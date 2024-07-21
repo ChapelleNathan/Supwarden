@@ -17,11 +17,6 @@ services:
     build:
       context: ./backend/backend
     container_name: backend
-    environment:
-      DB_HOST: postgres
-      DB_NAME: ${DB_NAME}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
     depends_on:
       - postgres
     ports:
