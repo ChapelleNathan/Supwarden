@@ -10,9 +10,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a9bfda9-274f-46c6-9a55-48b94b78bdc3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/backend/AutoMapperProfile.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/Context/DataContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Context/DataContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/Models/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Models/User.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Controller/UserController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Controller/UserController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/DTO/UserDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/DTO/UserDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Repository/UserRepository/IUserRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Repository/UserRepository/IUserRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Repository/UserRepository/UserRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Repository/UserRepository/UserRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Services/UserServices/IUserServices.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Services/UserServices/IUserServices.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Services/UserServices/UserServices.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Services/UserServices/UserServices.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/backend.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,7 +114,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1721572061116</updated>
-      <workItem from="1721572063096" duration="1727000" />
+      <workItem from="1721572063096" duration="4331000" />
     </task>
     <servers />
   </component>
