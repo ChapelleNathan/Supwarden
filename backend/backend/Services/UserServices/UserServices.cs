@@ -10,6 +10,7 @@ public class UserServices(IUserRepository userRepository, IMapper mapper) : IUse
     public async Task<PublicUserDto> CreateUser(CreateUserDto userDto)
     {
         var newUser = mapper.Map<User>(userDto);
+        newUser.Password = PasswordHashService.HashPassword(userDto.Password);
         try
         {
             newUser = await userRepository.CreateUser(newUser);
