@@ -1,6 +1,7 @@
 using backend.Context;
 using backend.Models;
 using backend.Repository.UserRepository;
+using backend.Services.AuthService;
 using backend.Services.UserServices;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +20,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserServices, UserServices>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
