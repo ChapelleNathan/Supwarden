@@ -6,4 +6,6 @@ public interface IUserServices
 {
     public Task<PublicUserDto> CreateUser(CreateUserDto userDto);
     public Task<PublicUserDto> GetUser(string id);
+
+    public Task<PublicUserDto> AuthUser(AuthUser authUser);
 }

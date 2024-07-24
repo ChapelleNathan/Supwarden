@@ -22,4 +22,11 @@ public class UserController(IUserServices userServices) : ControllerBase
         var response = await userServices.GetUser(id);
         return Ok(response);
     }
+
+    [HttpPost("/auth")]
+    public async Task<ActionResult<PublicUserDto?>> ConnectUser(AuthUser authDto)
+    {
+        var response = await userServices.AuthUser(authDto);
+        return Ok(response);
+    }
 }

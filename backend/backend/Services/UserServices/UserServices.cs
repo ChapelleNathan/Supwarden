@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using AutoMapper;
 using backend.DTO;
 using backend.Models;
@@ -10,7 +11,7 @@ public class UserServices(IUserRepository userRepository, IMapper mapper) : IUse
     public async Task<PublicUserDto> CreateUser(CreateUserDto userDto)
     {
         var newUser = mapper.Map<User>(userDto);
-        newUser.Password = PasswordHashService.HashPassword(userDto.Password);
+        newUser.Password = BCrypt.Net.BCrypt.HashPassword(newUser.Password);
         try
         {
             newUser = await userRepository.CreateUser(newUser);
@@ -37,5 +38,26 @@ public class UserServices(IUserRepository userRepository, IMapper mapper) : IUse
         }
 
         return mapper.Map<PublicUserDto>(user);
+    }
+
+    public async Task<PublicUserDto?> AuthUser(AuthUser authUser)
+    {
+        try
+        {
+            var user = await userRepository.FindUserByEmail(authUser.Email);
+            if (user is null) throw new Exception("mauvais mdp");
+            var isPasswordGood = BCrypt.Net.BCrypt.Verify(authUser.Password, user.Password);
+            if (isPasswordGood)
+            {
+                return mapper.Map<PublicUserDto>(user);
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
+        return null;
     }
 }

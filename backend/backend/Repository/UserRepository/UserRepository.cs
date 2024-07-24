@@ -17,4 +17,10 @@ public class UserRepository(DataContext context) : IUserRepository
     {
         return await context.Users.FirstOrDefaultAsync(user => user.Id.ToString() == id);
     }
+
+    public async Task<User?> FindUserByEmail(string email)
+    {
+        var user = await context.Users.FirstOrDefaultAsync(user => user.Email == email);
+        return user;
+    }
 }
