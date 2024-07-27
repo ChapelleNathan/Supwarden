@@ -10,12 +10,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a9bfda9-274f-46c6-9a55-48b94b78bdc3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/Enum/ErrorMessages.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/Helper/ErrorHelper.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/Helper/AuthSettings.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/Controller/AuthController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Controller/AuthController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/DTO/UserDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/DTO/UserDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/Services/AuthService/AuthService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Services/AuthService/AuthService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/Services/AuthService/IAuthService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Services/AuthService/IAuthService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/backend.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +112,7 @@
       <option name="presentableId" value="Default" />
       <updated>1721572061116</updated>
       <workItem from="1721572063096" duration="4640000" />
-      <workItem from="1722088353970" duration="2775000" />
+      <workItem from="1722088353970" duration="4531000" />
     </task>
     <servers />
   </component>

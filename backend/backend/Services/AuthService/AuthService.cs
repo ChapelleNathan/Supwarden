@@ -45,6 +45,8 @@ public class AuthService(IUserRepository userRepository, IMapper mapper, DataCon
             throw new HttpResponseException(400, errorMessage, userDto);
         }
 
+        userDto.Token = IAuthService.GenerateToken(user);
+        
         return userDto;
     }
 
