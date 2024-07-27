@@ -25,4 +25,21 @@ public class AuthController (IAuthService authService)
 
         return new HttpResponseHandler().Handle(serviceResponse);
     }
+
+    [HttpPost("/login")]
+    public async Task<ActionResult<ServiceResponse<PublicUserDto>>> Login(AuthUserDto userDto)
+    {
+        var serviceResponse = new ServiceResponse<PublicUserDto>();
+        try
+        {
+            serviceResponse.Data = await authService.Login(userDto);
+        }
+        catch (HttpResponseException e)
+        {
+            serviceResponse.HttpCode = e.StatusCode;
+            serviceResponse.Message = e.Message;
+        }
+
+        return new HttpResponseHandler().Handle(serviceResponse);
+    }
 }

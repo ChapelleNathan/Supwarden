@@ -6,5 +6,5 @@ public interface IAuthService
 {
     public Task<PublicUserDto> Signin(CreateUserDto userDto);
 
-    public Task<ServiceResponse<PublicUserDto>> Login(AuthUserDto authUserDto);
+    public Task<PublicUserDto> Login(AuthUserDto authUserDto);
 }
