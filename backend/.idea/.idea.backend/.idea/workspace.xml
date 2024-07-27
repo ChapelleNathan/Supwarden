@@ -10,7 +10,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a9bfda9-274f-46c6-9a55-48b94b78bdc3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/backend/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/AutoMapperProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/AutoMapperProfile.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Controller/AuthController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Controller/AuthController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Controller/UserController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Controller/UserController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/DTO/UserDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/DTO/UserDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/HttpResponseException.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/HttpResponseException.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Services/AuthService/AuthService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Services/AuthService/AuthService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Services/AuthService/IAuthService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Services/AuthService/IAuthService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Services/UserServices/IUserServices.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Services/UserServices/IUserServices.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Services/UserServices/UserServices.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Services/UserServices/UserServices.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +31,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e9ab9854a998450581979dd665f45e2b18920/07/eefd5ba1/ClaimTypes.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -109,13 +118,14 @@
       <option name="presentableId" value="Default" />
       <updated>1721572061116</updated>
       <workItem from="1721572063096" duration="4640000" />
-      <workItem from="1722088353970" duration="4962000" />
+      <workItem from="1722088353970" duration="5451000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>

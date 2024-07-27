@@ -4,5 +4,5 @@ public class HttpResponseException(int statusCode, string message, object? value
 {
     public int StatusCode { get; } = statusCode;
     public object? Value { get; } = value;
-    public string Message { get; } = message;
+    public new string Message { get; } = message;
 }

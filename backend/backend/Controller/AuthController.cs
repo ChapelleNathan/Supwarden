@@ -10,9 +10,9 @@ namespace backend.Controller;
 public class AuthController (IAuthService authService)
 {
     [HttpPost("/signin")]
-    public async Task<ActionResult<ServiceResponse<PublicUserDto>>> Signin(CreateUserDto userDto)
+    public async Task<ActionResult<ServiceResponse<UserDto>>> Signin(CreateUserDto userDto)
     {
-        var serviceResponse = new ServiceResponse<PublicUserDto>();
+        var serviceResponse = new ServiceResponse<UserDto>();
         try
         {
             serviceResponse.Data = await authService.Signin(userDto);
@@ -27,9 +27,9 @@ public class AuthController (IAuthService authService)
     }
 
     [HttpPost("/login")]
-    public async Task<ActionResult<ServiceResponse<PublicUserDto>>> Login(AuthUserDto userDto)
+    public async Task<ActionResult<ServiceResponse<UserDto>>> Login(AuthUserDto userDto)
     {
-        var serviceResponse = new ServiceResponse<PublicUserDto>();
+        var serviceResponse = new ServiceResponse<UserDto>();
         try
         {
             serviceResponse.Data = await authService.Login(userDto);

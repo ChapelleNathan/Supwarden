@@ -11,7 +11,7 @@ namespace backend.Controller;
 public class UserController(IUserServices userServices) : ControllerBase
 {
     [HttpGet("{id}")]
-    public async Task<ActionResult<PublicUserDto>> GetUser(string id)
+    public async Task<ActionResult<UserDto>> GetUser(string id)
     {
         var response = await userServices.GetUser(id);
         return Ok(response);

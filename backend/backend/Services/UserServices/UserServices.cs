@@ -8,7 +8,7 @@ namespace backend.Services.UserServices;
 
 public class UserServices(IUserRepository userRepository, IMapper mapper) : IUserServices
 {
-    public async Task<PublicUserDto> GetUser(string id)
+    public async Task<UserDto> GetUser(string id)
     {
         User? user;
         try
@@ -21,6 +21,6 @@ public class UserServices(IUserRepository userRepository, IMapper mapper) : IUse
             throw;
         }
 
-        return mapper.Map<PublicUserDto>(user);
+        return mapper.Map<UserDto>(user);
     }
 }
