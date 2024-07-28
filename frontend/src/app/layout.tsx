@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body className={inter.className} data-bs-theme="dark">
+      <body className={inter.className + " vh-100"} data-bs-theme="dark">
         <Header/>
         {children}
       </body>
