@@ -10,7 +10,6 @@ namespace backend.Services.AuthService;
 
 public interface IAuthService
 {
-    public Task<UserDto> Signin(CreateUserDto userDto);
 
     public Task<UserDto> Login(AuthUserDto authUserDto);
 
