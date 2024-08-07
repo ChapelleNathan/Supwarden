@@ -1,13 +1,13 @@
 namespace backend.DTO;
 
-public class UserDto(Guid id, string firstname, string lastname, string email, string token, string phoneNumber)
+public class UserDto
 {
-    public Guid Id { get; set; } = id;
-    public string Firstname { get; set; } = firstname;
-    public string Lastname { get; set; } = lastname;
-    public string Email { get; set; } = email;
-    public string Token { get; set; } = token;
-    public string PhoneNumber { get; set; } = phoneNumber;
+    public required Guid Id { get; set; }
+    public required string Firstname { get; set; }
+    public required string Lastname { get; set; }
+    public required string Email { get; set; }
+    public string Token { get; set; } = "";
+    public required string PhoneNumber { get; set; }
 }
 public abstract class AuthUserDto(string email, string password)
 {
