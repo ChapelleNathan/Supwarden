@@ -54,6 +54,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("localhost");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
