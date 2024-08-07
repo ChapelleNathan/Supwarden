@@ -1,8 +1,7 @@
 "use client"
 
-import CreateUserDto from "@/app/DTO/UserDto";
+import {CreateUserDto} from "@/app/DTO/UserDto";
 import axios from "axios";
-import { redirect } from "next/navigation";
 import React, { useState } from "react"
 import { navigate } from "./action";
 
@@ -15,7 +14,7 @@ export default function SignInRoute() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errors, setErrors] = useState<Error[]>([]);
-
+    
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         const newUser: CreateUserDto = {
@@ -34,7 +33,6 @@ export default function SignInRoute() {
             navigate();
         }
     }
-
 
     return (
         <form onSubmit={handleSubmit} className="border border-2 rounded-2 col-5 p-4 d-flex flex-column align-items-center">
@@ -109,7 +107,7 @@ export default function SignInRoute() {
                 type="submit"
                 className={"btn btn-primary col-4 mt-3"}
             >Créer mon compte</button>
-            <p className="fs-6 m-0 mt-2">Déjà un compte ? connecter vous ici</p>
+            <p className="fs-6 m-0 mt-2">Déjà un compte ? connectez vous <span role="button" className="text-primary" onClick={() => navigate()}>ici</span></p>
         </form>
     )
 }
