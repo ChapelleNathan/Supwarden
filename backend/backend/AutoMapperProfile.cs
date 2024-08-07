@@ -8,6 +8,8 @@ public class AutoMapperProfile : Profile
 {
     public AutoMapperProfile()
     {
+        CreateMap<CreateUserDto, User>();
+        CreateMap<User, ConnectedUserDto>();
         CreateMap<User, UserDto>();
     }
 }

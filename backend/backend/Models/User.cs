@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace backend.Models;
 
 [Table("User")]
-public class User(Guid id, string firstname, string lastname, string email, string password, string phoneNumber)
+public class User(string firstname, string lastname, string email, string password, string phoneNumber)
 {
     [Key]
-    public Guid Id { get; set; } = id;
+    public Guid Id { get; set; }
 
     [Column("firstname")]
     [Required]

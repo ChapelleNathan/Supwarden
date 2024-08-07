@@ -11,8 +11,23 @@ namespace backend.Services.AuthService;
 
 public class AuthService(IUserRepository userRepository, IMapper mapper, DataContext context) : IAuthService
 {
+    public async Task<UserDto> Signin(CreateUserDto userDto)
+    {
+        var user = await userRepository.CreateUser(mapper.Map<User>(userDto));
+        if (user is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.CreationError500);
+            throw new HttpResponseException(500,errorMessage ,user);
+        }
+        user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+        IsUserCorrect(user);
+        
+        await context.SaveChangesAsync();
+        
+        return mapper.Map<UserDto>(user);
+    }
 
-    public async Task<UserDto> Login(AuthUserDto authUserDto)
+    public async Task<ConnectedUserDto> Login(AuthUserDto authUserDto)
     {
         var user = await userRepository.FindUserByEmail(authUserDto.Email);
         if (user is null)
@@ -20,7 +35,7 @@ public class AuthService(IUserRepository userRepository, IMapper mapper, DataCon
             var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.ConnectionError400);
             throw new HttpResponseException(404, errorMessage, authUserDto);
         }
-        var userDto = mapper.Map<UserDto>(user);
+        var userDto = mapper.Map<ConnectedUserDto>(user);
         
         var checkPassword = BCrypt.Net.BCrypt.Verify(authUserDto.Password, user.Password);
         if (!checkPassword)
