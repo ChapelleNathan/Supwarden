@@ -6,5 +6,14 @@ export default defineConfig({
   plugins: [react()],
   server:{
     port: 8000,
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        sassOpions: {
+          quietDeps: true,
+        }
+      }
+    }
   }
 })
