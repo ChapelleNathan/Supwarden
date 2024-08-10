@@ -1,0 +1,14 @@
+{
+  "node": {
+    "1f07bf7c709eac545b0df556818b91c1c5fe28b1": {
+      "workers": {
+        "app/(auth)/signin/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fhome%2Fnathanc%2FProgrammation%2FSupinfo%2FSupwarden%2Ffrontend%2Fsrc%2Fapp%2F(auth)%2Fsignin%2Faction.tsx%22%2C%5B%22navigate%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/(auth)/signin/page": "action-browser"
+      }
+    }
+  },
+  "edge": {},
+  "encryptionKey": "MKlulyNB1mIH7IzHxINrBDXXGKzSDomBDj9YRjhDjhE="
+}
