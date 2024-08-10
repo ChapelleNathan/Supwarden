@@ -1,0 +1,92 @@
+# Fichiers de build de Visual Studio
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Fichiers de build de .NET
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Fichiers de build de l'application
+bin/
+obj/
+out/
+
+# Fichiers de build de l'environnement
+*.log
+*.stackdump
+*.env
+*.specflow
+TestResults/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]*/
+[Aa][Rr][Mm]64*/
+[Bb][Ii][Nn]*/
+[Oo][Bb][Jj]*/
+
+# Packages NuGet
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+nuget.exe
+*.nuspec
+
+# Dossiers de publication
+publish/
+wwwroot/
+
+# Logs et fichiers temporaires
+*.pid
+*.log
+*.cache
+*.pdb
+*.mdb
+
+# Fichiers de configuration
+appsettings*.json
+secrets.json
+*.config
+*.prefs
+
+# Systèmes d'exploitation
+[Tt]humbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# MacOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+# Ignorer les fichiers temporaires créés par l'éditeur Vim
+*.swp
+
+# Windows
+*.lnk
+
+# Rider
+.idea/
+*.sln.iml
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+
+# Docker
+docker-compose.override.yml
+docker-compose.*.yml
+Dockerfile*
+.dockerignore
+.env
