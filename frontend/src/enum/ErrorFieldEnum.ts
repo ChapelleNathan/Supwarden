@@ -7,3 +7,7 @@ export enum ConnectionErrorEnum {
     EMAIL,
     DEFAULT
 }
+
+export enum CreatePasswordEnum {
+    PASSWORD
+}

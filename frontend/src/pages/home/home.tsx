@@ -1,5 +1,8 @@
+import PasswordForm from "../../components/password/PasswordForm";
+
 export default function Home() {
     return (
-        <h1>Hello</h1>
+
+        <PasswordForm />
     )
 }
