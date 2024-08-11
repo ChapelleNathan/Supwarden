@@ -43,4 +43,21 @@ public class PasswordController (IPasswordService passwordService)
 
         return serviceResponse;
     }
+
+    [HttpGet("{passwordId}")]
+    public async Task<ActionResult<ServiceResponse<PasswordDto>>> GetOnePassword(Guid passwordId)
+    {
+        var serviceResponse = new ServiceResponse<PasswordDto>();
+        try
+        {
+            serviceResponse.Data = await passwordService.GetPassword(passwordId);
+        }
+        catch (HttpResponseException e)
+        {
+            serviceResponse.HttpCode = e.StatusCode;
+            serviceResponse.Message = e.Message;
+        }
+
+        return serviceResponse;
+    }
 }

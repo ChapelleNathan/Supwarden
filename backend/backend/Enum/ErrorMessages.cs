@@ -26,4 +26,7 @@ public enum ErrorMessages
     
     [Description("Impossible de récupérer les mot de passe. Veuillez réessayer ultérieurement")]
     Sup404PasswordUserNotFound,
+    
+    [Description("Impossible de trouver le mot de passe")]
+    Sup404PasswordNotFound,
 }
