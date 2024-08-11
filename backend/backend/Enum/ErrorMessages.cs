@@ -24,4 +24,6 @@ public enum ErrorMessages
     [Description("Impossible de créer le mot de passe, veuillez réessayer ultérieurement")]
     Sup500PasswordCreation,
     
+    [Description("Impossible de récupérer les mot de passe. Veuillez réessayer ultérieurement")]
+    Sup404PasswordUserNotFound,
 }

@@ -10,7 +10,6 @@ public class PasswordDto
     public required String Identifier { get; set; }
     public required String Note { get; set; }
     public required String Uri { get; set; }
-    public required UserDto User { get; set; }
 }
 
 public class CreatePasswordDto

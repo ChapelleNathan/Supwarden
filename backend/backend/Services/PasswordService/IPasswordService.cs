@@ -5,4 +5,6 @@ namespace backend.Services.PasswordService;
 public interface IPasswordService
 {
     public Task<PasswordDto> CreatePassword(CreatePasswordDto newPassword);
+
+    public Task<List<PasswordDto>> GetAllPassword();
 }

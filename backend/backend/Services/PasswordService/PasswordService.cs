@@ -33,4 +33,22 @@ public class PasswordService(
         passwordRepository.Save();
         return mapper.Map<PasswordDto>(password);
     }
+
+    public async Task<List<PasswordDto>> GetAllPassword()
+    {
+        var userEmail = context.HttpContext?.User.FindFirst(ClaimTypes.Email)!;
+        var user = await userRepository.FindUserByEmail(userEmail.Value);
+        if (user is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup404PasswordUserNotFound);
+            throw new HttpResponseException(404, errorMessage);
+        }
+
+        var passwords = await passwordRepository.GetAllPasswordFromUser(user.Id);
+        passwords.ForEach(password =>
+        {
+            password.SitePassword = PasswordSaveHelper.DecryptPassword(password.SitePassword);
+        });
+        return passwords.Select(password => mapper.Map<PasswordDto>(password)).ToList();;
+    }
 }
