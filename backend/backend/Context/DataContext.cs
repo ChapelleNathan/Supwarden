@@ -9,6 +9,7 @@ public class DataContext : DbContext
     
     public DataContext() {}
     public DbSet<User> Users => Set<User>();
+    public DbSet<Password> Passwords => Set<Password>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
