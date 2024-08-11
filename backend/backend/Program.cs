@@ -1,9 +1,14 @@
+using System.Text;
 using backend.Context;
+using backend.Helper;
 using backend.Models;
+using backend.Repository.PasswordRepository;
 using backend.Repository.UserRepository;
 using backend.Services.AuthService;
+using backend.Services.PasswordService;
 using backend.Services.UserServices;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -24,6 +29,7 @@ builder.Services.AddSwaggerGen(options =>
 });
 builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDbContext<DataContext>(options => 
     options.UseNpgsql(builder.Configuration.GetConnectionString("DevConnection"))
@@ -40,9 +46,24 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddAuthentication().AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value!))
+    };
+});
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserServices, UserServices>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IPasswordService, PasswordService>();
+builder.Services.AddScoped<IPasswordRepository, PasswordRepository>();
+builder.Services.AddScoped<AuthHelper>();
 
 
 var app = builder.Build();

@@ -22,4 +22,9 @@ public class UserRepository(DataContext context) : IUserRepository
         var user = await context.Users.FirstOrDefaultAsync(user => user.Email == email);
         return user;
     }
+
+    public void Save()
+    {
+        context.SaveChanges();
+    }
 }

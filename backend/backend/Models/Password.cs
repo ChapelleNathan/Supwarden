@@ -7,7 +7,7 @@ namespace backend.Models;
 public class Password (string name, string identifier, string sitePassword, string uri)
 {
     [Key]
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
 
     [Column("name")]
     [Required]
@@ -31,4 +31,8 @@ public class Password (string name, string identifier, string sitePassword, stri
 
     [Column("note")]
     public String Note { get; set; } = "";
+
+    [Column("user_id")]
+    [Required]
+    public required User User { get; set; }
 }

@@ -7,7 +7,7 @@ namespace backend.Models;
 public class User(string firstname, string lastname, string email, string password, string phoneNumber)
 {
     [Key]
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
 
     [Column("firstname")]
     [Required]
