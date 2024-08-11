@@ -3,7 +3,7 @@ import { Button, Form, FormControl, FormGroup, FormLabel } from "react-bootstrap
 import { Link, useNavigate } from "react-router-dom";
 import { CreateUserDTO } from "../../../model/UserModels";
 import { FieldError, RenderErrors } from "../../../components/error";
-import verifySigninForm from "./verifyForm";
+import { verifySigninForm } from "../verifyForm";
 import { ConnectionErrorEnum } from "../../../enum/ErrorFieldEnum";
 import axios from "axios";
 
@@ -35,7 +35,7 @@ export default function Signin() {
             } catch (e: any) {
                 if (axios.isAxiosError(e)) {
                     const errorMessage = e.response?.data.message;
-                    setErrors([...errors, { field: ConnectionErrorEnum.DEFAULT, message: errorMessage }])
+                    setErrors([{ field: ConnectionErrorEnum.DEFAULT, message: errorMessage }])
                 }
             }
         }

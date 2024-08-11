@@ -16,11 +16,17 @@ export class FieldError {
 }
 
 export function RenderErrors({errors, field}: ErrorProps): ReactNode {
-    let html = <></>
-    errors.forEach(error => {
-        if(error.field == field){
-            html = <p className="text-danger">{error.message}</p>
-        }
-    })
-    return html;
+    //let html = <></>
+    //errors.forEach(error => {
+    //    if(error.field == field){
+    //        html = <p className="text-danger">{error.message}</p>
+    //    }
+    //})
+    const errorMessages = errors
+        .filter(error => error.field === field)
+        .map((error, index) => (
+            <p key={index} className="text-danger">{error.message}</p>
+        ));
+        
+    return <>{errorMessages}</>;
 }

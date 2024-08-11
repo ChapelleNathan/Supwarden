@@ -5,3 +5,20 @@ export interface CreateUserDTO {
     password: string,
     phoneNumber: string
 }
+
+export interface AuthUserDTO {
+    email: string,
+    password: string,
+}
+
+export interface UserDTO {
+    id: string,
+    firstname: string,
+    lastname: string,
+    email: string,
+    phoneNumber: string,
+}
+
+export interface ConnectedUserDTO extends UserDTO {
+    token: string,
+}
