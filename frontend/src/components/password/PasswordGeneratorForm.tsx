@@ -31,8 +31,7 @@ export default function PasswordGeneratorForm(props: Props) {
 
             
         if (chars === '') {
-            setGeneratedPassword('Veuillez selectionner les options pour générer un mot de passe')
-            return;
+            setLowercase(true)
         }
         let password: string = '';
 
