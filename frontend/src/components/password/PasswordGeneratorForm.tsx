@@ -8,7 +8,7 @@ interface Props {
 
 export default function PasswordGeneratorForm(props: Props) {
     const [numCaracters, setNumCaracters] = useState('6');
-    const [lowercase, setLowercase] = useState(false);
+    const [lowercase, setLowercase] = useState(true);
     const [uppercase, setUppercase] = useState(false);
     const [number, setNumber] = useState(false);
     const [areSpecialChars, setAreSpecialChars] = useState(false);
@@ -49,6 +49,7 @@ export default function PasswordGeneratorForm(props: Props) {
 
     return (
         <div className="d-flex flex-column gap-1">
+            <p className="form-text passwordHelpBloc">Il doit y avoir au minimum 1 switch d'activé</p>
             <div className="d-flex">
                 <FormCheck
                     type="switch"
