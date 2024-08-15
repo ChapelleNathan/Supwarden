@@ -3,7 +3,7 @@ import { ConnectionErrorEnum, CreatePasswordEnum } from "../enum/ErrorFieldEnum"
 
 interface ErrorProps {
     errors: FieldError[],
-    field: ConnectionErrorEnum | CreatePasswordEnum,
+    field: ConnectionErrorEnum | CreatePasswordEnum
 }
 
 export class FieldError {

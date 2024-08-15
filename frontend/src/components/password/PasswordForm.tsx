@@ -1,89 +1,125 @@
-import { useEffect, useState } from "react";
-import { Form, FormCheck, FormGroup, FormLabel, Row } from "react-bootstrap";
-import FormRange from "react-bootstrap/esm/FormRange";
+import { Alert, AlertHeading, Button, Form, FormControl, FormGroup, FormLabel, InputGroup, OverlayTrigger, Tooltip } from "react-bootstrap";
+import PasswordGeneratorForm from "./PasswordGeneratorForm";
+import React, { useState } from "react";
+import { PasswordDto } from "../../model/PasswordModels";
+import axios from "axios";
+import { FieldError, RenderErrors } from "../error";
+import verifyPasswordForm from "./verifyPasswordForm";
+import { CreatePasswordEnum } from "../../enum/ErrorFieldEnum";
+import Required from "../required";
 
+interface PasswordFormProps {
+    passwordDto?: PasswordDto
+}
 
-export default function PasswordForm() {
-    const [numCaracters, setNumCaracters] = useState('6');
-    const [lowercase, setLowercase] = useState(false);
-    const [uppercase, setUppercase] = useState(false);
-    const [number, setNumber] = useState(false);
-    const [areSpecialChars, setAreSpecialChars] = useState(false);
-    const [generatedPassword, setGeneratedPassword] = useState('');
+interface Alert {
+    show: boolean,
+    message: string
+}
 
+export default function PasswordForm(props: PasswordFormProps) {
+    const [show, setShow] = useState(false);
+    const [password, setPassword] = useState(props.passwordDto?.sitePassword ?? '');
+    const [name, setName] = useState(props.passwordDto?.name ?? '');
+    const [identifier, setIdentifier] = useState(props.passwordDto?.identifier ?? '');
+    const [uri, setUri] = useState(props.passwordDto?.uri ?? '');
+    const [note, setNote] = useState(props.passwordDto?.note ?? '');
+    const [showAlert, setShowAlert] = useState<Alert>({ show: false, message: '' });
+    const [errors, setErrors] = useState<FieldError[]>([]);
 
-    const generatePassword = (): void => {
-        const lowercaseChars: string = 'abcdefghijklmnopqrstuvwxyz'
-        const uppercaseChars: string = lowercaseChars.toUpperCase();
-        const numberChars: string = '0123456789';
-        const specialChars: string = '!@#$%^&*()_-+=|;"<>.?/';
+    const handlePasswordChange = (password: string) => {
+        setPassword(password);
+    }
 
-        const chars: string = (lowercase ? lowercaseChars : '')
-            + (uppercase ? uppercaseChars : '')
-            + (number ? numberChars : '')
-            + (areSpecialChars ? specialChars : '');
+    const handleSubmit = (event: React.FormEvent) => {
+        const config = {
+            headers:
+                { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        };
 
-        let password: string = '';
-
-        for (let i = 0; i < parseInt(numCaracters); i++) {
-            password += chars[Math.floor(Math.random() * chars.length)]
+        event.preventDefault();
+        const newPassword: PasswordDto = {
+            name: name,
+            identifier: identifier,
+            sitePassword: password,
+            uri: uri,
+            note: note,
         }
-        setGeneratedPassword(password);
-        if (chars === 'false') {
-            console.log('test');
-            setGeneratedPassword('Veuillez selectionner les options pour générer un mot de passe')
+
+        const verification = verifyPasswordForm(newPassword);
+        setErrors(verification);
+
+        if(verification.length == 0) {
+            try {
+                axios.post('http://localhost:8080/password', newPassword, config);
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    setShowAlert({ show: true, message: error.message })
+                }
+            }
         }
     }
 
-    useEffect(() => {
-        generatePassword()
-    }, [numCaracters, lowercase, uppercase, number, areSpecialChars])
+    return (
+        <Form onSubmit={handleSubmit} className="d-flex flex-column gap-2">
+            {displayAlert(showAlert)}
+            <FormGroup>
+                <FormLabel>Nom <Required/></FormLabel>
+                <FormControl type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                <RenderErrors errors={errors} field={CreatePasswordEnum.NAME}/>
+            </FormGroup>
+            <FormGroup>
+                <FormLabel>Identifiant <Required/></FormLabel>
+                <FormControl type="text" value={identifier} onChange={(e) => setIdentifier(e.target.value)} />
+                <RenderErrors errors={errors} field={CreatePasswordEnum.IDENTIFIER}/>
+            </FormGroup>
+            <FormGroup>
+                <FormLabel>Mot de passe <Required /></FormLabel>
+                <InputGroup>
+                    <FormControl type="text" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <OverlayTrigger
+                        key={'generatePassword'}
+                        placement={'top'}
+                        overlay={
+                            <Tooltip id={`tooltip-top`}>
+                                Ouvrir l'outil de génération de mot de passe
+                            </Tooltip>
+                        }
+                    >
+                        <Button onClick={() => setShow(true)}>Générer</Button>
+                    </OverlayTrigger>
+                </InputGroup>
+                {show ? (<PasswordGeneratorForm onPasswordChange={handlePasswordChange} />) : (<></>)}
+                <RenderErrors errors={errors} field={CreatePasswordEnum.PASSWORD}/>
+            </FormGroup>
+            <FormGroup>
+                <FormLabel>URI <Required /></FormLabel>
+                <FormControl type="text" value={uri} onChange={(e) => setUri(e.target.value)} />
+                <RenderErrors errors={errors} field={CreatePasswordEnum.URI}/>
+            </FormGroup>
+            <FormGroup>
+                <FormLabel>Note</FormLabel>
+                <FormControl
+                    as={"textarea"}
+                    placeholder="Mettez une note sur vos identifiant de connection"
+                    value={note}
+                    onChange={(e) => setNote(e.target.value)}
+                />
+            </FormGroup>
+            <Button type="submit" className="w-100">Créer</Button>
+        </Form>
+    )
+}
+
+function displayAlert(showAlert: Alert) {
+    if (!showAlert.show) {
+        return (<></>)
+    }
 
     return (
-        <section className="col-12">
-            <Form className="d-flex flex-column" onSubmit={generatePassword}>
-                <Row>
-                    <FormCheck
-                        type="switch"
-                        id="lowercase"
-                        label="Inclure des minuscules"
-                        className="col"
-                        checked={lowercase}
-                        onChange={(e) => setLowercase(e.target.checked)}
-                    />
-                    <FormCheck
-                        type="switch"
-                        id="uppercase"
-                        label="Inclure des majuscule"
-                        className="col"
-                        checked={uppercase}
-                        onChange={(e) => setUppercase(e.target.checked)}
-                    />
-                </Row>
-                <Row>
-                    <FormCheck
-                        type="switch"
-                        id="number"
-                        label="Inclure des chiffres"
-                        className="col"
-                        checked={number}
-                        onChange={(e) => setNumber(e.target.checked)}
-                    />
-                    <FormCheck
-                        type="switch"
-                        id="specialChars"
-                        label="Inclure des caractères spéciaux"
-                        className="col"
-                        checked={areSpecialChars}
-                        onChange={(e) => setAreSpecialChars(e.target.checked)}
-                    />
-                </Row>
-                <FormGroup>
-                    <FormLabel>Nombres de caractères: {numCaracters}</FormLabel>
-                    <FormRange min={16} max={34} value={numCaracters} onChange={(e) => setNumCaracters(e.target.value)} />
-                </FormGroup>
-                <p>{generatedPassword}</p>
-            </Form>
-        </section>
+        <Alert variant="danger" dismissible>
+            <AlertHeading>Erreur</AlertHeading>
+            <p>{showAlert.message}</p>
+        </Alert>
     )
 }
