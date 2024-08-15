@@ -29,7 +29,7 @@ public class AuthHelper
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = GenerateClaims(user),
-            Expires = DateTime.UtcNow.AddMinutes(15),
+            Expires = DateTime.UtcNow.AddDays(7),
             SigningCredentials = credentials
         };
 

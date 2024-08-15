@@ -18,9 +18,15 @@ public class PasswordRepository(DataContext context) : IPasswordRepository
         return passwords;
     }
 
-    public async Task<Password?> GetOnePasswordById(Guid passwordId)
+    public async Task<Password?> GetOnePasswordById(String passwordId)
     {
-        return await context.Passwords.FirstOrDefaultAsync(password => password.Id == passwordId);
+        return await context.Passwords.FirstOrDefaultAsync(password => password.Id.ToString() == passwordId);
+    }
+
+    public Password UpdatePassword(Password updatedPassword)
+    {
+        var password = context.Passwords.Update(updatedPassword);
+        return password.Entity;
     }
 
     public void Save()
