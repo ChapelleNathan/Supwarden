@@ -1,7 +1,7 @@
 import { Alert, AlertHeading, Button, Form, FormControl, FormGroup, FormLabel, InputGroup, OverlayTrigger, Tooltip } from "react-bootstrap";
 import PasswordGeneratorForm from "./PasswordGeneratorForm";
 import React, { useState } from "react";
-import { PasswordDto } from "../../model/PasswordModels";
+import { CreatePasswordDto, PasswordDto } from "../../model/PasswordModels";
 import axios from "axios";
 import { FieldError, RenderErrors } from "../error";
 import verifyPasswordForm from "./verifyPasswordForm";
@@ -9,7 +9,8 @@ import { CreatePasswordEnum } from "../../enum/ErrorFieldEnum";
 import Required from "../required";
 
 interface PasswordFormProps {
-    passwordDto?: PasswordDto
+    passwordDto?: PasswordDto,
+    isEditiing?: boolean,
 }
 
 interface Alert {
@@ -38,7 +39,8 @@ export default function PasswordForm(props: PasswordFormProps) {
         };
 
         event.preventDefault();
-        const newPassword: PasswordDto = {
+
+        const newPassword: CreatePasswordDto = {
             name: name,
             identifier: identifier,
             sitePassword: password,
@@ -51,7 +53,12 @@ export default function PasswordForm(props: PasswordFormProps) {
 
         if(verification.length == 0) {
             try {
-                axios.post('http://localhost:8080/password', newPassword, config);
+                if(props.isEditiing && props.passwordDto){
+                    const password: PasswordDto = {...newPassword, id: props.passwordDto.id}
+                    axios.put('http://localhost:8080/password', password, config)
+                } else {
+                    axios.post('http://localhost:8080/password', newPassword, config);
+                }
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     setShowAlert({ show: true, message: error.message })
@@ -106,7 +113,7 @@ export default function PasswordForm(props: PasswordFormProps) {
                     onChange={(e) => setNote(e.target.value)}
                 />
             </FormGroup>
-            <Button type="submit" className="w-100">Créer</Button>
+            <Button type="submit" className="w-100">{props.isEditiing ? 'Modifier' : 'Créer'}</Button>
         </Form>
     )
 }

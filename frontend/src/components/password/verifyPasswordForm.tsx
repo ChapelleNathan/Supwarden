@@ -1,8 +1,8 @@
 import { CreatePasswordEnum } from "../../enum/ErrorFieldEnum";
-import { PasswordDto } from "../../model/PasswordModels";
+import { CreatePasswordDto, PasswordDto } from "../../model/PasswordModels";
 import { FieldError } from "../error";
 
-export default function verifyPasswordForm(password: PasswordDto): FieldError[] {
+export default function verifyPasswordForm(password: PasswordDto | CreatePasswordDto): FieldError[] {
     const errors: FieldError[] = [];
 
     if(password.sitePassword == '') {
