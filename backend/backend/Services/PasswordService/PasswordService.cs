@@ -52,7 +52,7 @@ public class PasswordService(
         return passwords.Select(password => mapper.Map<PasswordDto>(password)).ToList();;
     }
 
-    public async Task<PasswordDto> GetPassword(Guid passwordId)
+    public async Task<PasswordDto> GetPassword(String passwordId)
     {
         var password = await passwordRepository.GetOnePasswordById(passwordId);
         if (password is null)
@@ -62,6 +62,30 @@ public class PasswordService(
         }
         
         password.SitePassword = PasswordSaveHelper.DecryptPassword(password.SitePassword);
+        return mapper.Map<PasswordDto>(password);
+    }
+
+    public async Task<PasswordDto> UpdatePassword(PasswordDto updatedPassword)
+    {
+        var password = await passwordRepository.GetOnePasswordById(updatedPassword.Id);
+        if (password is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup404PasswordNotFound);
+            throw new HttpResponseException(404, errorMessage);
+        }
+
+        password.SitePassword = PasswordSaveHelper.DecryptPassword(password.SitePassword);
+
+        password.Identifier = updatedPassword.Identifier;
+        password.Name = updatedPassword.Name;
+        password.Uri = updatedPassword.Uri;
+        password.Note = updatedPassword.Note;
+        password.SitePassword = updatedPassword.SitePassword;
+
+        password.SitePassword = PasswordSaveHelper.EncryptPassword(password.SitePassword);
+        
+        passwordRepository.UpdatePassword(password);
+        passwordRepository.Save();
         return mapper.Map<PasswordDto>(password);
     }
 }

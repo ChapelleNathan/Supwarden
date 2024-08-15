@@ -8,5 +8,7 @@ public interface IPasswordService
 
     public Task<List<PasswordDto>> GetAllPassword();
 
-    public Task<PasswordDto> GetPassword(Guid passwordId);
+    public Task<PasswordDto> GetPassword(String passwordId);
+
+    public Task<PasswordDto> UpdatePassword(PasswordDto updatedPassword);
 }

@@ -13,5 +13,6 @@ public class AutoMapperProfile : Profile
         CreateMap<User, UserDto>();
         CreateMap<CreatePasswordDto, Password>();
         CreateMap<Password, PasswordDto>();
+        CreateMap<PasswordDto, Password>();
     }
 }

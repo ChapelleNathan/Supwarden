@@ -8,5 +8,7 @@ public interface IPasswordRepository : IRepository
 
     public Task<List<Password>> GetAllPasswordFromUser(Guid userId);
 
-    public Task<Password?> GetOnePasswordById(Guid passwordId);
+    public Task<Password?> GetOnePasswordById(String passwordId);
+
+    public Password UpdatePassword(Password updatedPassword);
 }

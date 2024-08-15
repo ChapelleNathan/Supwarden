@@ -45,12 +45,29 @@ public class PasswordController (IPasswordService passwordService)
     }
 
     [HttpGet("{passwordId}")]
-    public async Task<ActionResult<ServiceResponse<PasswordDto>>> GetOnePassword(Guid passwordId)
+    public async Task<ActionResult<ServiceResponse<PasswordDto>>> GetOnePassword(String passwordId)
     {
         var serviceResponse = new ServiceResponse<PasswordDto>();
         try
         {
             serviceResponse.Data = await passwordService.GetPassword(passwordId);
+        }
+        catch (HttpResponseException e)
+        {
+            serviceResponse.HttpCode = e.StatusCode;
+            serviceResponse.Message = e.Message;
+        }
+
+        return serviceResponse;
+    }
+
+    [HttpPut]
+    public async Task<ActionResult<ServiceResponse<PasswordDto>>> UpdatePassword(PasswordDto updatedPassword)
+    {
+        var serviceResponse = new ServiceResponse<PasswordDto>();
+        try
+        {
+            serviceResponse.Data = await passwordService.UpdatePassword(updatedPassword);
         }
         catch (HttpResponseException e)
         {
