@@ -44,5 +44,5 @@ public class Password (string name, string identifier, string sitePassword, stri
     public Boolean IsSensitive { get; set; } = false;
     
     [Column("created_at")]
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

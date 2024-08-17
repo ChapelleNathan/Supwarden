@@ -38,5 +38,9 @@ public enum ErrorMessages
     
     //UserGroup
     [Description("Erreur lors de l'ajout de l'utilisateur dans le group, veuillez réessayer ultérieurement")]
-    Sup500UserGroupCreationError
+    Sup500UserGroupCreationError,
+    
+    //Group
+    [Description("Impossible de trouver le groupe, veuillez réessayer avec un autre")]
+    Sup404GroupNotFound,
 }

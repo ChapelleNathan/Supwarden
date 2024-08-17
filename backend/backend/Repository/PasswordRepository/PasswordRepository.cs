@@ -14,7 +14,9 @@ public class PasswordRepository(DataContext context) : IPasswordRepository
 
     public async Task<List<Password>> GetAllPasswordFromUser(Guid userId)
     {
-        var passwords = await context.Passwords.Where(password => password.User.Id == userId).ToListAsync();
+        var passwords = await context.Passwords.Where(password => password.User.Id == userId)
+            .Include(password => password.Group)
+            .ToListAsync();
         return passwords;
     }
 

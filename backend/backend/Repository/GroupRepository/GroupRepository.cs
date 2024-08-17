@@ -1,5 +1,6 @@
 using backend.Context;
 using backend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Repository.GroupRepository;
 
@@ -14,5 +15,10 @@ public class GroupRepository(DataContext context) : IGroupRepository
     {
         var newGroup = await context.Groups.AddAsync(group);
         return newGroup.Entity;
+    }
+
+    public async Task<Group?> GetGroupById(string id)
+    {
+        return await context.Groups.FirstOrDefaultAsync(group => group.Id.ToString() == id);
     }
 }

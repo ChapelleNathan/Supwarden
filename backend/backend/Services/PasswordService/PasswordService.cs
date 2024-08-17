@@ -4,6 +4,7 @@ using backend.DTO;
 using backend.Enum;
 using backend.Helper;
 using backend.Models;
+using backend.Repository.GroupRepository;
 using backend.Repository.PasswordRepository;
 using backend.Repository.UserRepository;
 using Microsoft.AspNetCore.Authentication;
@@ -14,17 +15,33 @@ public class PasswordService(
     IMapper mapper,
     IPasswordRepository passwordRepository,
     IUserRepository userRepository,
-    IHttpContextAccessor context) : IPasswordService
+    IHttpContextAccessor context,
+    IGroupRepository groupRepository
+    ) : IPasswordService
 {
     public async Task<PasswordDto> CreatePassword(CreatePasswordDto newPassword)
     {
         var userEmail = context.HttpContext?.User.FindFirst(ClaimTypes.Email)!;
         var user = await userRepository.FindUserByEmail(userEmail.Value);
+        
+        
         var password = await passwordRepository.CreatePassword(mapper.Map<Password>(newPassword));
         if (password is null || user is null)
         {
             var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup500PasswordCreation);
             throw new HttpResponseException(500, errorMessage);
+        }
+        
+        if (newPassword.GroupId is not null)
+        {
+            var group = await groupRepository.GetGroupById(newPassword.GroupId);
+            if (group is null)
+            {
+                var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup404GroupNotFound);
+                throw new HttpResponseException(404, errorMessage);
+            }
+
+            password.Group = group;
         }
 
         password.SitePassword = PasswordSaveHelper.EncryptPassword(password.SitePassword);
