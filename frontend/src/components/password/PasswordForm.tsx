@@ -1,4 +1,4 @@
-import { Alert, AlertHeading, Button, ButtonGroup, Form, FormControl, FormGroup, FormLabel, InputGroup, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Alert, AlertHeading, Button, Form, FormControl, FormGroup, FormLabel, InputGroup, OverlayTrigger, Tooltip } from "react-bootstrap";
 import PasswordGeneratorForm from "./PasswordGeneratorForm";
 import React, { useState } from "react";
 import { CreatePasswordDto, PasswordDto } from "../../model/PasswordModels";
@@ -9,6 +9,7 @@ import { CreatePasswordEnum } from "../../enum/ErrorFieldEnum";
 import Required from "../required";
 import { useNavigate } from "react-router-dom";
 import { Copy, X } from "react-bootstrap-icons";
+import { useToast } from "../../context/ToastContext";
 
 interface PasswordFormProps {
     passwordDto?: PasswordDto,
@@ -29,6 +30,7 @@ export default function PasswordForm(props: PasswordFormProps) {
     const [note, setNote] = useState(props.passwordDto?.note ?? '');
     const [showAlert, setShowAlert] = useState<Alert>({ show: false, message: '' });
     const [errors, setErrors] = useState<FieldError[]>([]);
+    const {addToast} = useToast();
 
     const navigate = useNavigate();
 
@@ -85,7 +87,7 @@ export default function PasswordForm(props: PasswordFormProps) {
                             </Tooltip>
                         }
                     >
-                        <Button onClick={copyToClipboard}><Copy size={15} /></Button>
+                        <Button onClick={() => copyToClipboard('Mot de passe copié 😶‍🌫️ !')}><Copy size={15} /></Button>
                     </OverlayTrigger>
                     <Button variant="danger" onClick={() => setPasswordPanel(false)}><X size={20} /></Button>
                 </>
@@ -107,10 +109,15 @@ export default function PasswordForm(props: PasswordFormProps) {
         }
     }
 
-    const copyToClipboard = () => {
+    const copyToClipboard = (message: string) => {
         navigator.clipboard.writeText(password).then(() => {
-            alert('copié');
-        })
+            addToast(
+                message, {
+                    delay: 3000,
+                    autohide: true
+                }
+            )
+        });
     }
 
     return (

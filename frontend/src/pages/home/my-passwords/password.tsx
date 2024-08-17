@@ -3,6 +3,7 @@ import { PasswordDto } from "../../../model/PasswordModels";
 import { Dropdown, Offcanvas, OffcanvasBody, OffcanvasHeader } from "react-bootstrap";
 import PasswordForm from "../../../components/password/PasswordForm";
 import { useState } from "react";
+import { useToast } from "../../../context/ToastContext";
 
 interface PasswordProps {
     password: PasswordDto
@@ -10,9 +11,22 @@ interface PasswordProps {
 
 export default function Password({ password }: PasswordProps) {
     const [show, setShow] = useState(false);
+    const { addToast } = useToast();
 
     const handleShow = () => setShow(true);
     const handleHide = () => setShow(false);
+
+
+    function copyToClipboard(element: string, message: string) {
+        navigator.clipboard.writeText(element).then(() => {
+            addToast(
+                message, {
+                delay: 3000,
+                autohide: true
+            }
+            )
+        });
+    }
 
     return (
         <tr>
@@ -32,17 +46,27 @@ export default function Password({ password }: PasswordProps) {
                         <ThreeDots size={20} />
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <Dropdown.Item><Copy size={20} /> Identifiant</Dropdown.Item>
-                        <Dropdown.Item><Copy size={20} /> Mot de passe</Dropdown.Item>
-                        <Dropdown.Item onClick={handleShow}>
-                            <PencilFill size={20} />Détails
+                        <Dropdown.Item
+                            className="d-flex gap-3"
+                            onClick={() => copyToClipboard(password.identifier, 'Identifiant copié 😉 !')}>
+                            <Copy size={20} />
+                            <p >Identifiant</p>
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                            className="d-flex gap-3"
+                            onClick={() => copyToClipboard(password.sitePassword, 'Mot de passe copié 😶‍🌫️ !')}>
+                            <Copy size={20} />
+                            <p>Mot de passe</p>
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handleShow} className="d-flex gap-3">
+                            <PencilFill size={20} /><p>Détails</p>
                         </Dropdown.Item>
                         <Offcanvas show={show} onHide={handleHide} placement="end">
                             <OffcanvasHeader closeButton>
                                 <h2>Modifier l'élément</h2>
                             </OffcanvasHeader>
                             <OffcanvasBody>
-                                <PasswordForm passwordDto={password} isEditiing={true}/>
+                                <PasswordForm passwordDto={password} isEditiing={true} />
                             </OffcanvasBody>
                         </Offcanvas>
                     </Dropdown.Menu>
