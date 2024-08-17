@@ -7,6 +7,7 @@ import { FieldError, RenderErrors } from "../error";
 import verifyPasswordForm from "./verifyPasswordForm";
 import { CreatePasswordEnum } from "../../enum/ErrorFieldEnum";
 import Required from "../required";
+import { useNavigate } from "react-router-dom";
 
 interface PasswordFormProps {
     passwordDto?: PasswordDto,
@@ -27,6 +28,7 @@ export default function PasswordForm(props: PasswordFormProps) {
     const [note, setNote] = useState(props.passwordDto?.note ?? '');
     const [showAlert, setShowAlert] = useState<Alert>({ show: false, message: '' });
     const [errors, setErrors] = useState<FieldError[]>([]);
+    const navigate = useNavigate();
 
     const handlePasswordChange = (password: string) => {
         setPassword(password);
@@ -59,6 +61,7 @@ export default function PasswordForm(props: PasswordFormProps) {
                 } else {
                     axios.post('http://localhost:8080/password', newPassword, config);
                 }
+                navigate(0);
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     setShowAlert({ show: true, message: error.message })
