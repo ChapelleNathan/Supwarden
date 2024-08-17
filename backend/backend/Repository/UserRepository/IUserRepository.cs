@@ -8,4 +8,6 @@ public interface IUserRepository : IRepository
     public Task<User?> GetUser(string id);
 
     public Task<User?> FindUserByEmail(string email);
+
+    public Task<List<User>> SearchUserByEmail(string email);
 }

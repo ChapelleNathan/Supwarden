@@ -24,4 +24,11 @@ public class UserServices(IUserRepository userRepository, IMapper mapper) : IUse
 
         return mapper.Map<UserDto>(user);
     }
+
+    public async Task<List<UserDto>> SearchUserByEmail(string email)
+    {
+        var users = await userRepository.SearchUserByEmail(email);
+
+        return users.Select(user => mapper.Map<UserDto>(user)).ToList();
+    }
 }
