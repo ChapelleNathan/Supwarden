@@ -43,7 +43,7 @@ export default function Login() {
     return (
         <section className="w-100 align-self-center">
             <Form className="border col-8 offset-2 rounded p-5 d-flex flex-column gap-3" onSubmit={handleSubmit}>
-                <h1 className="text-center">Inscription</h1>
+                <h1 className="text-center">Connection</h1>
                 <RenderErrors errors={errors} field={ConnectionErrorEnum.DEFAULT} />
                 <FormGroup controlId="email" className="col">
                     <FormLabel>Email</FormLabel>

@@ -6,6 +6,7 @@ import { FieldError, RenderErrors } from "../../../components/error";
 import { verifySigninForm } from "../verifyForm";
 import { ConnectionErrorEnum } from "../../../enum/ErrorFieldEnum";
 import axios from "axios";
+import Required from "../../../components/required";
 
 export default function Signin() {
     const [firsname, setFirstname] = useState('');
@@ -48,35 +49,35 @@ export default function Signin() {
                 <RenderErrors errors={errors} field={ConnectionErrorEnum.DEFAULT} />
                 <div className="name row">
                     <FormGroup controlId="firstname" className="col">
-                        <FormLabel>Prénom</FormLabel>
+                        <FormLabel>Prénom <Required/></FormLabel>
                         <FormControl type="text" onChange={(e) => setFirstname(e.target.value)} value={firsname} />
                         <RenderErrors errors={errors} field={ConnectionErrorEnum.FIRSNAME} />
                     </FormGroup>
                     <FormGroup controlId="lastname" className="col">
-                        <FormLabel>Nom</FormLabel>
+                        <FormLabel>Nom <Required /></FormLabel>
                         <FormControl type="text" onChange={(e) => setLastname(e.target.value)} value={lastname} />
                         <RenderErrors errors={errors} field={ConnectionErrorEnum.LASTNAME} />
                     </FormGroup>
                 </div>
                 <div className="coordinate row">
                     <FormGroup controlId="email" className="col">
-                        <FormLabel>Email</FormLabel>
+                        <FormLabel>Email <Required /></FormLabel>
                         <FormControl type="email" onChange={(e) => setEmail(e.target.value)} value={email} />
                         <RenderErrors errors={errors} field={ConnectionErrorEnum.EMAIL} />
                     </FormGroup>
                     <FormGroup controlId="phoneNumber" className="col">
-                        <FormLabel>Numéro de téléphone</FormLabel>
+                        <FormLabel>Numéro de téléphone <Required /></FormLabel>
                         <FormControl type="tel" onChange={(e) => setPhoneNumber(e.target.value)} value={phoneNumber} />
                         <RenderErrors errors={errors} field={ConnectionErrorEnum.PHONENUMBER} />
                     </FormGroup>
                 </div>
                 <FormGroup controlId="password">
-                    <FormLabel>Mot de passe</FormLabel>
+                    <FormLabel>Mot de passe <Required /></FormLabel>
                     <FormControl type="password" onChange={(e) => setPassword(e.target.value)} value={password} />
                     <RenderErrors errors={errors} field={ConnectionErrorEnum.PASSWORD} />
                 </FormGroup>
                 <FormGroup controlId="confirmPassword">
-                    <FormLabel>Confirmez le mot de passe</FormLabel>
+                    <FormLabel>Confirmez le mot de passe <Required /></FormLabel>
                     <FormControl type="password" onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword} />
                     <RenderErrors errors={errors} field={ConnectionErrorEnum.CONFIRMPASSWORD} />
                 </FormGroup>

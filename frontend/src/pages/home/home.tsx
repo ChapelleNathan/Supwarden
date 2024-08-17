@@ -1,8 +1,9 @@
-import PasswordForm from "../../components/password/PasswordForm";
+import MyPasswords from "./my-passwords/my-passwords";
 
 export default function Home() {
     return (
-
-        <PasswordForm />
+        <section className="my-password w-100">
+            <MyPasswords/>
+        </section>
     )
 }

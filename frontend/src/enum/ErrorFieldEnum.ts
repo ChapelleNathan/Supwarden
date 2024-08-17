@@ -9,5 +9,8 @@ export enum ConnectionErrorEnum {
 }
 
 export enum CreatePasswordEnum {
-    PASSWORD
+    PASSWORD,
+    NAME,
+    IDENTIFIER,
+    URI,
 }
