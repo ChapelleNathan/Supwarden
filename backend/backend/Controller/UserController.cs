@@ -1,4 +1,5 @@
 using backend.DTO;
+using backend.Models;
 using backend.Services;
 using backend.Services.UserServices;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -11,10 +12,21 @@ namespace backend.Controller;
 public class UserController(IUserServices userServices) : ControllerBase
 {
     [HttpGet("{id}")]
-    public async Task<ActionResult<UserDto>> GetUser(string id)
+    public async Task<ActionResult<ServiceResponse<UserDto>>> GetUser(string id)
     {
-        var response = await userServices.GetUser(id);
-        return Ok(response);
+        var serviceResponse = new ServiceResponse<UserDto>();
+
+        try
+        {
+            serviceResponse.Data = await userServices.GetUser(id);
+        }
+        catch (HttpResponseException e)
+        {
+            serviceResponse.Message = e.Message;
+            serviceResponse.HttpCode = e.StatusCode;
+        }
+
+        return new HttpResponseHandler().Handle(serviceResponse);
     }
 
     [HttpGet("search")]

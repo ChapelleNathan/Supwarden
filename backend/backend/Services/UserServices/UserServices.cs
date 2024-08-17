@@ -1,6 +1,8 @@
 using System.Security.Cryptography;
 using AutoMapper;
 using backend.DTO;
+using backend.Enum;
+using backend.Helper;
 using backend.Models;
 using backend.Repository.UserRepository;
 
@@ -11,15 +13,11 @@ public class UserServices(IUserRepository userRepository, IMapper mapper) : IUse
 {
     public async Task<UserDto> GetUser(string id)
     {
-        User? user;
-        try
+        var user = await userRepository.GetUser(id);
+        if (user is null)
         {
-            user = await userRepository.GetUser(id);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup404UserNotFound);
+            throw new HttpResponseException(404, errorMessage);
         }
 
         return mapper.Map<UserDto>(user);
