@@ -1,6 +1,6 @@
 using backend.Context;
 
-namespace backend.Repository.UserContact;
+namespace backend.Repository.UserContactRepository;
 
 public class UserContactRepository(DataContext context) : IUserContactRepository
 {

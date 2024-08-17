@@ -1,4 +1,4 @@
-namespace backend.Repository.UserContact;
+namespace backend.Repository.UserContactRepository;
 
 public interface IUserContactRepository : IRepository
 {

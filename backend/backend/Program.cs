@@ -1,9 +1,8 @@
 using System.Text;
 using backend.Context;
 using backend.Helper;
-using backend.Models;
 using backend.Repository.PasswordRepository;
-using backend.Repository.UserContact;
+using backend.Repository.UserContactRepository;
 using backend.Repository.UserRepository;
 using backend.Services.AuthService;
 using backend.Services.PasswordService;

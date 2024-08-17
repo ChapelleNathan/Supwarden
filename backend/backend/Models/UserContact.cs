@@ -16,7 +16,7 @@ public class UserContact
     
     [Column("User2")]
     [Required]
-    public required User Use2 { get; init; }
+    public required User User2 { get; init; }
 
     [Column("request_status")]
     public ContactRequestEnum Status { get; set; } = ContactRequestEnum.Pending;
