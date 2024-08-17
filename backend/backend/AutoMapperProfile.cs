@@ -8,11 +8,17 @@ public class AutoMapperProfile : Profile
 {
     public AutoMapperProfile()
     {
+        //USER
         CreateMap<CreateUserDto, User>();
         CreateMap<User, ConnectedUserDto>();
         CreateMap<User, UserDto>();
+        
+        //PASSWORD
         CreateMap<CreatePasswordDto, Password>();
         CreateMap<Password, PasswordDto>();
         CreateMap<PasswordDto, Password>();
+        
+        //USER_CONTACT
+        CreateMap<UserContact, UserContactDto>();
     }
 }

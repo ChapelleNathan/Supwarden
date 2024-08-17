@@ -9,6 +9,7 @@ public class UserDto
     public required string Lastname { get; set; }
     public required string Email { get; set; }
     public required string PhoneNumber { get; set; }
+    public string CodePin { get; set; } = "";
 }
 
 public class ConnectedUserDto : UserDto

@@ -6,8 +6,8 @@ namespace backend.Enum;
 public enum ErrorMessages
 {
     //GLOBAL
-    [Description("Impossible de récupérer la ressource")]
-    SUP404_NotFound,
+    [Description("Impossible de trouver l'utilisateur connecté")]
+    Sup400ConnectedUser,
     
     [Description("Impossible de créer la ressource")]
     Sup500CreationError,
@@ -29,4 +29,10 @@ public enum ErrorMessages
     
     [Description("Impossible de trouver le mot de passe")]
     Sup404PasswordNotFound,
+    
+    //User
+    [Description("Impossible de récupérer cet utilisateur")]
+    Sup404UserNotFound,
+    [Description("Vous êtes déjà amis")]
+    Sup400AlreadyFriend
 }
