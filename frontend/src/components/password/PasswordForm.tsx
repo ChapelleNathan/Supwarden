@@ -1,4 +1,4 @@
-import { Alert, AlertHeading, Button, Form, FormControl, FormGroup, FormLabel, InputGroup, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Alert, AlertHeading, Button, ButtonGroup, Form, FormControl, FormGroup, FormLabel, InputGroup, OverlayTrigger, Tooltip } from "react-bootstrap";
 import PasswordGeneratorForm from "./PasswordGeneratorForm";
 import React, { useState } from "react";
 import { CreatePasswordDto, PasswordDto } from "../../model/PasswordModels";
@@ -8,6 +8,7 @@ import verifyPasswordForm from "./verifyPasswordForm";
 import { CreatePasswordEnum } from "../../enum/ErrorFieldEnum";
 import Required from "../required";
 import { useNavigate } from "react-router-dom";
+import { Copy, X } from "react-bootstrap-icons";
 
 interface PasswordFormProps {
     passwordDto?: PasswordDto,
@@ -20,7 +21,7 @@ interface Alert {
 }
 
 export default function PasswordForm(props: PasswordFormProps) {
-    const [show, setShow] = useState(false);
+    const [passwordPanel, setPasswordPanel] = useState(false);
     const [password, setPassword] = useState(props.passwordDto?.sitePassword ?? '');
     const [name, setName] = useState(props.passwordDto?.name ?? '');
     const [identifier, setIdentifier] = useState(props.passwordDto?.identifier ?? '');
@@ -28,6 +29,7 @@ export default function PasswordForm(props: PasswordFormProps) {
     const [note, setNote] = useState(props.passwordDto?.note ?? '');
     const [showAlert, setShowAlert] = useState<Alert>({ show: false, message: '' });
     const [errors, setErrors] = useState<FieldError[]>([]);
+
     const navigate = useNavigate();
 
     const handlePasswordChange = (password: string) => {
@@ -53,10 +55,10 @@ export default function PasswordForm(props: PasswordFormProps) {
         const verification = verifyPasswordForm(newPassword);
         setErrors(verification);
 
-        if(verification.length == 0) {
+        if (verification.length == 0) {
             try {
-                if(props.isEditiing && props.passwordDto){
-                    const password: PasswordDto = {...newPassword, id: props.passwordDto.id}
+                if (props.isEditiing && props.passwordDto) {
+                    const password: PasswordDto = { ...newPassword, id: props.passwordDto.id }
                     axios.put('http://localhost:8080/password', password, config)
                 } else {
                     axios.post('http://localhost:8080/password', newPassword, config);
@@ -70,42 +72,73 @@ export default function PasswordForm(props: PasswordFormProps) {
         }
     }
 
+    const passwordPannelButtons = () => {
+        if (passwordPanel) {
+            return (
+                <>
+                    <OverlayTrigger
+                        key={'copyPassword'}
+                        placement={'top'}
+                        overlay={
+                            <Tooltip id={`tooltip-top`}>
+                                Copier le mot de passe
+                            </Tooltip>
+                        }
+                    >
+                        <Button onClick={copyToClipboard}><Copy size={15} /></Button>
+                    </OverlayTrigger>
+                    <Button variant="danger" onClick={() => setPasswordPanel(false)}><X size={20} /></Button>
+                </>
+            )
+        } else {
+            return (
+                <OverlayTrigger
+                    key={'generatePassword'}
+                    placement={'top'}
+                    overlay={
+                        <Tooltip id={`tooltip-top`}>
+                            Ouvrir l'outil de génération de mot de passe
+                        </Tooltip>
+                    }
+                >
+                    <Button onClick={() => setPasswordPanel(true)}>Générer</Button>
+                </OverlayTrigger>
+            )
+        }
+    }
+
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(password).then(() => {
+            alert('copié');
+        })
+    }
+
     return (
         <Form onSubmit={handleSubmit} className="d-flex flex-column gap-2">
             {displayAlert(showAlert)}
             <FormGroup>
-                <FormLabel>Nom <Required/></FormLabel>
+                <FormLabel>Nom <Required /></FormLabel>
                 <FormControl type="text" value={name} onChange={(e) => setName(e.target.value)} />
-                <RenderErrors errors={errors} field={CreatePasswordEnum.NAME}/>
+                <RenderErrors errors={errors} field={CreatePasswordEnum.NAME} />
             </FormGroup>
             <FormGroup>
-                <FormLabel>Identifiant <Required/></FormLabel>
+                <FormLabel>Identifiant <Required /></FormLabel>
                 <FormControl type="text" value={identifier} onChange={(e) => setIdentifier(e.target.value)} />
-                <RenderErrors errors={errors} field={CreatePasswordEnum.IDENTIFIER}/>
+                <RenderErrors errors={errors} field={CreatePasswordEnum.IDENTIFIER} />
             </FormGroup>
             <FormGroup>
                 <FormLabel>Mot de passe <Required /></FormLabel>
                 <InputGroup>
                     <FormControl type="text" value={password} onChange={(e) => setPassword(e.target.value)} />
-                    <OverlayTrigger
-                        key={'generatePassword'}
-                        placement={'top'}
-                        overlay={
-                            <Tooltip id={`tooltip-top`}>
-                                Ouvrir l'outil de génération de mot de passe
-                            </Tooltip>
-                        }
-                    >
-                        <Button onClick={() => setShow(true)}>Générer</Button>
-                    </OverlayTrigger>
+                    {passwordPannelButtons()}
                 </InputGroup>
-                {show ? (<PasswordGeneratorForm onPasswordChange={handlePasswordChange} />) : (<></>)}
-                <RenderErrors errors={errors} field={CreatePasswordEnum.PASSWORD}/>
+                {passwordPanel ? (<PasswordGeneratorForm onPasswordChange={handlePasswordChange} />) : (<></>)}
+                <RenderErrors errors={errors} field={CreatePasswordEnum.PASSWORD} />
             </FormGroup>
             <FormGroup>
                 <FormLabel>URI <Required /></FormLabel>
                 <FormControl type="text" value={uri} onChange={(e) => setUri(e.target.value)} />
-                <RenderErrors errors={errors} field={CreatePasswordEnum.URI}/>
+                <RenderErrors errors={errors} field={CreatePasswordEnum.URI} />
             </FormGroup>
             <FormGroup>
                 <FormLabel>Note</FormLabel>
