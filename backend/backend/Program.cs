@@ -3,9 +3,11 @@ using backend.Context;
 using backend.Helper;
 using backend.Models;
 using backend.Repository.PasswordRepository;
+using backend.Repository.UserContact;
 using backend.Repository.UserRepository;
 using backend.Services.AuthService;
 using backend.Services.PasswordService;
+using backend.Services.UserContactService;
 using backend.Services.UserServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -63,6 +65,8 @@ builder.Services.AddScoped<IUserServices, UserServices>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPasswordService, PasswordService>();
 builder.Services.AddScoped<IPasswordRepository, PasswordRepository>();
+builder.Services.AddScoped<IUserContactRepository, UserContactRepository>();
+builder.Services.AddScoped<IUserContactService, UserContactService>();
 builder.Services.AddScoped<AuthHelper>();
 
 

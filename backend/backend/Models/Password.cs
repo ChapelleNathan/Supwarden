@@ -35,4 +35,10 @@ public class Password (string name, string identifier, string sitePassword, stri
     [Column("user_id")]
     [Required]
     public required User User { get; set; }
+
+    [Column("is_sensitive")]
+    public Boolean IsSensitive { get; set; } = false;
+    
+    [Column("created_at")]
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 }
