@@ -4,6 +4,7 @@ using backend.Helper;
 using backend.Repository.GroupRepository;
 using backend.Repository.PasswordRepository;
 using backend.Repository.UserContactRepository;
+using backend.Repository.UserGroupRepository;
 using backend.Repository.UserRepository;
 using backend.Services.AuthService;
 using backend.Services.GroupService;
@@ -75,6 +76,8 @@ builder.Services.AddScoped<IUserContactService, UserContactService>();
 //Group
 builder.Services.AddScoped<IGroupRepository, GroupRepository>();
 builder.Services.AddScoped<IGroupService, GroupService>();
+//UserGroup
+builder.Services.AddScoped<IUserGroupRepository, UserGroupRepository>();
 
 builder.Services.AddScoped<AuthHelper>();
 

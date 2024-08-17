@@ -34,5 +34,9 @@ public enum ErrorMessages
     [Description("Impossible de récupérer cet utilisateur")]
     Sup404UserNotFound,
     [Description("Vous êtes déjà amis")]
-    Sup400AlreadyFriend
+    Sup400AlreadyFriend,
+    
+    //UserGroup
+    [Description("Erreur lors de l'ajout de l'utilisateur dans le group, veuillez réessayer ultérieurement")]
+    Sup500UserGroupCreationError
 }
