@@ -20,5 +20,11 @@ public class AutoMapperProfile : Profile
         
         //USER_CONTACT
         CreateMap<UserContact, UserContactDto>();
+        
+        //GROUP
+        CreateMap<Group, GroupDto>();
+        
+        //USER_GROUP
+        CreateMap<UserGroup, UserGroupDto>();
     }
 }

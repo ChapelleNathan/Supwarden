@@ -30,11 +30,15 @@ public class Password (string name, string identifier, string sitePassword, stri
     public String Uri { get; set; } = uri;
 
     [Column("note")]
+    [MaxLength(1000)]
     public String Note { get; set; } = "";
 
     [Column("user_id")]
     [Required]
     public required User User { get; set; }
+    
+    [Column ("group_id")]
+    public Group? Group { get; set; }
 
     [Column("is_sensitive")]
     public Boolean IsSensitive { get; set; } = false;

@@ -1,10 +1,12 @@
 using System.Text;
 using backend.Context;
 using backend.Helper;
+using backend.Repository.GroupRepository;
 using backend.Repository.PasswordRepository;
 using backend.Repository.UserContactRepository;
 using backend.Repository.UserRepository;
 using backend.Services.AuthService;
+using backend.Services.GroupService;
 using backend.Services.PasswordService;
 using backend.Services.UserContactService;
 using backend.Services.UserServices;
@@ -59,13 +61,21 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
     };
 });
 
+//User
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserServices, UserServices>();
+//Auth
 builder.Services.AddScoped<IAuthService, AuthService>();
+//Password
 builder.Services.AddScoped<IPasswordService, PasswordService>();
 builder.Services.AddScoped<IPasswordRepository, PasswordRepository>();
+//UserContact
 builder.Services.AddScoped<IUserContactRepository, UserContactRepository>();
 builder.Services.AddScoped<IUserContactService, UserContactService>();
+//Group
+builder.Services.AddScoped<IGroupRepository, GroupRepository>();
+builder.Services.AddScoped<IGroupService, GroupService>();
+
 builder.Services.AddScoped<AuthHelper>();
 
 
