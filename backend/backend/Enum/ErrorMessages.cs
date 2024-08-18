@@ -39,6 +39,10 @@ public enum ErrorMessages
     //UserGroup
     [Description("Erreur lors de l'ajout de l'utilisateur dans le group, veuillez réessayer ultérieurement")]
     Sup500UserGroupCreationError,
+    [Description("Impossible d'ajouter cet utilisateur au groupe. Vous n'avez pas la permission d'ajouter quelqu'un si vous ne faites pas partie du groupe")]
+    Sup400NotInGroup,
+    [Description("Impossible d'ajouter cet utilisateur au groupe. Il est déjà dedans")]
+    Sup400AlreadyInGroup,
     
     //Group
     [Description("Impossible de trouver le groupe, veuillez réessayer avec un autre")]

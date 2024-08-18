@@ -42,13 +42,73 @@ public class GroupService(
             throw new HttpResponseException(500, errorMessage);
         }
 
-        var groupDto = new GroupDto()
-        {
+        userGroupRepository.Save();
+        
+        return new GroupDto() {
             Id = group.Id.ToString(),
             Name = group.Name,
             Users = [mapper.Map<UserGroupDto>(userGroup)]
+        };;
+    }
+
+    public async Task<GroupDto> AddUserToGroup(string groupId, string addedUserId)
+    {
+        var group = await groupRepository.GetGroupById(groupId);
+        if (group is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup404GroupNotFound);
+            throw new HttpResponseException(404, errorMessage);
+        }
+        
+        var addedUser = await userRepository.GetUser(addedUserId);
+        if (addedUser is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup404UserNotFound);
+            throw new HttpResponseException(404, errorMessage);
+        }
+        
+        var connectedEmail = httpContext.HttpContext?.User.FindFirst(ClaimTypes.Email);
+        if (connectedEmail is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400ConnectedUser);
+            throw new HttpResponseException(400, errorMessage);
+        }
+
+        var connectedUser = await userRepository.FindUserByEmail(connectedEmail.Value);
+        if (connectedUser is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup404UserNotFound);
+            throw new HttpResponseException(404, errorMessage);
+        }
+
+        var userGroups = await userGroupRepository.GetAllUsersFromGroup(groupId);
+        var usersInGroup = userGroups.Select(userGroup => userGroup.User).ToList();
+        if (!usersInGroup.Contains(connectedUser))
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400NotInGroup);
+            throw new HttpResponseException(400, errorMessage);
+        }
+        if (usersInGroup.Contains(addedUser))
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400AlreadyInGroup);
+            throw new HttpResponseException(400, errorMessage);
+        }
+
+        var newUserGroup =
+            await userGroupRepository.AddUser(new UserGroup() { Group = group, User = addedUser });
+        if (newUserGroup is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup500UserGroupCreationError);
+            throw new HttpResponseException(500, errorMessage);
+        }
+        
+        groupRepository.Save();
+        userGroups.Add(newUserGroup);
+        return new GroupDto()
+        {
+            Id = group.Id.ToString(),
+            Name = group.Name,
+            Users = userGroups.Select(userGroup => mapper.Map<UserGroupDto>(userGroup)).ToList()
         };
-        userGroupRepository.Save();
-        return groupDto;
     }
 }
