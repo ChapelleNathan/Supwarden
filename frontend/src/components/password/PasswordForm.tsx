@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { CreatePasswordDto, PasswordDto } from "../../model/PasswordModels";
 import axios from "axios";
 import { FieldError, RenderErrors } from "../error";
-import verifyPasswordForm from "./verifyPasswordForm";
+import verifyPasswordForm from "./verifyPasswordForm.tsx";
 import { CreatePasswordEnum } from "../../enum/ErrorFieldEnum";
 import Required from "../required";
 import { useNavigate } from "react-router-dom";

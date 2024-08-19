@@ -33,7 +33,6 @@ interface ToastProviderProps {
 
 export function ToastProvider({children}: ToastProviderProps) {
     const [toasts, setToasts] = useState<ToastItem[]>([]);
-    console.log(children);
     
     const addToast = useCallback((message: string, options: ToastOptions = {}) => {
         setToasts((prevToasts) => [
