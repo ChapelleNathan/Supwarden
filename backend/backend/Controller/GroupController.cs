@@ -26,5 +26,23 @@ public class GroupController(IGroupService groupService)
         }
         
         return new HttpResponseHandler().Handle(serviceResponse);
-    } 
+    }
+
+    [HttpPost("{groupId}/add-user/{userId}")]
+    public async Task<ActionResult<ServiceResponse<GroupDto>>> AddUserToGroup(string groupId, string userId)
+    {
+        var serviceResponse = new ServiceResponse<GroupDto>();
+
+        try
+        {
+            serviceResponse.Data = await groupService.AddUserToGroup(groupId, userId);
+        }
+        catch (HttpResponseException e)
+        {
+            serviceResponse.Message = e.Message;
+            serviceResponse.HttpCode = e.StatusCode;
+        }
+        
+        return new HttpResponseHandler().Handle(serviceResponse);
+    }
 }

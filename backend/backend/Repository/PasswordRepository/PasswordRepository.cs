@@ -12,9 +12,11 @@ public class PasswordRepository(DataContext context) : IPasswordRepository
         return password.Entity;
     }
 
-    public async Task<List<Password>> GetAllPasswordFromUser(Guid userId)
+    public async Task<List<Password>> GetAllPasswordFromUser(Guid userId, List<Guid>? groupIds = null)
     {
-        var passwords = await context.Passwords.Where(password => password.User.Id == userId)
+        var passwords = await context.Passwords
+            .Where(password => password.User.Id == userId || 
+                               password.Group != null && groupIds != null && groupIds.Contains(password.Group.Id))
             .Include(password => password.Group)
             .ToListAsync();
         return passwords;

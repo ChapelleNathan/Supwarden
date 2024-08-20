@@ -18,8 +18,8 @@ public class UserGroup
     public required Group Group { get; init; }
 
     [Column("Can_Edit")]
-    public required bool CanEdit { get; set; } = false;
+    public bool CanEdit { get; set; }
 
     [Column("Is_Creator")]
-    public required bool IsCreator { get; set; } = false;
+    public bool IsCreator { get; set; }
 }

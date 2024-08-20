@@ -6,8 +6,10 @@ using backend.Helper;
 using backend.Models;
 using backend.Repository.GroupRepository;
 using backend.Repository.PasswordRepository;
+using backend.Repository.UserGroupRepository;
 using backend.Repository.UserRepository;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.IdentityModel.Tokens;
 
 namespace backend.Services.PasswordService;
 
@@ -16,7 +18,8 @@ public class PasswordService(
     IPasswordRepository passwordRepository,
     IUserRepository userRepository,
     IHttpContextAccessor context,
-    IGroupRepository groupRepository
+    IGroupRepository groupRepository,
+    IUserGroupRepository userGroupRepository
     ) : IPasswordService
 {
     public async Task<PasswordDto> CreatePassword(CreatePasswordDto newPassword)
@@ -61,7 +64,9 @@ public class PasswordService(
             throw new HttpResponseException(404, errorMessage);
         }
 
-        var passwords = await passwordRepository.GetAllPasswordFromUser(user.Id);
+        var groupIds = await userGroupRepository.GetUserGroups(user.Id.ToString());
+
+        var passwords = await passwordRepository.GetAllPasswordFromUser(user.Id, groupIds.IsNullOrEmpty() ? null : groupIds);
         passwords.ForEach(password =>
         {
             password.SitePassword = PasswordSaveHelper.DecryptPassword(password.SitePassword);
