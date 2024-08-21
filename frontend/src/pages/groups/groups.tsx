@@ -3,7 +3,6 @@ import GroupList from "./components/group-list/groupList";
 import axios from "axios";
 import ServiceResponse from "../../model/ServiceResponse";
 import { GroupDTO, LightGroupDTO } from "../../model/GroupModels";
-import GroupForm from "./components/group-form/groupForm";
 import GroupDetails from "./components/group-details/groupDetails";
 
 export default function Groups() {
@@ -39,10 +38,9 @@ export default function Groups() {
     }
 
     return (
-        <>
+        <div className="d-flex group-page w-100 justify-content-around">
             <GroupList groupList={groups} onSelectGroup={handleSelectedGroup}/>
-            <GroupForm onGroupCreated={handleCreateGroup} />
             {isSelectedGroup()}
-        </>
+        </div>
     )
 }

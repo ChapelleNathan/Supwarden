@@ -2,7 +2,7 @@ import { PasswordDto } from "../../model/PasswordModels";
 import Password from "./password";
 
 interface PasswordListProps {
-    passwords: PasswordDto[]
+    passwords: PasswordDto[],
 }
 
 export default function PasswordList({passwords}: PasswordListProps) {
@@ -16,7 +16,7 @@ export default function PasswordList({passwords}: PasswordListProps) {
                     <th className="col">Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody className="overflow-y-scroll">
                 {displayPassword(passwords)}
             </tbody>
         </table>

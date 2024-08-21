@@ -13,7 +13,7 @@ import { useToast } from "../../../context/ToastContext.tsx";
 
 interface PasswordFormProps {
     passwordDto?: PasswordDto,
-    isEditiing?: boolean,
+    isEditing?: boolean,
 }
 
 interface Alert {
@@ -59,7 +59,7 @@ export default function PasswordForm(props: PasswordFormProps) {
 
         if (verification.length == 0) {
             try {
-                if (props.isEditiing && props.passwordDto) {
+                if (props.isEditing && props.passwordDto) {
                     const password: PasswordDto = { ...newPassword, id: props.passwordDto.id }
                     axios.put('http://localhost:8080/password', password, config)
                 } else {
@@ -156,7 +156,7 @@ export default function PasswordForm(props: PasswordFormProps) {
                     onChange={(e) => setNote(e.target.value)}
                 />
             </FormGroup>
-            <Button type="submit" className="w-100">{props.isEditiing ? 'Modifier' : 'Créer'}</Button>
+            <Button type="submit" className="w-100">{props.isEditing ? 'Modifier' : 'Créer'}</Button>
         </Form>
     )
 }

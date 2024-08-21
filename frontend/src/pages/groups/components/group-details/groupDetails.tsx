@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { GroupDTO, LightGroupDTO } from "../../../../model/GroupModels"
+import { LightGroupDTO } from "../../../../model/GroupModels"
 import axios from "axios";
 import ServiceResponse from "../../../../model/ServiceResponse";
 import PasswordList from "../../../../components/password/password-list";
@@ -19,8 +19,6 @@ export default function GroupDetails ({lightGroup}: GroupDetailsProps) {
             }
         }
         const fetchGroupData = async () => {
-            console.log(lightGroup);
-            
             const response = await axios.get(`http://localhost:8080/password/group/${lightGroup.id}`, config);
             const serviceResponse = response.data as ServiceResponse;
             setPasswords(serviceResponse.data as PasswordDto[])
@@ -28,12 +26,14 @@ export default function GroupDetails ({lightGroup}: GroupDetailsProps) {
 
         fetchGroupData();
     }, [lightGroup])
+
+
     
     if (!lightGroup){
-        return <>Aucun groupe sélectionné</>
+        return <section className="group-details col-8">Aucun groupe sélectionné</section>
     }
     return (
-        <section className="Group Details">
+        <section className="group-details col-8 border rounded p-3">
             <h1 className="text-capitalize">{lightGroup.name}</h1>
             <PasswordList passwords={passwords}/>
         </section>

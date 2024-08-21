@@ -1,8 +1,8 @@
-import { Nav, Navbar, Offcanvas, OffcanvasBody, OffcanvasHeader } from "react-bootstrap";
+import { Nav, Navbar } from "react-bootstrap";
 import './header.scss'
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PasswordForm from "../password/password-form/PasswordForm";
+import CreatePasswordTrigger from "../password/create-password-trigger";
 
 export default function Header() {
     const navigate = useNavigate();
@@ -16,8 +16,9 @@ export default function Header() {
 
     const handleShow = () => setShow(true);
     const handleHide = () => setShow(false);
+
     const handleNav = () => {
-        return localStorage.getItem('token') ? true: false;
+        return localStorage.getItem('token') ? true : false;
     }
 
     function renderNav(showNav: boolean) {
@@ -31,12 +32,15 @@ export default function Header() {
                     <Nav.Link href="/groupes">Groupes</Nav.Link>
                     <Nav.Link href="#link">Link</Nav.Link>
                     <Nav.Link onClick={handleDeconnection}>Deco</Nav.Link>
-                    <Nav.Link 
-                        className="fs-2 link-underline link-underline-opacity-0"
-                        onClick={handleShow}
-                    >
-                        +
-                    </Nav.Link>
+                    <CreatePasswordTrigger header="Création de mot de passe" show={show} onClose={handleHide}>
+                        <Nav.Link
+                            className="fs-2 link-underline link-underline-opacity-0"
+                            onClick={handleShow}
+                        >
+                            +
+                        </Nav.Link>
+                    </CreatePasswordTrigger>
+
                 </Nav>
             </Navbar.Collapse>
         )
@@ -48,14 +52,6 @@ export default function Header() {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 {renderNav(handleNav())}
             </Navbar>
-            <Offcanvas show={show} onHide={handleHide} placement="end">
-                <OffcanvasHeader closeButton>
-                    <h2>Créer un mot de passe</h2>
-                </OffcanvasHeader>
-                <OffcanvasBody>
-                    <PasswordForm />
-                </OffcanvasBody>
-            </Offcanvas>
         </>
     );
 }

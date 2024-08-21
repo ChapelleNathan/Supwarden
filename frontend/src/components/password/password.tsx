@@ -1,9 +1,9 @@
 import { Copy, PencilFill, ThreeDots } from "react-bootstrap-icons";
 import { PasswordDto } from "../../model/PasswordModels";
-import { Dropdown, Offcanvas, OffcanvasBody, OffcanvasHeader } from "react-bootstrap";
-import PasswordForm from "./password-form/PasswordForm";
+import { Dropdown } from "react-bootstrap";
 import { useState } from "react";
 import { useToast } from "../../context/ToastContext";
+import CreatePasswordTrigger from "./create-password-trigger";
 
 interface PasswordProps {
     password: PasswordDto
@@ -58,17 +58,16 @@ export default function Password({ password }: PasswordProps) {
                             <Copy size={20} />
                             <p>Mot de passe</p>
                         </Dropdown.Item>
-                        <Dropdown.Item onClick={handleShow} className="d-flex gap-3">
-                            <PencilFill size={20} /><p>Détails</p>
-                        </Dropdown.Item>
-                        <Offcanvas show={show} onHide={handleHide} placement="end">
-                            <OffcanvasHeader closeButton>
-                                <h2>Modifier l'élément</h2>
-                            </OffcanvasHeader>
-                            <OffcanvasBody>
-                                <PasswordForm passwordDto={password} isEditiing={true} />
-                            </OffcanvasBody>
-                        </Offcanvas>
+                        <CreatePasswordTrigger
+                            isEditing={true} 
+                            passwordDto={password} 
+                            show={show} 
+                            header="Modifier un mot de passe" 
+                            onClose={handleHide}>
+                            <Dropdown.Item onClick={handleShow} className="d-flex gap-3">
+                                <PencilFill size={20} /><p>Détails</p>
+                            </Dropdown.Item>
+                        </CreatePasswordTrigger>
                     </Dropdown.Menu>
                 </Dropdown>
             </td>
