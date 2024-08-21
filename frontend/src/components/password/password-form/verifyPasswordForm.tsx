@@ -1,6 +1,6 @@
-import { CreatePasswordEnum } from "../../enum/ErrorFieldEnum";
-import { CreatePasswordDto, PasswordDto } from "../../model/PasswordModels";
-import { FieldError } from "../error";
+import { CreatePasswordEnum } from "../../../enum/ErrorFieldEnum";
+import { CreatePasswordDto, PasswordDto } from "../../../model/PasswordModels";
+import { FieldError } from "../../error";
 
 export default function verifyPasswordForm(password: PasswordDto | CreatePasswordDto): FieldError[] {
     const errors: FieldError[] = [];

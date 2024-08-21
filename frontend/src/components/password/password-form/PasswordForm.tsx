@@ -1,15 +1,15 @@
 import { Alert, AlertHeading, Button, Form, FormControl, FormGroup, FormLabel, InputGroup, OverlayTrigger, Tooltip } from "react-bootstrap";
-import PasswordGeneratorForm from "./PasswordGeneratorForm";
+import PasswordGeneratorForm from "./PasswordGeneratorForm.tsx";
 import React, { useState } from "react";
-import { CreatePasswordDto, PasswordDto } from "../../model/PasswordModels";
+import { CreatePasswordDto, PasswordDto } from "../../../model/PasswordModels.ts";
 import axios from "axios";
-import { FieldError, RenderErrors } from "../error";
+import { FieldError, RenderErrors } from "../../error.tsx";
 import verifyPasswordForm from "./verifyPasswordForm.tsx";
-import { CreatePasswordEnum } from "../../enum/ErrorFieldEnum";
-import Required from "../required";
+import { CreatePasswordEnum } from "../../../enum/ErrorFieldEnum.ts";
+import Required from "../../required.tsx";
 import { useNavigate } from "react-router-dom";
 import { Copy, X } from "react-bootstrap-icons";
-import { useToast } from "../../context/ToastContext";
+import { useToast } from "../../../context/ToastContext.tsx";
 
 interface PasswordFormProps {
     passwordDto?: PasswordDto,

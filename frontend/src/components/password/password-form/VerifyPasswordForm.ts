@@ -1,5 +1,5 @@
-import { CreatePasswordEnum } from "../../enum/ErrorFieldEnum";
-import { FieldError } from "../error";
+import { CreatePasswordEnum } from "../../../enum/ErrorFieldEnum";
+import { FieldError } from "../../error";
 
 export default function VerifyPasswordForm(areLowercase: boolean, areUppercase: boolean, areNumber: boolean, areSpecialChars: boolean): FieldError | null {
     if(!(areLowercase && areUppercase && areNumber && areSpecialChars)){

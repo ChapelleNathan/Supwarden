@@ -2,7 +2,7 @@ import { Nav, Navbar, Offcanvas, OffcanvasBody, OffcanvasHeader } from "react-bo
 import './header.scss'
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PasswordForm from "../password/PasswordForm";
+import PasswordForm from "../password/password-form/PasswordForm";
 
 export default function Header() {
     const navigate = useNavigate();
@@ -28,7 +28,7 @@ export default function Header() {
         return (
             <Navbar.Collapse>
                 <Nav className="me-auto align-items-center w-100 justify-content-end">
-                    <Nav.Link href="#home">Home</Nav.Link>
+                    <Nav.Link href="/groupes">Groupes</Nav.Link>
                     <Nav.Link href="#link">Link</Nav.Link>
                     <Nav.Link onClick={handleDeconnection}>Deco</Nav.Link>
                     <Nav.Link 
@@ -44,7 +44,7 @@ export default function Header() {
     return (
         <>
             <Navbar expand="lg" className="bg-body-tertiary navbar">
-                <Navbar.Brand className="ms-3" href="#home">Supwarden</Navbar.Brand>
+                <Navbar.Brand className="ms-3" href="/home">Supwarden</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 {renderNav(handleNav())}
             </Navbar>

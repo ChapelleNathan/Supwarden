@@ -1,9 +1,9 @@
 import { Copy, PencilFill, ThreeDots } from "react-bootstrap-icons";
-import { PasswordDto } from "../../../model/PasswordModels";
+import { PasswordDto } from "../../model/PasswordModels";
 import { Dropdown, Offcanvas, OffcanvasBody, OffcanvasHeader } from "react-bootstrap";
-import PasswordForm from "../../../components/password/PasswordForm";
+import PasswordForm from "./password-form/PasswordForm";
 import { useState } from "react";
-import { useToast } from "../../../context/ToastContext";
+import { useToast } from "../../context/ToastContext";
 
 interface PasswordProps {
     password: PasswordDto
