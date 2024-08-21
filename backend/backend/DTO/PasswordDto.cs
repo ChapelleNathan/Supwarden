@@ -8,9 +8,9 @@ public class PasswordDto
     public required string Name { get; set; }
     public required string SitePassword { get; set; }
     public required string Identifier { get; set; }
-    public string Note { get; set; } = "";
+    public string? Note { get; set; }
     public required string Uri { get; set; }
-    public required Group Group { get; set; }
+    public Group? Group { get; set; }
 }
 
 public class CreatePasswordDto
