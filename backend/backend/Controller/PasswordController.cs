@@ -77,4 +77,22 @@ public class PasswordController (IPasswordService passwordService)
 
         return serviceResponse;
     }
+
+    [HttpGet("group/{groupId}")]
+    public async Task<ActionResult<ServiceResponse<List<PasswordDto>>>> GetPasswordsFromGroup(string groupId)
+    {
+        var serviceResponse = new ServiceResponse<List<PasswordDto>>();
+
+        try
+        {
+            serviceResponse.Data = await passwordService.GetPasswordsFromGroup(groupId);
+        }
+        catch (HttpResponseException e)
+        {
+            serviceResponse.HttpCode = e.StatusCode;
+            serviceResponse.Message = e.Message;
+        }
+        
+        return serviceResponse;
+    }
 }

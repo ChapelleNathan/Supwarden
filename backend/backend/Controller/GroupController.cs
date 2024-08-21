@@ -45,4 +45,41 @@ public class GroupController(IGroupService groupService)
         
         return new HttpResponseHandler().Handle(serviceResponse);
     }
+
+    [HttpGet("user/{userId}")]
+    public async Task<ActionResult<ServiceResponse<List<LightGroupDto>>>> GetUserGroups(string userId)
+    {
+        var serviceResponse = new ServiceResponse<List<LightGroupDto>>();
+
+        try
+        {
+            serviceResponse.Data = await groupService.GetUserGroups(userId);
+        }
+        catch (HttpResponseException e)
+        {
+            serviceResponse.Message = e.Message;
+            serviceResponse.HttpCode = e.StatusCode;
+        }
+
+        return new HttpResponseHandler().Handle(serviceResponse);
+    }
+
+
+    [HttpGet("{groupId}")]
+    public async Task<ActionResult<ServiceResponse<GroupDto>>> GetGroup(string groupId)
+    {
+        var serviceResponse = new ServiceResponse<GroupDto>();
+
+        try
+        {
+            serviceResponse.Data = await groupService.GetGroup(groupId);
+        }
+        catch (HttpResponseException e)
+        {
+            serviceResponse.Message = e.Message;
+            serviceResponse.HttpCode = e.StatusCode;
+        }
+        
+        return new HttpResponseHandler().Handle(serviceResponse);
+    }
 }

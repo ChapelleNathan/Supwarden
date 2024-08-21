@@ -9,6 +9,9 @@ public enum ErrorMessages
     [Description("Impossible de trouver l'utilisateur connecté")]
     Sup400ConnectedUser,
     
+    [Description("Vous n'avez pas les droit nécessaire")]
+    Sup400Authorization,
+    
     [Description("Impossible de créer la ressource")]
     Sup500CreationError,
     

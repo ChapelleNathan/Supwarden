@@ -11,4 +11,6 @@ public interface IPasswordRepository : IRepository
     public Task<Password?> GetOnePasswordById(String passwordId);
 
     public Password UpdatePassword(Password updatedPassword);
+
+    public Task<List<Password>> GetPasswordsFromGroup(string groupId);
 }

@@ -33,6 +33,13 @@ public class PasswordRepository(DataContext context) : IPasswordRepository
         return password.Entity;
     }
 
+    public async Task<List<Password>> GetPasswordsFromGroup(string groupId)
+    {
+        return await context.Passwords
+            .Where(password => password.Group != null && password.Group.Id.ToString() == groupId)
+            .ToListAsync();
+    }
+
     public void Save()
     {
         context.SaveChanges();

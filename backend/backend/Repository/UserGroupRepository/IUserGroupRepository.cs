@@ -6,7 +6,7 @@ public interface IUserGroupRepository : IRepository
 {
     public Task<UserGroup?> AddUser(UserGroup userGroup);
 
-    public Task<List<Guid>> GetUserGroups(string userId);
+    public Task<List<UserGroup>> GetUserGroups(string userId);
 
     public Task<UserGroup?> GetUserGroup(string userId, string groupId);
 

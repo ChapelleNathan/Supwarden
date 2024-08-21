@@ -11,4 +11,6 @@ public interface IPasswordService
     public Task<PasswordDto> GetPassword(String passwordId);
 
     public Task<PasswordDto> UpdatePassword(PasswordDto updatedPassword);
+
+    public Task<List<PasswordDto>> GetPasswordsFromGroup(string groupId);
 }

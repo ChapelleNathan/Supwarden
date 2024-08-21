@@ -23,6 +23,7 @@ public class AutoMapperProfile : Profile
 
         //GROUP
         CreateMap<Group, GroupDto>();
+        CreateMap<Group, LightGroupDto>();
 
         //USER_GROUP
         CreateMap<UserGroup, UserGroupDto>();

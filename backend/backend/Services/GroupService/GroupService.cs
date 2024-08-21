@@ -10,7 +10,7 @@ using backend.Repository.UserRepository;
 
 namespace backend.Services.GroupService;
 
-public class GroupService(
+internal class GroupService(
     IGroupRepository groupRepository,
     IHttpContextAccessor httpContext,
     IUserRepository userRepository,
@@ -110,5 +110,64 @@ public class GroupService(
             Name = group.Name,
             Users = userGroups.Select(userGroup => mapper.Map<UserGroupDto>(userGroup)).ToList()
         };
+    }
+
+    public async Task<List<LightGroupDto>> GetUserGroups(string userId)
+    {
+        var connectedEmail = httpContext.HttpContext?.User.FindFirst(ClaimTypes.Email);
+        if(connectedEmail is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400ConnectedUser);
+            throw new HttpResponseException(400, errorMessage);
+        }
+
+        var connectedUser = await userRepository.GetUser(userId);
+        if (connectedUser is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup404UserNotFound);
+            throw new HttpResponseException(404, errorMessage);
+        }
+
+        if (connectedEmail.Value != connectedUser.Email)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400Authorization);
+            throw new HttpResponseException(400, errorMessage);
+        }
+
+        var userGroups = await userGroupRepository.GetUserGroups(connectedUser.Id.ToString());
+
+        return userGroups.Select(userGroup => mapper.Map<LightGroupDto>(userGroup.Group)).ToList();
+    }
+
+    public async Task<GroupDto> GetGroup(string groupId)
+    {
+        VerifyConnection();
+
+        var group = await groupRepository.GetGroupById(groupId);
+        if(group is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup404GroupNotFound);
+            throw new HttpResponseException(404, errorMessage);
+        }
+
+        return mapper.Map<GroupDto>(group);
+    }
+
+    private async void VerifyConnection()
+    {
+        var connectedEmail = httpContext.HttpContext?.User.FindFirst(ClaimTypes.Email);
+        if (connectedEmail is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400ConnectedUser);
+            throw new HttpResponseException(400, errorMessage);
+        }
+
+        var connectedUser = await userRepository.FindUserByEmail(connectedEmail.Value);
+        if (connectedUser is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup404UserNotFound);
+            throw new HttpResponseException(404, errorMessage);
+        }
+        
     }
 }

@@ -64,9 +64,11 @@ public class PasswordService(
             throw new HttpResponseException(404, errorMessage);
         }
 
-        var groupIds = await userGroupRepository.GetUserGroups(user.Id.ToString());
+        var userGroups = await userGroupRepository.GetUserGroups(user.Id.ToString());
 
-        var passwords = await passwordRepository.GetAllPasswordFromUser(user.Id, groupIds.IsNullOrEmpty() ? null : groupIds);
+        var passwords = await passwordRepository
+            .GetAllPasswordFromUser(user.Id, userGroups.IsNullOrEmpty() 
+                ? null : userGroups.Select(userGroup => userGroup.Group.Id).ToList());
         passwords.ForEach(password =>
         {
             password.SitePassword = PasswordSaveHelper.DecryptPassword(password.SitePassword);
@@ -109,5 +111,19 @@ public class PasswordService(
         passwordRepository.UpdatePassword(password);
         passwordRepository.Save();
         return mapper.Map<PasswordDto>(password);
+    }
+
+    public async Task<List<PasswordDto>> GetPasswordsFromGroup(string groupId)
+    {
+        var group = await groupRepository.GetGroupById(groupId);
+        if (group is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup404GroupNotFound);
+            throw new HttpResponseException(404, errorMessage);
+        }
+        
+        var passwords = await passwordRepository.GetPasswordsFromGroup(groupId);
+        
+        return passwords.Select(password => mapper.Map<PasswordDto>(password)).ToList();
     }
 }
