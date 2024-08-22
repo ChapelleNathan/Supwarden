@@ -27,20 +27,19 @@ export default function Groups() {
         const fetchGroups = async () => {
             const response = await axios.get(`http://localhost:8080/group/user/${localStorage.getItem('id')}`, config);
             const serviceResponse = response.data as ServiceResponse;
-            setGroups(serviceResponse.data as LightGroupDTO[]);
+            const fecthedGroups = serviceResponse.data as LightGroupDTO[];
+            setGroups(fecthedGroups);
+            setDisplayedGroup(fecthedGroups[0])
         }
 
         fetchGroups();
     }, [])
 
-    const isSelectedGroup = () => {
-        return displayedGroup ? (<GroupDetails lightGroup={displayedGroup} />) : (<p>pas de groupe</p>)
-    }
 
     return (
         <div className="d-flex group-page w-100 justify-content-around">
             <GroupList groupList={groups} onSelectGroup={handleSelectedGroup}/>
-            {isSelectedGroup()}
+            <GroupDetails lightGroup={displayedGroup} />
         </div>
     )
 }

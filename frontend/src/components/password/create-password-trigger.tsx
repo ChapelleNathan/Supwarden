@@ -25,7 +25,7 @@ export default function CreatePasswordTrigger({header, children, show, onClose, 
     }, [show])
 
     return (
-        <div className="password-form-button">
+        <>
             {children}
             <Offcanvas show={isShow} onHide={handleHide} placement="end">
                 <OffcanvasHeader closeButton>
@@ -35,6 +35,6 @@ export default function CreatePasswordTrigger({header, children, show, onClose, 
                     <PasswordForm isEditing={isEditing} passwordDto={passwordDto}/>
                 </OffcanvasBody>
             </Offcanvas>
-        </div>
+        </>
     )
 }

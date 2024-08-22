@@ -6,7 +6,7 @@ import PasswordList from "../../../../components/password/password-list";
 import { PasswordDto } from "../../../../model/PasswordModels";
 
 interface GroupDetailsProps {
-    lightGroup: LightGroupDTO
+    lightGroup?: LightGroupDTO
 }
 
 export default function GroupDetails ({lightGroup}: GroupDetailsProps) {
@@ -19,9 +19,11 @@ export default function GroupDetails ({lightGroup}: GroupDetailsProps) {
             }
         }
         const fetchGroupData = async () => {
-            const response = await axios.get(`http://localhost:8080/password/group/${lightGroup.id}`, config);
-            const serviceResponse = response.data as ServiceResponse;
-            setPasswords(serviceResponse.data as PasswordDto[])
+            if (lightGroup) {
+                const response = await axios.get(`http://localhost:8080/password/group/${lightGroup.id}`, config);
+                const serviceResponse = response.data as ServiceResponse;
+                setPasswords(serviceResponse.data as PasswordDto[])
+            }
         }
 
         fetchGroupData();
