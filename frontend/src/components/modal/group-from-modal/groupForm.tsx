@@ -1,8 +1,8 @@
 import { Button, Form } from "react-bootstrap";
-import { GroupDTO } from "../../../../model/GroupModels";
+import { GroupDTO } from "../../../model/GroupModels";
 import { useState } from "react";
 import axios from "axios";
-import ServiceResponse from "../../../../model/ServiceResponse";
+import ServiceResponse from "../../../model/ServiceResponse";
 
 interface GroupFormProps {
     modifiedGroup?: GroupDTO,
@@ -27,12 +27,12 @@ export default function GroupForm({modifiedGroup, onGroupCreated}: GroupFormProp
     }
 
     return(
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
             <Form.Group>
                 <Form.Label>Nom du groupe</Form.Label>
                 <Form.Control value={groupName} onChange={(e) => setGroupName(e.target.value)}/>
             </Form.Group>
-            <Button type="submit">Créer le Groupe</Button>
+            <Button className="col-4 offset-4" type="submit">Créer le Groupe</Button>
         </Form>
     )
 }
