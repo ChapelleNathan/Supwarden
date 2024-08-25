@@ -11,11 +11,11 @@ using backend.Repository.UserRepository;
 namespace backend.Services.UserContactService;
 
 public class UserContactService(
-        IUserContactRepository userContactRepository,
-        IUserRepository userRepository,
-        IHttpContextAccessor httpContext,
-        IMapper mapper
-    ) : IUserContactService
+    IUserContactRepository userContactRepository,
+    IUserRepository userRepository,
+    IHttpContextAccessor httpContext,
+    IMapper mapper
+) : IUserContactService
 {
     public async Task<UserContactDto> AddContact(string contactId)
     {
@@ -48,6 +48,83 @@ public class UserContactService(
                 User2 = contact
             });
 
+        return mapper.Map<UserContactDto>(userContact);
+    }
+
+    public async Task<List<UserContactDto>> GetContact()
+    {
+        var connectedEmail = httpContext.HttpContext?.User.FindFirst(ClaimTypes.Email);
+        if (connectedEmail is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400Authorization);
+            throw new HttpResponseException(400, errorMessage);
+        }
+        
+        var connectedUser = await userRepository.FindUserByEmail(connectedEmail.Value);
+        if (connectedUser is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup404UserNotFound);
+            throw new HttpResponseException(404, errorMessage);
+        }
+
+        var contacts = await userContactRepository.GetUserContact(connectedUser.Id);
+
+        return contacts.Select(contact => mapper.Map<UserContactDto>(contact)).ToList();
+    }
+
+    public async Task<List<UserContactDto>> GetPendingRequest()
+    {
+        var connectedEmail = httpContext.HttpContext?.User.FindFirst(ClaimTypes.Email);
+        if (connectedEmail is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400ConnectedUser);
+            throw new HttpResponseException(400, errorMessage);
+        }
+
+        var connectedUser = await userRepository.FindUserByEmail(connectedEmail.Value);
+        if (connectedUser is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup404UserNotFound);
+            throw new HttpResponseException(404, errorMessage);
+        }
+
+        var pendingList = await userContactRepository.GetFriendRequest(connectedUser.Id);
+
+        return pendingList.Select(userContact => mapper.Map<UserContactDto>(userContact)).ToList();
+    }
+
+    public async Task<UserContactDto> UpdateFriendRequest(int userContactId, bool isAccepted)
+    {
+        var connectedEmail = httpContext.HttpContext?.User.FindFirst(ClaimTypes.Email);
+        if (connectedEmail is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400ConnectedUser);
+            throw new HttpResponseException(400, errorMessage);
+        }
+        var connectedUser = await userRepository.FindUserByEmail(connectedEmail.Value);
+        var userContact = await userContactRepository.GetUserContactById(userContactId);
+        if (userContact is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup404UserContactNotFound);
+            throw new HttpResponseException(404, errorMessage);
+        }
+
+        if (userContact.User2 != connectedUser)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400Authorization);
+            throw new HttpResponseException(400, errorMessage);
+        }
+
+        if (isAccepted)
+        {
+            userContact.Status = ContactRequestEnum.Accepted;
+        }
+        else
+        {
+            userContact.Status = ContactRequestEnum.Refused;
+        }
+        
+        userContactRepository.Save();
         return mapper.Map<UserContactDto>(userContact);
     }
 }

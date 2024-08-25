@@ -69,7 +69,6 @@ namespace backend.Migrations
                         .HasColumnName("name");
 
                     b.Property<string>("Note")
-                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)")
                         .HasColumnName("note");

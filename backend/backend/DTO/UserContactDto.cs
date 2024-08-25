@@ -16,3 +16,9 @@ public class CreateUserContactDto
     public required UserDto User2 { get; init; }
     public required ContactRequestEnum Status { get; set; }
 }
+
+public class GetUserContactDto
+{
+    public required string User1Id { get; set; }
+    public required string User2Id { get; set; }
+}

@@ -12,8 +12,8 @@ using backend.Context;
 namespace backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240822121140_nullable-code-pin")]
-    partial class nullablecodepin
+    [Migration("20240825095300_nullable_pin_code")]
+    partial class nullable_pin_code
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,7 +72,6 @@ namespace backend.Migrations
                         .HasColumnName("name");
 
                     b.Property<string>("Note")
-                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)")
                         .HasColumnName("note");

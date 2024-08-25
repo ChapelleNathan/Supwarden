@@ -8,7 +8,6 @@ public enum ErrorMessages
     //GLOBAL
     [Description("Impossible de trouver l'utilisateur connecté")]
     Sup400ConnectedUser,
-    
     [Description("Vous n'avez pas les droit nécessaire")]
     Sup400Authorization,
     
@@ -36,8 +35,14 @@ public enum ErrorMessages
     //User
     [Description("Impossible de récupérer cet utilisateur")]
     Sup404UserNotFound,
+    
+    //UserContact
     [Description("Vous êtes déjà amis")]
     Sup400AlreadyFriend,
+    [Description("Vous n'êtes pas amis")]
+    Sup404NotFriend,
+    [Description("Vous n'êtes pas amis")]
+    Sup404UserContactNotFound,
     
     //UserGroup
     [Description("Erreur lors de l'ajout de l'utilisateur dans le group, veuillez réessayer ultérieurement")]

@@ -31,7 +31,7 @@ public class Password (string name, string identifier, string sitePassword, stri
 
     [Column("note")]
     [MaxLength(1000)]
-    public String Note { get; set; } = "";
+    public String? Note { get; set; }
 
     [Column("user_id")]
     [Required]

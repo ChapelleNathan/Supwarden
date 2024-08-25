@@ -5,7 +5,7 @@
 namespace backend.Migrations
 {
     /// <inheritdoc />
-    public partial class nullablecodepin : Migration
+    public partial class nullable_pin_code : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,6 +19,16 @@ namespace backend.Migrations
                 oldClrType: typeof(string),
                 oldType: "character varying(100)",
                 oldMaxLength: 100);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "note",
+                table: "Password",
+                type: "character varying(1000)",
+                maxLength: 1000,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "character varying(1000)",
+                oldMaxLength: 1000);
         }
 
         /// <inheritdoc />
@@ -34,6 +44,18 @@ namespace backend.Migrations
                 oldClrType: typeof(string),
                 oldType: "character varying(100)",
                 oldMaxLength: 100,
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "note",
+                table: "Password",
+                type: "character varying(1000)",
+                maxLength: 1000,
+                nullable: false,
+                defaultValue: "",
+                oldClrType: typeof(string),
+                oldType: "character varying(1000)",
+                oldMaxLength: 1000,
                 oldNullable: true);
         }
     }
