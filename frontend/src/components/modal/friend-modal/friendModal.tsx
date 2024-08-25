@@ -22,6 +22,15 @@ export default function FriendModal() {
         setUsers(searchedUsers)
     }
 
+    useEffect(() => {
+        const fetchFriendRequest = async () => {
+            const response = await axios.get(`http://localhost:8080/user-contact/friend-requests`, config);
+            const serviceResponse = response.data as ServiceResponse;
+            setFriendRequests(serviceResponse.data as UserContactDTO[]);
+        }
+        fetchFriendRequest();
+    }, [])
+
     const addFriend = async (user: UserDTO) => {
         try {
             await axios.post(`http://localhost:8080/user-contact/${user.id}`, null, config);
@@ -30,7 +39,7 @@ export default function FriendModal() {
                 autohide: true
             })
         } catch (error) {
-            if(axios.isAxiosError(error)){
+            if (axios.isAxiosError(error)) {
                 const serviceResponse = error.response?.data as ServiceResponse;
                 addToast(
                     `${serviceResponse.message} ⚠️`,
@@ -43,26 +52,6 @@ export default function FriendModal() {
             }
         }
     }
-
-    const displayUsers = (): ReactNode => {
-        return users.map((user, index) => (
-            <li className="list-group-item list-group-item-action d-flex align-items-center justify-content-between" key={index}>
-                {user.email}
-                <Button onClick={() => addFriend(user)} size="sm" className="px-1 py-0 d-flex align-items-center" variant="outline-primary">
-                    <Plus size={20} /> Ajouter
-                </Button>
-            </li>
-        ))
-    }
-
-    useEffect(() => {
-        const fetchFriendRequest = async () => {
-            const response = await axios.get(`http://localhost:8080/user-contact/friend-requests`, config);
-            const serviceResponse = response.data as ServiceResponse;
-            setFriendRequests(serviceResponse.data as UserContactDTO[]);
-        }
-        fetchFriendRequest();
-    }, [])
 
     const acceptFriendRequest = async (userContact: UserContactDTO) => {
         const response = await axios.put(`http://localhost:8080/user-contact/accept-request/${userContact.id}`, null, config)
@@ -81,21 +70,38 @@ export default function FriendModal() {
         const rejectedFriend = serviceResponse.data as UserContactDTO;
         setFriendRequests([...friendRequests.filter(friendRequest => friendRequest.id != rejectedFriend.id)]);
         addToast(`Vous avez refuser d'être amis avec ${userContact.user1.email} 😟`, {
-            delay:3000,
+            delay: 3000,
             autohide: true
         })
     }
 
+
+    const displayUsers = (): ReactNode => {
+        return users.map((user, index) => (
+            <li className="list-group-item list-group-item-action d-flex align-items-center justify-content-between" key={index}>
+                {user.email}
+                <Button onClick={() => addFriend(user)} size="sm" className="px-1 py-0 d-flex align-items-center" variant="outline-primary">
+                    <Plus size={20} /> Ajouter
+                </Button>
+            </li>
+        ))
+    }
+
     const displayFrienRequests = (): ReactNode => {
+
+        if (!friendRequests) {
+            return (<p>vous n'avez pas de demande d'amis !</p>)
+        }
+
         return friendRequests.map((friendRequest, index) => (
             <ul key={index} className="list-group-item list-group-item-action d-flex align-items-center justify-content-between">
                 {friendRequest.user1.email}
                 <div className="actions d-flex gap-2">
                     <Button size="sm" variant="success" className="px-1 py-0 d-flex align-items-center" onClick={() => acceptFriendRequest(friendRequest)}>
-                        <Check  size={20}/>
+                        <Check size={20} />
                     </Button>
                     <Button size="sm" variant="outline-danger" className="px-1 py-0 d-flex align-items-center" onClick={() => rejectFriendRequest(friendRequest)}>
-                        <X size={20}/>
+                        <X size={20} />
                     </Button>
                 </div>
             </ul>
@@ -115,9 +121,12 @@ export default function FriendModal() {
             </div>
             <div className="friend-requests col-5 offset-1">
                 <h2 className="mb-2">Demandes d'amis:</h2>
-                <ul className="list-group">
-                    {displayFrienRequests()}
-                </ul>
+                {friendRequests.length == 0 ? (
+                    <ul className="list-group">
+                        {displayFrienRequests()}
+                    </ul>
+
+                ) : (<p>vous n'avez pas de demande d'amis</p>)}
             </div>
         </div>
     )

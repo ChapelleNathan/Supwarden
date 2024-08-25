@@ -1,5 +1,4 @@
 import { ReactNode, useState } from "react";
-import { Button } from "react-bootstrap";
 import Modal from 'react-bootstrap/Modal';
 
 
@@ -7,9 +6,10 @@ interface ModalProps {
     children: ReactNode,
     header?: string,
     size?: 'sm' | 'lg' | 'xl',
+    buttonText: string
 }
 
-export default function CustomModal({children, header, size}: ModalProps) {
+export default function CustomModal({children, header, size, buttonText}: ModalProps) {
     const [show, setShow] = useState(false);
 
     const handleShow = () => setShow(true);
@@ -17,9 +17,9 @@ export default function CustomModal({children, header, size}: ModalProps) {
 
     return (
         <>
-            <Button variant="primary" onClick={handleShow}>
-                Launch demo modal
-            </Button>
+            <p role="button" onClick={handleShow}>
+                {buttonText}
+            </p>
             <Modal size={size} show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>{header}</Modal.Title>

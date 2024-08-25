@@ -35,7 +35,7 @@ export default function Header() {
                     <Nav.Link href="/groupes">Groupes</Nav.Link>
                     <Nav.Link href="#link">Link</Nav.Link>
                     <Nav.Link>
-                        <CustomModal size="lg" header="Ajouter des amis">
+                        <CustomModal size="lg" header="Ajouter des amis" buttonText="Amis">
                             <FriendModal/>
                             </CustomModal>
                     </Nav.Link>
