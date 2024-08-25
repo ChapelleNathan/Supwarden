@@ -1,3 +1,5 @@
+import { ContactRequestEnum } from "../enum/ContactRequestEnum"
+
 export interface CreateUserDTO {
     firstname: string,
     lastname: string,
@@ -21,4 +23,11 @@ export interface UserDTO {
 
 export interface ConnectedUserDTO extends UserDTO {
     token: string,
+}
+
+export interface UserContactDTO {
+    id: number,
+    user1: UserDTO,
+    user2: UserDTO,
+    status: ContactRequestEnum
 }

@@ -54,7 +54,7 @@ export function ToastProvider({children}: ToastProviderProps) {
                         <Toast.Header className="d-flex justify-content-between">
                             Supwarden
                         </Toast.Header>
-                        <Toast.Body>
+                        <Toast.Body className={rest.bg == 'danger' ? 'text-light' : ''}>
                             {message}
                         </Toast.Body>
                     </Toast>

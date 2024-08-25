@@ -25,11 +25,6 @@ export default function CustomModal({children, header, size}: ModalProps) {
                     <Modal.Title>{header}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>{children}</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" className="offset-10" onClick={handleClose}>
-                        Close
-                    </Button>
-                </Modal.Footer>
             </Modal>
         </>
     )
