@@ -35,9 +35,9 @@ export default function Header() {
                     <Nav.Link href="/groupes">Groupes</Nav.Link>
                     <Nav.Link href="#link">Link</Nav.Link>
                     <Nav.Link>
-                        <CustomModal size="lg" header="Ajouter des amis">
+                        <CustomModal size="lg" header="Ajouter des amis" buttonText="Amis" isLink={true}>
                             <FriendModal/>
-                            </CustomModal>
+                        </CustomModal>
                     </Nav.Link>
                     <CreatePasswordTrigger header="Création de mot de passe" show={show} onClose={handleHide}>
                         <Nav.Link

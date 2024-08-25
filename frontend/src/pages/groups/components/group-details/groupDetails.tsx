@@ -4,6 +4,8 @@ import axios from "axios";
 import ServiceResponse from "../../../../model/ServiceResponse";
 import PasswordList from "../../../../components/password/password-list";
 import { PasswordDto } from "../../../../model/PasswordModels";
+import CustomModal from "../../../../components/modal/customModal";
+import FriendListModal from "../../../../components/modal/friend-modal/friendListModal";
 
 interface GroupDetailsProps {
     lightGroup?: LightGroupDTO
@@ -36,7 +38,12 @@ export default function GroupDetails ({lightGroup}: GroupDetailsProps) {
     }
     return (
         <section className="group-details col-8 border rounded p-3">
-            <h1 className="text-capitalize">{lightGroup.name}</h1>
+            <div className="group-list-header d-flex justify-content-between">
+                <h1 className="text-capitalize">{lightGroup.name}</h1>
+                <CustomModal buttonText="Ajouter un ami" header="Vos Amis">
+                    <FriendListModal lightGroup={lightGroup}/>
+                </CustomModal>
+            </div>
             <PasswordList passwords={passwords}/>
         </section>
     )

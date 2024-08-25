@@ -7,29 +7,40 @@ interface ModalProps {
     children: ReactNode,
     header?: string,
     size?: 'sm' | 'lg' | 'xl',
+    buttonText: string,
+    isLink?: boolean
 }
 
-export default function CustomModal({children, header, size}: ModalProps) {
+export default function CustomModal({ children, header, size, buttonText, isLink = false }: ModalProps) {
     const [show, setShow] = useState(false);
 
     const handleShow = () => setShow(true);
-    const handleClose= () => setShow(false);
+    const handleClose = () => setShow(false);
+
+    const displayButton = () => {
+        if (isLink) {
+            return (
+                <p role="button" onClick={handleShow}>
+                    {buttonText}
+                </p>
+            )
+        }
+
+        return (
+            <Button onClick={handleShow}>
+                {buttonText}
+            </Button>
+        )
+    }
 
     return (
         <>
-            <Button variant="primary" onClick={handleShow}>
-                Launch demo modal
-            </Button>
+            {displayButton()}
             <Modal size={size} show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>{header}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>{children}</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" className="offset-10" onClick={handleClose}>
-                        Close
-                    </Button>
-                </Modal.Footer>
             </Modal>
         </>
     )
