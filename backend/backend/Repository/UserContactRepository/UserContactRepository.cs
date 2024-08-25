@@ -32,7 +32,7 @@ public class UserContactRepository(DataContext context) : IUserContactRepository
     public async Task<List<UserContact>> GetUserContact(Guid connectedUserId)
     {
         return await context.UserContacts
-            .Where(userContact => userContact.User1.Id == connectedUserId || userContact.User2.Id == connectedUserId)
+            .Where(userContact => (userContact.User1.Id == connectedUserId || userContact.User2.Id == connectedUserId) && userContact.Status == ContactRequestEnum.Accepted)
             .Include(userContact => userContact.User2)
             .Include(userContact => userContact.User1)
             .ToListAsync();

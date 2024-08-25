@@ -153,6 +153,22 @@ internal class GroupService(
         return mapper.Map<GroupDto>(group);
     }
 
+    public async Task<List<UserDto>> GetUsersFromGroup(string groupId)
+    {
+        var connectedEmail = httpContext.HttpContext?.User.FindFirst(ClaimTypes.Email);
+        if (connectedEmail is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400ConnectedUser);
+            throw new HttpResponseException(400, errorMessage);
+        }
+        var userGroups = await userGroupRepository.GetAllUsersFromGroup(groupId);
+        var users = userGroups.Select(userGroup => userGroup.User)
+            .Where(userGroup => userGroup.Email != connectedEmail.Value)
+            .ToList();
+        
+        return users.Select(user => mapper.Map<UserDto>(user)).ToList();
+    }
+
     private async void VerifyConnection()
     {
         var connectedEmail = httpContext.HttpContext?.User.FindFirst(ClaimTypes.Email);

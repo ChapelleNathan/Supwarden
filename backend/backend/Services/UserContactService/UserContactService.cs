@@ -51,7 +51,7 @@ public class UserContactService(
         return mapper.Map<UserContactDto>(userContact);
     }
 
-    public async Task<List<UserContactDto>> GetContact()
+    public async Task<List<UserContactDto>> GetUserContacts()
     {
         var connectedEmail = httpContext.HttpContext?.User.FindFirst(ClaimTypes.Email);
         if (connectedEmail is null)
@@ -126,5 +126,31 @@ public class UserContactService(
         
         userContactRepository.Save();
         return mapper.Map<UserContactDto>(userContact);
+    }
+
+    public async Task<List<UserDto>> GetContacts()
+    {
+        var connectedEmail = httpContext.HttpContext?.User.FindFirst(ClaimTypes.Email);
+        if (connectedEmail is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400ConnectedUser);
+            throw new HttpResponseException(400, errorMessage);
+        }
+
+        var connectedUser = await userRepository.FindUserByEmail(connectedEmail.Value);
+        if (connectedUser is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup404UserNotFound);
+            throw new HttpResponseException(404, errorMessage);
+        }
+
+        var userContacts = await userContactRepository.GetUserContact(connectedUser.Id);
+
+        var contacts = userContacts
+            .SelectMany(userContact => new[] { userContact.User1, userContact.User2 })
+            .Where(user => user != connectedUser)
+            .ToList();
+        
+        return contacts.Select(contact => mapper.Map<UserDto>(contact)).ToList();
     }
 }

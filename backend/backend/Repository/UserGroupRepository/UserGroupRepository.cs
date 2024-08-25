@@ -41,6 +41,7 @@ public class UserGroupRepository(DataContext context) : IUserGroupRepository
     {
         var users = await context.UserGroups
             .Where(userGroup => userGroup.Group.Id.ToString() == groupId)
+            .Include(userGroup => userGroup.User)
             .ToListAsync();
         return users!;
     }

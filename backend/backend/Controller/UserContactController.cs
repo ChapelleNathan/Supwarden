@@ -36,7 +36,7 @@ public class UserContactController (IUserContactService userContactService)
 
         try
         {
-            serviceResponse.Data = await userContactService.GetContact();
+            serviceResponse.Data = await userContactService.GetUserContacts();
         }
         catch (HttpResponseException e)
         {
@@ -89,6 +89,23 @@ public class UserContactController (IUserContactService userContactService)
         try
         {
             serviceResponse.Data = await userContactService.UpdateFriendRequest(userContactId, false);
+        }
+        catch (HttpResponseException e)
+        {
+            serviceResponse.Message = e.Message;
+            serviceResponse.HttpCode = e.StatusCode;
+        }
+
+        return new HttpResponseHandler().Handle(serviceResponse);
+    }
+
+    [HttpGet("friends")]
+    public async Task<ActionResult<ServiceResponse<List<UserDto>>>> GetContacts()
+    {
+        var serviceResponse = new ServiceResponse<List<UserDto>>();
+        try
+        {
+            serviceResponse.Data = await userContactService.GetContacts();
         }
         catch (HttpResponseException e)
         {

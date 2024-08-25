@@ -1,4 +1,5 @@
 using backend.DTO;
+using backend.Repository.UserGroupRepository;
 using backend.Services;
 using backend.Services.GroupService;
 using Microsoft.AspNetCore.Authorization;
@@ -73,6 +74,24 @@ public class GroupController(IGroupService groupService)
         try
         {
             serviceResponse.Data = await groupService.GetGroup(groupId);
+        }
+        catch (HttpResponseException e)
+        {
+            serviceResponse.Message = e.Message;
+            serviceResponse.HttpCode = e.StatusCode;
+        }
+        
+        return new HttpResponseHandler().Handle(serviceResponse);
+    }
+
+    [HttpGet("{groupId}/users")]
+    public async Task<ActionResult<ServiceResponse<List<UserDto>>>> GetUsersFromGroup(string groupId)
+    {
+        var serviceResponse = new ServiceResponse<List<UserDto>>();
+
+        try
+        {
+            serviceResponse.Data = await groupService.GetUsersFromGroup(groupId);
         }
         catch (HttpResponseException e)
         {

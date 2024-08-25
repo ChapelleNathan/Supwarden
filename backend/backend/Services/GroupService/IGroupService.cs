@@ -11,4 +11,6 @@ public interface IGroupService
     public Task<List<LightGroupDto>> GetUserGroups(string userId);
 
     public Task<GroupDto> GetGroup(string groupId);
+
+    public Task<List<UserDto>> GetUsersFromGroup(string groupId);
 }
