@@ -25,7 +25,10 @@ public class UserRepository(DataContext context) : IUserRepository
 
     public async Task<List<User>> SearchUserByEmail(string email)
     {
-        return await context.Users.Where(user => user.Email.Contains(email)).ToListAsync();
+        return await context.Users
+            .Where(user => user.Email.Contains(email))
+            .Take(15)
+            .ToListAsync();
     }
 
     public void Save()

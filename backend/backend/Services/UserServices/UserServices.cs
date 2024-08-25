@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Security.Cryptography;
 using AutoMapper;
 using backend.DTO;
@@ -9,7 +10,7 @@ using backend.Repository.UserRepository;
 
 namespace backend.Services.UserServices;
 
-public class UserServices(IUserRepository userRepository, IMapper mapper) : IUserServices
+public class UserServices(IUserRepository userRepository, IMapper mapper, IHttpContextAccessor httpContext) : IUserServices
 {
     public async Task<UserDto> GetUser(string id)
     {
@@ -25,7 +26,16 @@ public class UserServices(IUserRepository userRepository, IMapper mapper) : IUse
 
     public async Task<List<UserDto>> SearchUserByEmail(string email)
     {
+        var connectedEmail = httpContext.HttpContext?.User.FindFirst(ClaimTypes.Email);
+        if (connectedEmail is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400Authorization);
+            throw new HttpResponseException(400, errorMessage);
+        }
+        
         var users = await userRepository.SearchUserByEmail(email);
+        
+        users = users.Where(user => user.Email != connectedEmail.Value).ToList();
 
         return users.Select(user => mapper.Map<UserDto>(user)).ToList();
     }

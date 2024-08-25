@@ -2,6 +2,7 @@ using backend.DTO;
 using backend.Models;
 using backend.Services;
 using backend.Services.UserServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace backend.Controller;
 
 [ApiController]
 [Route("user")]
+[Authorize]
 public class UserController(IUserServices userServices) : ControllerBase
 {
     [HttpGet("{id}")]

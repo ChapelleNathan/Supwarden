@@ -37,5 +37,5 @@ public class User(string firstname, string lastname, string email, string passwo
 
     [Column("code_pin")]
     [MaxLength(100)]
-    public String CodePin { get; set; } = "";
+    public String? CodePin { get; set; }
 }

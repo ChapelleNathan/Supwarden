@@ -1,7 +1,6 @@
 using System.Text.Json.Serialization;
 
 namespace backend.DTO;
-
 public class UserDto
 {
     public required Guid Id { get; set; }
@@ -9,7 +8,6 @@ public class UserDto
     public required string Lastname { get; set; }
     public required string Email { get; set; }
     public required string PhoneNumber { get; set; }
-    public string CodePin { get; set; } = "";
 }
 
 public class ConnectedUserDto : UserDto
