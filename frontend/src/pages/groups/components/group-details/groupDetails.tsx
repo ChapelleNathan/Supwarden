@@ -38,13 +38,13 @@ export default function GroupDetails ({lightGroup}: GroupDetailsProps) {
     }
     return (
         <section className="group-details col-8 border rounded p-3">
-            <div className="group-list-header d-flex justify-content-between">
+            <div className="group-list-header d-flex justify-content-between mb-3">
                 <h1 className="text-capitalize">{lightGroup.name}</h1>
                 <CustomModal buttonText="Ajouter un ami" header="Vos Amis">
                     <FriendListModal lightGroup={lightGroup}/>
                 </CustomModal>
             </div>
-            <PasswordList passwords={passwords}/>
+            <PasswordList groupId={lightGroup.id} passwords={passwords}/>
         </section>
     )
 }

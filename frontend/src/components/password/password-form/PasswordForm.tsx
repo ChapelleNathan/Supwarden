@@ -2,18 +2,20 @@ import { Alert, AlertHeading, Button, Form, FormControl, FormGroup, FormLabel, I
 import PasswordGeneratorForm from "./PasswordGeneratorForm.tsx";
 import React, { useState } from "react";
 import { CreatePasswordDto, PasswordDto } from "../../../model/PasswordModels.ts";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { FieldError, RenderErrors } from "../../error.tsx";
 import verifyPasswordForm from "./verifyPasswordForm.tsx";
 import { CreatePasswordEnum } from "../../../enum/ErrorFieldEnum.ts";
 import Required from "../../required.tsx";
-import { useNavigate } from "react-router-dom";
 import { Copy, X } from "react-bootstrap-icons";
 import { useToast } from "../../../context/ToastContext.tsx";
+import ServiceResponse from "../../../model/ServiceResponse.ts";
 
 interface PasswordFormProps {
     passwordDto?: PasswordDto,
     isEditing?: boolean,
+    groupId?: string
+    onPasswordCreate: (password: PasswordDto) => void;
 }
 
 interface Alert {
@@ -31,14 +33,13 @@ export default function PasswordForm(props: PasswordFormProps) {
     const [showAlert, setShowAlert] = useState<Alert>({ show: false, message: '' });
     const [errors, setErrors] = useState<FieldError[]>([]);
     const {addToast} = useToast();
-
-    const navigate = useNavigate();
+    
 
     const handlePasswordChange = (password: string) => {
         setPassword(password);
     }
 
-    const handleSubmit = (event: React.FormEvent) => {
+    const handleSubmit = async (event: React.FormEvent) => {
         const config = {
             headers:
                 { Authorization: `Bearer ${localStorage.getItem('token')}` }
@@ -59,13 +60,15 @@ export default function PasswordForm(props: PasswordFormProps) {
 
         if (verification.length == 0) {
             try {
+                var response: AxiosResponse;
                 if (props.isEditing && props.passwordDto) {
-                    const password: PasswordDto = { ...newPassword, id: props.passwordDto.id }
-                    axios.put('http://localhost:8080/password', password, config)
+                    const password: PasswordDto = { ...newPassword, id: props.passwordDto.id, groupId: props.groupId}
+                    response = await axios.put('http://localhost:8080/password', password, config)
                 } else {
-                    axios.post('http://localhost:8080/password', newPassword, config);
+                    response = await axios.post('http://localhost:8080/password', {... newPassword, groupId: props.groupId}, config);
                 }
-                navigate(0);
+                const serviceResponse = response.data as ServiceResponse
+                props.onPasswordCreate(serviceResponse.data as PasswordDto);
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     setShowAlert({ show: true, message: error.message })

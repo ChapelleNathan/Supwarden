@@ -39,14 +39,6 @@ export default function Header() {
                             <FriendModal/>
                         </CustomModal>
                     </Nav.Link>
-                    <CreatePasswordTrigger header="Création de mot de passe" show={show} onClose={handleHide}>
-                        <Nav.Link
-                            className="fs-2 link-underline link-underline-opacity-0"
-                            onClick={handleShow}
-                        >
-                            <Plus/>
-                        </Nav.Link>
-                    </CreatePasswordTrigger>
                     <Nav.Link onClick={handleDeconnection}>Deco</Nav.Link>
                 </Nav>
             </Navbar.Collapse>

@@ -2,7 +2,7 @@ import { createContext, ReactNode, useCallback, useContext, useState } from "rea
 import { Toast, ToastContainer } from "react-bootstrap";
 
 interface ToastOptions {
-    bg?: string,
+    bg?: 'danger' | 'success',
     delay?: number,
     autohide?: boolean
 }
@@ -54,7 +54,7 @@ export function ToastProvider({children}: ToastProviderProps) {
                         <Toast.Header className="d-flex justify-content-between">
                             Supwarden
                         </Toast.Header>
-                        <Toast.Body className={rest.bg == 'danger' ? 'text-light' : ''}>
+                        <Toast.Body className={rest.bg ? 'text-light' : ''}>
                             {message}
                         </Toast.Body>
                     </Toast>

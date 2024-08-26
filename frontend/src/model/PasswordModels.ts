@@ -8,4 +8,5 @@ export interface CreatePasswordDto {
     sitePassword: string,
     uri: string,
     note?: string,
+    groupId?: string
 }

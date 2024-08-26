@@ -60,7 +60,8 @@ export default function FriendModal() {
         setFriendRequests([...friendRequests.filter(friendRequest => friendRequest.id != acceptedFriend.id)]);
         addToast(`vous êtes maintenant amis avec ${userContact.user1.email} !`, {
             delay: 3000,
-            autohide: true
+            autohide: true,
+            bg: 'success'
         })
     }
 
@@ -87,13 +88,12 @@ export default function FriendModal() {
         ))
     }
 
-    const displayFrienRequests = (): ReactNode => {
-
-        if (!friendRequests) {
-            return (<p>vous n'avez pas de demande d'amis !</p>)
+    const displayFrienRequests = (requests: UserContactDTO[]): ReactNode => {
+        if (requests.length == 0) {
+            return (<p>vous n'avez pas de demande d'amis 😔</p>)
         }
 
-        return friendRequests.map((friendRequest, index) => (
+        return requests.map((friendRequest, index) => (
             <ul key={index} className="list-group-item list-group-item-action d-flex align-items-center justify-content-between">
                 {friendRequest.user1.email}
                 <div className="actions d-flex gap-2">
@@ -121,12 +121,9 @@ export default function FriendModal() {
             </div>
             <div className="friend-requests col-5 offset-1">
                 <h2 className="mb-2">Demandes d'amis:</h2>
-                {friendRequests.length == 0 ? (
                     <ul className="list-group">
-                        {displayFrienRequests()}
+                        {displayFrienRequests(friendRequests)}
                     </ul>
-
-                ) : (<p>vous n'avez pas de demande d'amis</p>)}
             </div>
         </div>
     )
