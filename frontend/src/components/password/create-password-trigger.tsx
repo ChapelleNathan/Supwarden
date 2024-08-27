@@ -11,10 +11,19 @@ interface PasswordTriggerProps {
     show: boolean,
     onClose: (show: boolean) => void,
     groupId?: string,
-    onPasswordCreate: (password: PasswordDto) => void,
+    onPasswordCreate?: (password: PasswordDto) => void,
 }
 
-export default function CreatePasswordTrigger({header, children, show, onClose, isEditing = false, passwordDto, groupId, onPasswordCreate}: PasswordTriggerProps) {
+export default function CreatePasswordTrigger({ 
+    header,
+    children,
+    show,
+    onClose,
+    isEditing = false,
+    passwordDto,
+    groupId,
+    onPasswordCreate
+}: PasswordTriggerProps) {
     const [isShow, setIsShow] = useState(show);
 
     const handleHide = () => {
@@ -34,7 +43,12 @@ export default function CreatePasswordTrigger({header, children, show, onClose, 
                     <h2>{header}</h2>
                 </OffcanvasHeader>
                 <OffcanvasBody>
-                    <PasswordForm groupId={groupId} isEditing={isEditing} passwordDto={passwordDto} onPasswordCreate={onPasswordCreate}/>
+                    <PasswordForm
+                        groupId={groupId}
+                        isEditing={isEditing}
+                        passwordDto={passwordDto}
+                        onPasswordCreate={onPasswordCreate}
+                    />
                 </OffcanvasBody>
             </Offcanvas>
         </>

@@ -1,15 +1,23 @@
-import { Copy, PencilFill, ThreeDots } from "react-bootstrap-icons";
+import { Copy, PencilFill, ThreeDots, Trash } from "react-bootstrap-icons";
 import { PasswordDto } from "../../model/PasswordModels";
 import { Dropdown } from "react-bootstrap";
 import { useState } from "react";
 import { useToast } from "../../context/ToastContext";
 import CreatePasswordTrigger from "./create-password-trigger";
+import axios from "axios";
+import ServiceResponse from "../../model/ServiceResponse";
 
 interface PasswordProps {
-    password: PasswordDto
+    password: PasswordDto,
+    onDeletePassword: (password: PasswordDto) => void
 }
 
-export default function Password({ password }: PasswordProps) {
+const config = {
+    headers:
+        { Authorization: `Bearer ${localStorage.getItem('token')}` }
+};
+
+export default function Password({ password, onDeletePassword }: PasswordProps) {
     const [show, setShow] = useState(false);
     const { addToast } = useToast();
 
@@ -27,6 +35,19 @@ export default function Password({ password }: PasswordProps) {
             )
         });
     }
+
+    const handleDelete = async (password: PasswordDto) => {
+        const response = await axios.delete(`http://localhost:8080/password/${password.id}`, config)
+        const serviceResponse = response.data as ServiceResponse;
+        onDeletePassword(serviceResponse.data as PasswordDto);
+        addToast(
+            'Votre mot de passe à bien été supprimé ! 🗑️',
+            {
+                autohide: true,
+                delay: 3000
+            }
+        )
+    } 
 
     return (
         <tr>
@@ -68,6 +89,13 @@ export default function Password({ password }: PasswordProps) {
                                 <PencilFill size={20} /><p>Détails</p>
                             </Dropdown.Item>
                         </CreatePasswordTrigger>
+                        <Dropdown.Item
+                            className="d-flex gap-3"
+                            onClick={()=> handleDelete(password)}
+                        >
+                            <Trash/>
+                            Supprimer
+                        </Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
             </td>

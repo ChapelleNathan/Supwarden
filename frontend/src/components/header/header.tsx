@@ -1,24 +1,18 @@
 import { Nav, Navbar } from "react-bootstrap";
 import './header.scss'
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import CreatePasswordTrigger from "../password/create-password-trigger";
-import { Plus } from "react-bootstrap-icons";
 import CustomModal from "../modal/customModal";
 import FriendModal from "../modal/friend-modal/friendModal";
 
 export default function Header() {
     const navigate = useNavigate();
-    const [show, setShow] = useState(false);
 
     const handleDeconnection = (e: React.FormEvent) => {
         e.preventDefault();
         localStorage.clear();
         navigate('/login');
     }
-
-    const handleShow = () => setShow(true);
-    const handleHide = () => setShow(false);
 
     const handleNav = () => {
         return localStorage.getItem('token') ? true : false;

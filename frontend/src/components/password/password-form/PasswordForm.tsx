@@ -7,15 +7,15 @@ import { FieldError, RenderErrors } from "../../error.tsx";
 import verifyPasswordForm from "./verifyPasswordForm.tsx";
 import { CreatePasswordEnum } from "../../../enum/ErrorFieldEnum.ts";
 import Required from "../../required.tsx";
-import { Copy, X } from "react-bootstrap-icons";
+import { Copy, Floppy, PencilSquare, X } from "react-bootstrap-icons";
 import { useToast } from "../../../context/ToastContext.tsx";
 import ServiceResponse from "../../../model/ServiceResponse.ts";
 
 interface PasswordFormProps {
     passwordDto?: PasswordDto,
     isEditing?: boolean,
-    groupId?: string
-    onPasswordCreate: (password: PasswordDto) => void;
+    groupId?: string,
+    onPasswordCreate?: (password: PasswordDto) => void,
 }
 
 interface Alert {
@@ -23,28 +23,28 @@ interface Alert {
     message: string
 }
 
-export default function PasswordForm(props: PasswordFormProps) {
+const config = {
+    headers:
+        { Authorization: `Bearer ${localStorage.getItem('token')}` }
+};
+
+export default function PasswordForm({passwordDto, isEditing, groupId, onPasswordCreate }: PasswordFormProps) {
     const [passwordPanel, setPasswordPanel] = useState(false);
-    const [password, setPassword] = useState(props.passwordDto?.sitePassword ?? '');
-    const [name, setName] = useState(props.passwordDto?.name ?? '');
-    const [identifier, setIdentifier] = useState(props.passwordDto?.identifier ?? '');
-    const [uri, setUri] = useState(props.passwordDto?.uri ?? '');
-    const [note, setNote] = useState(props.passwordDto?.note ?? '');
+    const [password, setPassword] = useState(passwordDto?.sitePassword ?? '');
+    const [name, setName] = useState(passwordDto?.name ?? '');
+    const [identifier, setIdentifier] = useState(passwordDto?.identifier ?? '');
+    const [uri, setUri] = useState(passwordDto?.uri ?? '');
+    const [note, setNote] = useState(passwordDto?.note ?? '');
     const [showAlert, setShowAlert] = useState<Alert>({ show: false, message: '' });
     const [errors, setErrors] = useState<FieldError[]>([]);
-    const {addToast} = useToast();
-    
+    const { addToast } = useToast();
 
+    
     const handlePasswordChange = (password: string) => {
         setPassword(password);
     }
 
     const handleSubmit = async (event: React.FormEvent) => {
-        const config = {
-            headers:
-                { Authorization: `Bearer ${localStorage.getItem('token')}` }
-        };
-
         event.preventDefault();
 
         const newPassword: CreatePasswordDto = {
@@ -61,14 +61,31 @@ export default function PasswordForm(props: PasswordFormProps) {
         if (verification.length == 0) {
             try {
                 var response: AxiosResponse;
-                if (props.isEditing && props.passwordDto) {
-                    const password: PasswordDto = { ...newPassword, id: props.passwordDto.id, groupId: props.groupId}
+                if (isEditing && passwordDto) {
+                    const password: PasswordDto = { ...newPassword, id: passwordDto.id, groupId: groupId }
                     response = await axios.put('http://localhost:8080/password', password, config)
+                    addToast(
+                        'Vous avez bien modifier le mot de passe',
+                        {
+                            bg: 'success',
+                            autohide: true,
+                            delay: 3000
+                        }
+                    )
                 } else {
-                    response = await axios.post('http://localhost:8080/password', {... newPassword, groupId: props.groupId}, config);
+                    response = await axios.post('http://localhost:8080/password', { ...newPassword, groupId: groupId }, config);
+                    addToast(
+                        'Vous avez bien créer votre mot de passe',
+                        {
+                            bg: 'success',
+                            autohide: true,
+                            delay: 3000
+                        }
+                    )
                 }
                 const serviceResponse = response.data as ServiceResponse
-                props.onPasswordCreate(serviceResponse.data as PasswordDto);
+                if(onPasswordCreate)
+                    onPasswordCreate(serviceResponse.data as PasswordDto);
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     setShowAlert({ show: true, message: error.message })
@@ -116,9 +133,9 @@ export default function PasswordForm(props: PasswordFormProps) {
         navigator.clipboard.writeText(password).then(() => {
             addToast(
                 message, {
-                    delay: 3000,
-                    autohide: true
-                }
+                delay: 3000,
+                autohide: true
+            }
             )
         });
     }
@@ -159,7 +176,15 @@ export default function PasswordForm(props: PasswordFormProps) {
                     onChange={(e) => setNote(e.target.value)}
                 />
             </FormGroup>
-            <Button type="submit" className="w-100">{props.isEditing ? 'Modifier' : 'Créer'}</Button>
+            <div className="actions d-flex gap-2">
+                <Button type="submit" className="col">
+                    {
+                        isEditing ?
+                            (<><PencilSquare /> Modifier</>) :
+                            (<><Floppy/> Créer</>)
+                    }
+                </Button>
+            </div>
         </Form>
     )
 }
