@@ -13,4 +13,6 @@ public interface IPasswordRepository : IRepository
     public Password UpdatePassword(Password updatedPassword);
 
     public Task<List<Password>> GetPasswordsFromGroup(string groupId);
+
+    public void DeletePassword(Password passwordId);
 }

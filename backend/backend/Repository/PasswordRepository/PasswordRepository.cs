@@ -18,6 +18,7 @@ public class PasswordRepository(DataContext context) : IPasswordRepository
             .Where(password => password.User.Id == userId || 
                                password.Group != null && groupIds != null && groupIds.Contains(password.Group.Id))
             .Include(password => password.Group)
+            .OrderByDescending(password => password.Id)
             .ToListAsync();
         return passwords;
     }
@@ -37,7 +38,14 @@ public class PasswordRepository(DataContext context) : IPasswordRepository
     {
         return await context.Passwords
             .Where(password => password.Group != null && password.Group.Id.ToString() == groupId)
+            .OrderByDescending(password => password.Id)
             .ToListAsync();
+    }
+
+    public void DeletePassword(Password password)
+    {
+        context.Passwords.Remove(password);
+        context.SaveChanges();
     }
 
     public void Save()

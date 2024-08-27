@@ -24,7 +24,7 @@ public class PasswordController (IPasswordService passwordService)
             serviceResponse.HttpCode = e.StatusCode;
             serviceResponse.Message = e.Message;
         }
-        return serviceResponse;
+        return new HttpResponseHandler().Handle(serviceResponse);
     }
 
     [HttpGet]
@@ -41,7 +41,7 @@ public class PasswordController (IPasswordService passwordService)
             serviceResponse.Message = e.Message;
         }
 
-        return serviceResponse;
+        return new HttpResponseHandler().Handle(serviceResponse);
     }
 
     [HttpGet("{passwordId}")]
@@ -58,7 +58,7 @@ public class PasswordController (IPasswordService passwordService)
             serviceResponse.Message = e.Message;
         }
 
-        return serviceResponse;
+        return new HttpResponseHandler().Handle(serviceResponse);
     }
 
     [HttpPut]
@@ -75,7 +75,7 @@ public class PasswordController (IPasswordService passwordService)
             serviceResponse.Message = e.Message;
         }
 
-        return serviceResponse;
+        return new HttpResponseHandler().Handle(serviceResponse);
     }
 
     [HttpGet("group/{groupId}")]
@@ -93,6 +93,24 @@ public class PasswordController (IPasswordService passwordService)
             serviceResponse.Message = e.Message;
         }
         
-        return serviceResponse;
+        return new HttpResponseHandler().Handle(serviceResponse);
+    }
+
+    [HttpDelete("{passwordId}")]
+    public async Task<ActionResult<ServiceResponse<PasswordDto>>> DeletePassword(string passwordId)
+    {
+        var serviceResponse = new ServiceResponse<PasswordDto>();
+
+        try
+        {
+            serviceResponse.Data = await passwordService.DeletePassword(passwordId);
+        }
+        catch (HttpResponseException e)
+        {
+            serviceResponse.HttpCode = e.StatusCode;
+            serviceResponse.Message = e.Message;
+        }
+
+        return new HttpResponseHandler().Handle(serviceResponse);
     }
 }

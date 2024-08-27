@@ -126,4 +126,18 @@ public class PasswordService(
         
         return passwords.Select(password => mapper.Map<PasswordDto>(password)).ToList();
     }
+
+    public async Task<PasswordDto> DeletePassword(string passwordId)
+    {
+        var password = await passwordRepository.GetOnePasswordById(passwordId);
+        if (password is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup404PasswordNotFound);
+            throw new HttpResponseException(404, errorMessage);
+        }
+        
+        passwordRepository.DeletePassword(password);
+        
+        return mapper.Map<PasswordDto>(password);
+    }
 }
