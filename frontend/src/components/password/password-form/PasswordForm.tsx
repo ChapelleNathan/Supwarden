@@ -1,6 +1,6 @@
 import { Alert, AlertHeading, Button, Form, FormControl, FormGroup, FormLabel, InputGroup, OverlayTrigger, Tooltip } from "react-bootstrap";
 import PasswordGeneratorForm from "./PasswordGeneratorForm.tsx";
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { CreatePasswordDto, PasswordDto } from "../../../model/PasswordModels.ts";
 import axios, { AxiosResponse } from "axios";
 import { FieldError, RenderErrors } from "../../error.tsx";
@@ -10,12 +10,14 @@ import Required from "../../required.tsx";
 import { Copy, Floppy, PencilSquare, X } from "react-bootstrap-icons";
 import { useToast } from "../../../context/ToastContext.tsx";
 import ServiceResponse from "../../../model/ServiceResponse.ts";
+import { UserGroupDTO } from "../../../model/GroupModels.ts";
 
 interface PasswordFormProps {
     passwordDto?: PasswordDto,
     isEditing?: boolean,
     groupId?: string,
     onPasswordCreate?: (password: PasswordDto) => void,
+    userGroup?: UserGroupDTO,
 }
 
 interface Alert {
@@ -28,7 +30,7 @@ const config = {
         { Authorization: `Bearer ${localStorage.getItem('token')}` }
 };
 
-export default function PasswordForm({passwordDto, isEditing, groupId, onPasswordCreate }: PasswordFormProps) {
+export default function PasswordForm({ passwordDto, isEditing, groupId, onPasswordCreate, userGroup }: PasswordFormProps) {
     const [passwordPanel, setPasswordPanel] = useState(false);
     const [password, setPassword] = useState(passwordDto?.sitePassword ?? '');
     const [name, setName] = useState(passwordDto?.name ?? '');
@@ -38,8 +40,9 @@ export default function PasswordForm({passwordDto, isEditing, groupId, onPasswor
     const [showAlert, setShowAlert] = useState<Alert>({ show: false, message: '' });
     const [errors, setErrors] = useState<FieldError[]>([]);
     const { addToast } = useToast();
+    const canEdit: boolean = userGroup == null || userGroup.canEdit;
 
-    
+
     const handlePasswordChange = (password: string) => {
         setPassword(password);
     }
@@ -84,7 +87,7 @@ export default function PasswordForm({passwordDto, isEditing, groupId, onPasswor
                     )
                 }
                 const serviceResponse = response.data as ServiceResponse
-                if(onPasswordCreate)
+                if (onPasswordCreate)
                     onPasswordCreate(serviceResponse.data as PasswordDto);
             } catch (error) {
                 if (axios.isAxiosError(error)) {
@@ -140,6 +143,24 @@ export default function PasswordForm({passwordDto, isEditing, groupId, onPasswor
         });
     }
 
+    const displaySaveOrModify = (): ReactNode => {
+
+
+        if (isEditing) {
+            return (
+                <Button type="submit" className={(canEdit ? '' : 'disabled') + ' col'}>
+                    <PencilSquare /> Modifier
+                </Button>
+            );
+        }
+
+        return (
+            <Button type="submit" className={((canEdit ? '' : 'disabled') + ' col')}>
+                <Floppy /> Créer
+            </Button>
+        )
+    }
+
     return (
         <Form onSubmit={handleSubmit} className="d-flex flex-column gap-2">
             {displayAlert(showAlert)}
@@ -177,13 +198,7 @@ export default function PasswordForm({passwordDto, isEditing, groupId, onPasswor
                 />
             </FormGroup>
             <div className="actions d-flex gap-2">
-                <Button type="submit" className="col">
-                    {
-                        isEditing ?
-                            (<><PencilSquare /> Modifier</>) :
-                            (<><Floppy/> Créer</>)
-                    }
-                </Button>
+            {displaySaveOrModify()}
             </div>
         </Form>
     )

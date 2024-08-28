@@ -14,6 +14,7 @@ export interface LightGroupDTO {
 export interface UserGroupDTO {
     id: string,
     user: UserDTO,
+    group: LightGroupDTO,
     canEdit: boolean,
     isCreator: boolean
 }

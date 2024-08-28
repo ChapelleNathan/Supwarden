@@ -2,6 +2,7 @@ import { Offcanvas, OffcanvasBody, OffcanvasHeader } from "react-bootstrap";
 import PasswordForm from "./password-form/PasswordForm";
 import { ReactNode, useEffect, useState } from "react";
 import { PasswordDto } from "../../model/PasswordModels";
+import { UserGroupDTO } from "../../model/GroupModels";
 
 interface PasswordTriggerProps {
     header?: string
@@ -12,6 +13,7 @@ interface PasswordTriggerProps {
     onClose: (show: boolean) => void,
     groupId?: string,
     onPasswordCreate?: (password: PasswordDto) => void,
+    userGroup?: UserGroupDTO
 }
 
 export default function CreatePasswordTrigger({ 
@@ -22,7 +24,8 @@ export default function CreatePasswordTrigger({
     isEditing = false,
     passwordDto,
     groupId,
-    onPasswordCreate
+    onPasswordCreate,
+    userGroup
 }: PasswordTriggerProps) {
     const [isShow, setIsShow] = useState(show);
 
@@ -48,6 +51,7 @@ export default function CreatePasswordTrigger({
                         isEditing={isEditing}
                         passwordDto={passwordDto}
                         onPasswordCreate={onPasswordCreate}
+                        userGroup={userGroup}
                     />
                 </OffcanvasBody>
             </Offcanvas>

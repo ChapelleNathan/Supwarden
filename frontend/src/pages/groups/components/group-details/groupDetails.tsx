@@ -31,8 +31,6 @@ export default function GroupDetails ({lightGroup}: GroupDetailsProps) {
         fetchGroupData();
     }, [lightGroup])
 
-
-    
     if (!lightGroup){
         return <section className="group-details col-8">Aucun groupe sélectionné</section>
     }

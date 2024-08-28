@@ -6,10 +6,13 @@ import { useToast } from "../../context/ToastContext";
 import CreatePasswordTrigger from "./create-password-trigger";
 import axios from "axios";
 import ServiceResponse from "../../model/ServiceResponse";
+import { UserGroupDTO } from "../../model/GroupModels";
 
 interface PasswordProps {
     password: PasswordDto,
-    onDeletePassword: (password: PasswordDto) => void
+    groupId?: string,
+    onDeletePassword: (password: PasswordDto) => void,
+    userGroup?: UserGroupDTO
 }
 
 const config = {
@@ -17,13 +20,12 @@ const config = {
         { Authorization: `Bearer ${localStorage.getItem('token')}` }
 };
 
-export default function Password({ password, onDeletePassword }: PasswordProps) {
+export default function Password({ password, onDeletePassword, groupId, userGroup }: PasswordProps) {
     const [show, setShow] = useState(false);
     const { addToast } = useToast();
 
     const handleShow = () => setShow(true);
     const handleHide = () => setShow(false);
-
 
     function copyToClipboard(element: string, message: string) {
         navigator.clipboard.writeText(element).then(() => {
@@ -47,7 +49,7 @@ export default function Password({ password, onDeletePassword }: PasswordProps) 
                 delay: 3000
             }
         )
-    } 
+    }
 
     return (
         <tr>
@@ -80,20 +82,23 @@ export default function Password({ password, onDeletePassword }: PasswordProps) 
                             <p>Mot de passe</p>
                         </Dropdown.Item>
                         <CreatePasswordTrigger
-                            isEditing={true} 
-                            passwordDto={password} 
-                            show={show} 
-                            header="Modifier un mot de passe" 
-                            onClose={handleHide}>
+                            isEditing={true}
+                            passwordDto={password}
+                            show={show}
+                            groupId={groupId}
+                            header="Modifier un mot de passe"
+                            onClose={handleHide}
+                            userGroup={userGroup}>
                             <Dropdown.Item onClick={handleShow} className="d-flex gap-3">
                                 <PencilFill size={20} /><p>Détails</p>
                             </Dropdown.Item>
                         </CreatePasswordTrigger>
                         <Dropdown.Item
-                            className="d-flex gap-3"
-                            onClick={()=> handleDelete(password)}
+                            className={(userGroup == null || userGroup?.canEdit ? '' : 'disabled') + 
+                                " d-flex gap-3 align-items-center"}
+                            onClick={() => handleDelete(password)}
                         >
-                            <Trash/>
+                            <Trash />
                             Supprimer
                         </Dropdown.Item>
                     </Dropdown.Menu>

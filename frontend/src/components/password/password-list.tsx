@@ -4,15 +4,25 @@ import CreatePasswordTrigger from "./create-password-trigger";
 import Password from "./password";
 import { useEffect, useState } from "react";
 import { Plus } from "react-bootstrap-icons";
+import { UserGroupDTO } from "../../model/GroupModels";
+import axios from "axios";
+import ServiceResponse from "../../model/ServiceResponse";
 
 interface PasswordListProps {
     passwords: PasswordDto[],
     groupId?: string,
 }
 
+const config = {
+    headers:
+        { Authorization: `Bearer ${localStorage.getItem('token')}` }
+};
+
 export default function PasswordList({ passwords, groupId }: PasswordListProps) {
     const [show, setShow] = useState(false);
     const [passwordList, setPasswordList] = useState<PasswordDto[]>(passwords);
+    const [userGroup, setUserGroup] = useState<UserGroupDTO>();
+
 
     useEffect(() => {
         setPasswordList(passwords)
@@ -28,6 +38,17 @@ export default function PasswordList({ passwords, groupId }: PasswordListProps) 
     const onPasswordDelete = (password: PasswordDto) => {
         setPasswordList([...passwordList.filter(value => value.id != password.id)])
     }
+
+    useEffect(() => {
+        const fetchUserGroup = async () => {
+            if(groupId) {
+                const serviceResponse = (await axios.get(`http://localhost:8080/group/${groupId}/user`, config)).data as ServiceResponse;
+                setUserGroup(serviceResponse.data as UserGroupDTO);
+            }
+        }
+
+        fetchUserGroup();
+    }, [])
 
     return (
         <div className="passwords">
@@ -55,15 +76,15 @@ export default function PasswordList({ passwords, groupId }: PasswordListProps) 
                     </tr>
                 </thead>
                 <tbody className="overflow-y-scroll">
-                    {displayPassword(passwordList, onPasswordDelete)}
+                    {displayPassword(passwordList, onPasswordDelete, groupId, userGroup)}
                 </tbody>
             </table>
         </div>
     )
 }
 
-function displayPassword(passwords: PasswordDto[], onPasswordDelete: (password: PasswordDto) => void) {
+function displayPassword(passwords: PasswordDto[], onPasswordDelete: (password: PasswordDto) => void, groupId?: string, userGroup?: UserGroupDTO) {
     return passwords.map((password, index) => (
-        <Password password={password} key={index} onDeletePassword={onPasswordDelete}/>
+        <Password password={password} key={index} onDeletePassword={onPasswordDelete} groupId={groupId} userGroup={userGroup}/>
     ))
 }
