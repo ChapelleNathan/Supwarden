@@ -169,6 +169,32 @@ internal class GroupService(
         return users.Select(user => mapper.Map<UserDto>(user)).ToList();
     }
 
+    public async Task<UserGroupDto> GetUserGroup(string groupId)
+    {
+        var connectedEmail = httpContext.HttpContext?.User.FindFirst(ClaimTypes.Email);
+        if (connectedEmail is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400ConnectedUser);
+            throw new HttpResponseException(400, errorMessage);
+        }
+
+        var connectedUser = await userRepository.FindUserByEmail(connectedEmail.Value);
+        if (connectedUser is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup404UserNotFound);
+            throw new HttpResponseException(404, errorMessage);
+        }
+
+        var userGroup = await userGroupRepository.GetUserGroup(connectedUser.Id.ToString(), groupId);
+        if (userGroup is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup404UserNotInGroup);
+            throw new HttpResponseException(404, errorMessage);
+        }
+
+        return mapper.Map<UserGroupDto>(userGroup);
+    }
+
     private async void VerifyConnection()
     {
         var connectedEmail = httpContext.HttpContext?.User.FindFirst(ClaimTypes.Email);

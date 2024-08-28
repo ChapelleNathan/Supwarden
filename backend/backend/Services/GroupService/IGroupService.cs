@@ -13,4 +13,6 @@ public interface IGroupService
     public Task<GroupDto> GetGroup(string groupId);
 
     public Task<List<UserDto>> GetUsersFromGroup(string groupId);
+
+    public Task<UserGroupDto> GetUserGroup(string groupId);
 }

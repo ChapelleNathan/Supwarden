@@ -33,7 +33,7 @@ public class UserGroupRepository(DataContext context) : IUserGroupRepository
         return await context.UserGroups
             .Where(userGroup => userGroup.User.Id.ToString() == userId &&
                                 userGroup.Group.Id.ToString() == groupId)
-            .Include(userGroup => userGroup!.Group)
+            .Include(userGroup => userGroup.Group)
             .FirstOrDefaultAsync();
     }
 

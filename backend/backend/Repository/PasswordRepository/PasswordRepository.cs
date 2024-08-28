@@ -14,9 +14,14 @@ public class PasswordRepository(DataContext context) : IPasswordRepository
 
     public async Task<List<Password>> GetAllPasswordFromUser(Guid userId, List<Guid>? groupIds = null)
     {
+        //FIXME
+        //De base sensé aller chercher tous les mdp. mêmes ceux des groups. Mais pour l'instant ça pause problème
+        //Dans le front car possibilité de modifier/supprimer un mdp alors que l'utilisateurs n'a pas le droit.
         var passwords = await context.Passwords
-            .Where(password => password.User.Id == userId || 
-                               password.Group != null && groupIds != null && groupIds.Contains(password.Group.Id))
+            .Where(password => password.User.Id == userId && password.Group == null
+                               //|| 
+                               //password.Group != null && groupIds != null && groupIds.Contains(password.Group.Id)
+                               )
             .Include(password => password.Group)
             .OrderByDescending(password => password.Id)
             .ToListAsync();

@@ -101,4 +101,22 @@ public class GroupController(IGroupService groupService)
         
         return new HttpResponseHandler().Handle(serviceResponse);
     }
+
+    [HttpGet("{groupId}/user")]
+    public async Task<ActionResult<ServiceResponse<UserGroupDto>>> GetUserGroup(string groupId)
+    {
+        var serviceResponse = new ServiceResponse<UserGroupDto>();
+
+        try
+        {
+            serviceResponse.Data = await groupService.GetUserGroup(groupId);
+        }
+        catch (HttpResponseException e)
+        {
+            serviceResponse.Message = e.Message;
+            serviceResponse.HttpCode = e.StatusCode;
+        }
+        
+        return new HttpResponseHandler().Handle(serviceResponse);
+    }
 }

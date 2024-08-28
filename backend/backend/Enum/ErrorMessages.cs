@@ -51,6 +51,8 @@ public enum ErrorMessages
     Sup400NotInGroup,
     [Description("Impossible d'ajouter cet utilisateur au groupe. Il est déjà dedans")]
     Sup400AlreadyInGroup,
+    [Description("L'utilisateur ne fait pas partit du groupe")]
+    Sup404UserNotInGroup,
     
     //Group
     [Description("Impossible de trouver le groupe, veuillez réessayer avec un autre")]
