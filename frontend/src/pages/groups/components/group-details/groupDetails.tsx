@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { LightGroupDTO } from "../../../../model/GroupModels"
+import { LightGroupDTO, UserGroupDTO } from "../../../../model/GroupModels"
 import axios from "axios";
 import ServiceResponse from "../../../../model/ServiceResponse";
 import PasswordList from "../../../../components/password/password-list";
@@ -10,6 +10,7 @@ import GroupParameter from "./groupParameter";
 
 interface GroupDetailsProps {
     lightGroup?: LightGroupDTO
+    userGroup?: UserGroupDTO
 }
 
 const config = {
@@ -18,9 +19,9 @@ const config = {
     }
 }
 
-export default function GroupDetails({ lightGroup }: GroupDetailsProps) {
+export default function GroupDetails({ lightGroup, userGroup }: GroupDetailsProps) {
     const [passwords, setPasswords] = useState<PasswordDto[]>([]);
-
+    
     useEffect(() => {
         const fetchGroupData = async () => {
             if (lightGroup) {
@@ -36,12 +37,13 @@ export default function GroupDetails({ lightGroup }: GroupDetailsProps) {
     if (!lightGroup) {
         return <section className="group-details col-8">Aucun groupe sélectionné</section>
     }
+    
     return (
         <section className="group-details col-8 border rounded p-3">
             <div className="group-list-header d-flex justify-content-between mb-3">
                 <h1 className="text-capitalize">{lightGroup.name}</h1>
                 <div className="buttons d-flex gap-1">
-                    <CustomModal buttonText="Paramètre" header="Paramètre du groupe">
+                    <CustomModal buttonText="Paramètre" size="lg" header="Paramètre du groupe">
                         <GroupParameter lightGroup={lightGroup}/>
                     </CustomModal>
                     <CustomModal buttonText="Ajouter un ami" header="Vos Amis">
@@ -49,7 +51,7 @@ export default function GroupDetails({ lightGroup }: GroupDetailsProps) {
                     </CustomModal>
                 </div>
             </div>
-            <PasswordList groupId={lightGroup.id} passwords={passwords} />
+            <PasswordList userGroup={userGroup} groupId={lightGroup.id} passwords={passwords} />
         </section>
     )
 }

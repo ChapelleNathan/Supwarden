@@ -40,8 +40,10 @@ export default function PasswordForm({ passwordDto, isEditing, groupId, onPasswo
     const [showAlert, setShowAlert] = useState<Alert>({ show: false, message: '' });
     const [errors, setErrors] = useState<FieldError[]>([]);
     const { addToast } = useToast();
-    const canEdit: boolean = userGroup == null || userGroup.canEdit;
-
+    const canEdit: boolean = userGroup?.canEdit || userGroup == null;
+    
+    console.log(userGroup);
+    
 
     const handlePasswordChange = (password: string) => {
         setPassword(password);
@@ -146,6 +148,7 @@ export default function PasswordForm({ passwordDto, isEditing, groupId, onPasswo
     const displaySaveOrModify = (): ReactNode => {
 
 
+        console.log(canEdit);
         if (isEditing) {
             return (
                 <Button type="submit" className={(canEdit ? '' : 'disabled') + ' col'}>
@@ -153,9 +156,9 @@ export default function PasswordForm({ passwordDto, isEditing, groupId, onPasswo
                 </Button>
             );
         }
-
+        
         return (
-            <Button type="submit" className={((canEdit ? '' : 'disabled') + ' col')}>
+            <Button type="submit" className={(canEdit ? '' : 'disabled') + ' col'}>
                 <Floppy /> Créer
             </Button>
         )

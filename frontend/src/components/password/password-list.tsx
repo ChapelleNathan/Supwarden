@@ -11,6 +11,7 @@ import ServiceResponse from "../../model/ServiceResponse";
 interface PasswordListProps {
     passwords: PasswordDto[],
     groupId?: string,
+    userGroup?: UserGroupDTO
 }
 
 const config = {
@@ -18,11 +19,9 @@ const config = {
         { Authorization: `Bearer ${localStorage.getItem('token')}` }
 };
 
-export default function PasswordList({ passwords, groupId }: PasswordListProps) {
+export default function PasswordList({ passwords, groupId, userGroup }: PasswordListProps) {
     const [show, setShow] = useState(false);
     const [passwordList, setPasswordList] = useState<PasswordDto[]>(passwords);
-    const [userGroup, setUserGroup] = useState<UserGroupDTO>();
-
 
     useEffect(() => {
         setPasswordList(passwords)
@@ -39,17 +38,6 @@ export default function PasswordList({ passwords, groupId }: PasswordListProps) 
         setPasswordList([...passwordList.filter(value => value.id != password.id)])
     }
 
-    useEffect(() => {
-        const fetchUserGroup = async () => {
-            if(groupId) {
-                const serviceResponse = (await axios.get(`http://localhost:8080/group/${groupId}/user`, config)).data as ServiceResponse;
-                setUserGroup(serviceResponse.data as UserGroupDTO);
-            }
-        }
-
-        fetchUserGroup();
-    }, [])
-
     return (
         <div className="passwords">
             <div className="d-flex justify-content-between">
@@ -59,6 +47,7 @@ export default function PasswordList({ passwords, groupId }: PasswordListProps) 
                     show={show}
                     onClose={onClose}
                     onPasswordCreate={onPasswordCreate}
+                    userGroup={userGroup}
                     >
                     <Button variant="outline-primary" size="sm" className="d-flex align-items-center" onClick={onShow}>
                         <Plus size={20} />
@@ -84,6 +73,8 @@ export default function PasswordList({ passwords, groupId }: PasswordListProps) 
 }
 
 function displayPassword(passwords: PasswordDto[], onPasswordDelete: (password: PasswordDto) => void, groupId?: string, userGroup?: UserGroupDTO) {
+    console.log(userGroup);
+    
     return passwords.map((password, index) => (
         <Password password={password} key={index} onDeletePassword={onPasswordDelete} groupId={groupId} userGroup={userGroup}/>
     ))
