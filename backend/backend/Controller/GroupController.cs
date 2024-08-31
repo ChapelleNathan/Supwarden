@@ -85,9 +85,9 @@ public class GroupController(IGroupService groupService)
     }
 
     [HttpGet("{groupId}/users")]
-    public async Task<ActionResult<ServiceResponse<List<UserDto>>>> GetUsersFromGroup(string groupId)
+    public async Task<ActionResult<ServiceResponse<List<UserGroupDto>>>> GetUsersFromGroup(string groupId)
     {
-        var serviceResponse = new ServiceResponse<List<UserDto>>();
+        var serviceResponse = new ServiceResponse<List<UserGroupDto>>();
 
         try
         {
@@ -110,6 +110,42 @@ public class GroupController(IGroupService groupService)
         try
         {
             serviceResponse.Data = await groupService.GetUserGroup(groupId);
+        }
+        catch (HttpResponseException e)
+        {
+            serviceResponse.Message = e.Message;
+            serviceResponse.HttpCode = e.StatusCode;
+        }
+        
+        return new HttpResponseHandler().Handle(serviceResponse);
+    }
+
+    [HttpPut("{groupId}/changeEditPerm")]
+    public async Task<ActionResult<ServiceResponse<UserGroupDto>>> ChangeEditPerm(UserGroupDto userGroupDto)
+    {
+        var serviceResponse = new ServiceResponse<UserGroupDto>();
+
+        try
+        {
+            serviceResponse.Data = await groupService.ChangeEditPerm(userGroupDto);
+        }
+        catch (HttpResponseException e)
+        {
+            serviceResponse.Message = e.Message;
+            serviceResponse.HttpCode = e.StatusCode;
+        }
+        
+        return new HttpResponseHandler().Handle(serviceResponse);
+    }
+
+    [HttpPut("{group}/changeCreatorPerm")]
+    public async Task<ActionResult<ServiceResponse<UserGroupDto>>> ChangeCreatorPerm(UserGroupDto userGroupDto)
+    {
+        var serviceResponse = new ServiceResponse<UserGroupDto>();
+
+        try
+        {
+            serviceResponse.Data = await groupService.ChangeCreatorPerm(userGroupDto);
         }
         catch (HttpResponseException e)
         {

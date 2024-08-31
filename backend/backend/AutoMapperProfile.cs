@@ -12,6 +12,8 @@ public class AutoMapperProfile : Profile
         CreateMap<CreateUserDto, User>();
         CreateMap<User, ConnectedUserDto>();
         CreateMap<User, UserDto>();
+        CreateMap<UserDto, User>()
+            .ForMember(dest => dest.Password, opt => opt.Ignore());
 
         //PASSWORD
         CreateMap<CreatePasswordDto, Password>();
@@ -27,5 +29,8 @@ public class AutoMapperProfile : Profile
 
         //USER_GROUP
         CreateMap<UserGroup, UserGroupDto>();
+        CreateMap<UserGroupDto, UserGroup>()
+            .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User))
+            .ForMember(dest => dest.Group, opt => opt.Ignore());
     }
 }

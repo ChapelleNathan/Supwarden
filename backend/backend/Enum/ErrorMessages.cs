@@ -40,19 +40,25 @@ public enum ErrorMessages
     [Description("Vous êtes déjà amis")]
     Sup400AlreadyFriend,
     [Description("Vous n'êtes pas amis")]
-    Sup404NotFriend,
-    [Description("Vous n'êtes pas amis")]
     Sup404UserContactNotFound,
     
     //UserGroup
     [Description("Erreur lors de l'ajout de l'utilisateur dans le group, veuillez réessayer ultérieurement")]
     Sup500UserGroupCreationError,
-    [Description("Impossible d'ajouter cet utilisateur au groupe. Vous n'avez pas la permission d'ajouter quelqu'un si vous ne faites pas partie du groupe")]
+    [Description("Erreur, vous ne faites pas partie du groupe.")]
     Sup400NotInGroup,
     [Description("Impossible d'ajouter cet utilisateur au groupe. Il est déjà dedans")]
     Sup400AlreadyInGroup,
     [Description("L'utilisateur ne fait pas partit du groupe")]
     Sup404UserNotInGroup,
+    [Description("Vous n'avez pas les pouvoirs nécessaire pour ceci")]
+    Sup400UserGroupUnauthorized,
+    [Description("Vous ne pouvez pas modifier vos permission, demandez au créateur du groupe")]
+    Sup400ModifPermEditNotCreator,
+    [Description("Vous êtes le créateur du groupe, vous pourrez toujours modifier. Veuillez désigner un nouveau créateur de groupe si vous voulez retirer vos pouvoirs")]
+    Sup400ModifPermEditCreator,
+    [Description("Vous êtes déjà le créateur du groupe, vous ne pouvez pas vous choisir vous même")]
+    Sup400ModifPermCreatorIsCreator,
     
     //Group
     [Description("Impossible de trouver le groupe, veuillez réessayer avec un autre")]
