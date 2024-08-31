@@ -12,7 +12,13 @@ public interface IGroupService
 
     public Task<GroupDto> GetGroup(string groupId);
 
-    public Task<List<UserDto>> GetUsersFromGroup(string groupId);
+    public Task<List<UserGroupDto>> GetUsersFromGroup(string groupId);
 
     public Task<UserGroupDto> GetUserGroup(string groupId);
+
+    public Task<UserGroupDto> ChangeEditPerm(UserGroupDto userGroupDto);
+
+    public Task<UserGroupDto> ChangeCreatorPerm(UserGroupDto userGroupDto);
+
+    public Task<LightGroupDto> UpdateGroupDto(LightGroupDto groupDto);
 }

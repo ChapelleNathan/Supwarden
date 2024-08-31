@@ -141,7 +141,7 @@ internal class GroupService(
 
     public async Task<GroupDto> GetGroup(string groupId)
     {
-        VerifyConnection();
+        await GetConnectedUser();
 
         var group = await groupRepository.GetGroupById(groupId);
         if(group is null)
@@ -153,20 +153,11 @@ internal class GroupService(
         return mapper.Map<GroupDto>(group);
     }
 
-    public async Task<List<UserDto>> GetUsersFromGroup(string groupId)
+    public async Task<List<UserGroupDto>> GetUsersFromGroup(string groupId)
     {
-        var connectedEmail = httpContext.HttpContext?.User.FindFirst(ClaimTypes.Email);
-        if (connectedEmail is null)
-        {
-            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400ConnectedUser);
-            throw new HttpResponseException(400, errorMessage);
-        }
         var userGroups = await userGroupRepository.GetAllUsersFromGroup(groupId);
-        var users = userGroups.Select(userGroup => userGroup.User)
-            .Where(userGroup => userGroup.Email != connectedEmail.Value)
-            .ToList();
         
-        return users.Select(user => mapper.Map<UserDto>(user)).ToList();
+        return userGroups.Select(user => mapper.Map<UserGroupDto>(user)).ToList();
     }
 
     public async Task<UserGroupDto> GetUserGroup(string groupId)
@@ -195,7 +186,92 @@ internal class GroupService(
         return mapper.Map<UserGroupDto>(userGroup);
     }
 
-    private async void VerifyConnection()
+    public async Task<UserGroupDto> ChangeEditPerm(UserGroupDto userGroupDto)
+    {
+        var connectedUser = await GetConnectedUser();
+
+        var connectedUserGroup = await UserPermVerification(connectedUser, userGroupDto);
+
+        if (connectedUserGroup.User.Id == userGroupDto.User.Id)
+        {
+            switch (userGroupDto.IsCreator)
+            {
+                case false:
+                    var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400ModifPermEditNotCreator);
+                    throw new HttpResponseException(400, errorMessage);
+                case true:
+                    errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400ModifPermEditCreator);
+                    throw new HttpResponseException(400, errorMessage);
+            }
+            
+        }
+
+        var userGroup = await userGroupRepository.GetUserGroup(userGroupDto.User.Id.ToString(), userGroupDto.Group.Id);
+        userGroup!.CanEdit = !userGroup.CanEdit;
+        var updatedUserGroup = userGroupRepository.UpdateGroup(userGroup);
+        
+        userRepository.Save();
+        return mapper.Map<UserGroupDto>(updatedUserGroup);
+    }
+
+    public async Task<UserGroupDto> ChangeCreatorPerm(UserGroupDto userGroupDto)
+    {
+        var connectedUser = await GetConnectedUser();
+        
+        var connectedUserGroup = await UserPermVerification(connectedUser, userGroupDto);
+
+        if (userGroupDto.User.Id == connectedUser.Id && userGroupDto.IsCreator)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400ModifPermCreatorIsCreator);
+            throw new HttpResponseException(400, errorMessage);
+        }
+
+        var userGroup = await userGroupRepository.GetUserGroup(userGroupDto.User.Id.ToString(), userGroupDto.Group.Id);
+        userGroup!.IsCreator = true;
+        userGroup.CanEdit = true;
+        var updatedUserGroup = userGroupRepository.UpdateGroup(userGroup);
+        
+        
+        connectedUserGroup.IsCreator = false;
+        connectedUserGroup.CanEdit = false;
+        userGroupRepository.UpdateGroup(connectedUserGroup);
+
+        userGroupRepository.Save();
+        return mapper.Map<UserGroupDto>(updatedUserGroup);
+    }
+
+    public async Task<LightGroupDto> UpdateGroupDto(LightGroupDto groupDto)
+    {
+        var group = await groupRepository.GetGroupById(groupDto.Id);
+        if (group is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup404GroupNotFound);
+            throw new HttpResponseException(404, errorMessage);
+        }
+        
+        group.Name = groupDto.Name;
+        return mapper.Map<LightGroupDto>(groupRepository.UpdateGroup(group));
+    }
+
+    private async Task<UserGroup> UserPermVerification(User connectedUser, UserGroupDto userGroupDto)
+    {
+        var connectedUserGroup = await userGroupRepository.GetUserGroup(connectedUser.Id.ToString(), userGroupDto.Group.Id);
+        if (connectedUserGroup is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400NotInGroup);
+            throw new HttpResponseException(400, errorMessage);
+        }
+
+        if (!connectedUserGroup.IsCreator)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400UserGroupUnauthorized);
+            throw new HttpResponseException(400, errorMessage);
+        }
+
+        return connectedUserGroup;
+    }
+    
+    private async Task<User> GetConnectedUser()
     {
         var connectedEmail = httpContext.HttpContext?.User.FindFirst(ClaimTypes.Email);
         if (connectedEmail is null)
@@ -210,6 +286,8 @@ internal class GroupService(
             var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup404UserNotFound);
             throw new HttpResponseException(404, errorMessage);
         }
-        
+
+        return connectedUser;
     }
+    
 }

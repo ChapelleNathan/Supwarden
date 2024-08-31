@@ -1,3 +1,4 @@
+using backend.DTO;
 using backend.Models;
 
 namespace backend.Repository.UserGroupRepository;
@@ -11,4 +12,6 @@ public interface IUserGroupRepository : IRepository
     public Task<UserGroup?> GetUserGroup(string userId, string groupId);
 
     public Task<List<UserGroup>> GetAllUsersFromGroup(string groupId);
+
+    public UserGroup UpdateGroup(UserGroup updatedUserGroup);
 }

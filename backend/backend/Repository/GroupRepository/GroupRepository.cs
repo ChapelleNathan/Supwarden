@@ -21,4 +21,11 @@ public class GroupRepository(DataContext context) : IGroupRepository
     {
         return await context.Groups.FirstOrDefaultAsync(group => group.Id.ToString() == id);
     }
+
+    public Group UpdateGroup(Group group)
+    {
+        var updatedGroup = context.Groups.Update(group);
+        context.SaveChanges();
+        return updatedGroup.Entity;
+    }
 }

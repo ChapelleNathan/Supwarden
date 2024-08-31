@@ -1,4 +1,5 @@
 using backend.Context;
+using backend.DTO;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -34,6 +35,7 @@ public class UserGroupRepository(DataContext context) : IUserGroupRepository
             .Where(userGroup => userGroup.User.Id.ToString() == userId &&
                                 userGroup.Group.Id.ToString() == groupId)
             .Include(userGroup => userGroup.Group)
+            .Include(userGroup => userGroup.User)
             .FirstOrDefaultAsync();
     }
 
@@ -42,7 +44,14 @@ public class UserGroupRepository(DataContext context) : IUserGroupRepository
         var users = await context.UserGroups
             .Where(userGroup => userGroup.Group.Id.ToString() == groupId)
             .Include(userGroup => userGroup.User)
+            .Include(userGroup => userGroup.Group)
             .ToListAsync();
         return users!;
+    }
+
+    public UserGroup UpdateGroup(UserGroup updatedUserGroup)
+    {
+         var userGroup = context.UserGroups.Update(updatedUserGroup);
+         return userGroup.Entity;
     }
 }

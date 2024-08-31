@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace backend.Models;
 
 [Table("User")]
-public class User(string firstname, string lastname, string email, string password, string phoneNumber)
+public class User
 {
     [Key]
     public Guid Id { get; init; }
@@ -12,28 +12,28 @@ public class User(string firstname, string lastname, string email, string passwo
     [Column("firstname")]
     [Required]
     [MaxLength(100)]
-    public string Firstname { get; set; } = firstname;
+    public required string Firstname { get; set; }
 
     [Column("lastname")]
     [Required]
     [MaxLength(100)]
-    public string Lastname { get; set; } = lastname;
+    public required string Lastname { get; set; }
 
     [Column ("email")]
     [Required]
     [MaxLength(100)]
-    public string Email { get; set; } = email;
+    public required string Email { get; set; }
 
     [Column ("password")]
     [Required]
     [MaxLength(100)]
-    public string Password { get; set; } = password;
+    public required string Password { get; set; }
 
     [Column("phone_number")]
     [Required]
     [Length(10, 10)]
     [MaxLength(10)]
-    public string PhoneNumber { get; set; } = phoneNumber;
+    public required string PhoneNumber { get; set; }
 
     [Column("code_pin")]
     [MaxLength(100)]
