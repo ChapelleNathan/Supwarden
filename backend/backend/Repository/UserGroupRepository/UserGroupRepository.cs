@@ -49,15 +49,9 @@ public class UserGroupRepository(DataContext context) : IUserGroupRepository
         return users!;
     }
 
-    public UserGroup ChangeEditPerm(UserGroup updatedUserGroup)
+    public UserGroup UpdateGroup(UserGroup updatedUserGroup)
     {
          var userGroup = context.UserGroups.Update(updatedUserGroup);
          return userGroup.Entity;
-    }
-
-    public UserGroup ChangeCreatorPerm(UserGroup updatedUserGroup)
-    {
-        var userGroup = context.UserGroups.Update(updatedUserGroup);
-        return userGroup.Entity;
     }
 }

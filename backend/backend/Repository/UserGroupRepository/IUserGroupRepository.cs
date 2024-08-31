@@ -13,7 +13,5 @@ public interface IUserGroupRepository : IRepository
 
     public Task<List<UserGroup>> GetAllUsersFromGroup(string groupId);
 
-    public UserGroup ChangeEditPerm(UserGroup updatedUserGroup);
-
-    public UserGroup ChangeCreatorPerm(UserGroup updatedUserGroup);
+    public UserGroup UpdateGroup(UserGroup updatedUserGroup);
 }

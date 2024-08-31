@@ -208,7 +208,7 @@ internal class GroupService(
 
         var userGroup = await userGroupRepository.GetUserGroup(userGroupDto.User.Id.ToString(), userGroupDto.Group.Id);
         userGroup!.CanEdit = !userGroup.CanEdit;
-        var updatedUserGroup = userGroupRepository.ChangeEditPerm(userGroup);
+        var updatedUserGroup = userGroupRepository.UpdateGroup(userGroup);
         
         userRepository.Save();
         return mapper.Map<UserGroupDto>(updatedUserGroup);
@@ -229,15 +229,28 @@ internal class GroupService(
         var userGroup = await userGroupRepository.GetUserGroup(userGroupDto.User.Id.ToString(), userGroupDto.Group.Id);
         userGroup!.IsCreator = true;
         userGroup.CanEdit = true;
-        var updatedUserGroup = userGroupRepository.ChangeCreatorPerm(userGroup);
+        var updatedUserGroup = userGroupRepository.UpdateGroup(userGroup);
         
         
         connectedUserGroup.IsCreator = false;
         connectedUserGroup.CanEdit = false;
-        userGroupRepository.ChangeCreatorPerm(connectedUserGroup);
+        userGroupRepository.UpdateGroup(connectedUserGroup);
 
         userGroupRepository.Save();
         return mapper.Map<UserGroupDto>(updatedUserGroup);
+    }
+
+    public async Task<LightGroupDto> UpdateGroupDto(LightGroupDto groupDto)
+    {
+        var group = await groupRepository.GetGroupById(groupDto.Id);
+        if (group is null)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup404GroupNotFound);
+            throw new HttpResponseException(404, errorMessage);
+        }
+        
+        group.Name = groupDto.Name;
+        return mapper.Map<LightGroupDto>(groupRepository.UpdateGroup(group));
     }
 
     private async Task<UserGroup> UserPermVerification(User connectedUser, UserGroupDto userGroupDto)

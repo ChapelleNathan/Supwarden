@@ -19,4 +19,6 @@ public interface IGroupService
     public Task<UserGroupDto> ChangeEditPerm(UserGroupDto userGroupDto);
 
     public Task<UserGroupDto> ChangeCreatorPerm(UserGroupDto userGroupDto);
+
+    public Task<LightGroupDto> UpdateGroupDto(LightGroupDto groupDto);
 }

@@ -155,4 +155,22 @@ public class GroupController(IGroupService groupService)
         
         return new HttpResponseHandler().Handle(serviceResponse);
     }
+
+    [HttpPut()]
+    public async Task<ActionResult<ServiceResponse<LightGroupDto>>> UpdateGroup(LightGroupDto groupDto)
+    {
+        var serviceResponse = new ServiceResponse<LightGroupDto>();
+
+        try
+        {
+            serviceResponse.Data = await groupService.UpdateGroupDto(groupDto);
+        }
+        catch (HttpResponseException e)
+        {
+            serviceResponse.Message = e.Message;
+            serviceResponse.HttpCode = e.StatusCode;
+        }
+        
+        return new HttpResponseHandler().Handle(serviceResponse);
+    }
 }
