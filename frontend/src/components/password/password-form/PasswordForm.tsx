@@ -42,9 +42,6 @@ export default function PasswordForm({ passwordDto, isEditing, groupId, onPasswo
     const { addToast } = useToast();
     const canEdit: boolean = userGroup?.canEdit || userGroup == null;
     
-    console.log(userGroup);
-    
-
     const handlePasswordChange = (password: string) => {
         setPassword(password);
     }
@@ -146,9 +143,6 @@ export default function PasswordForm({ passwordDto, isEditing, groupId, onPasswo
     }
 
     const displaySaveOrModify = (): ReactNode => {
-
-
-        console.log(canEdit);
         if (isEditing) {
             return (
                 <Button type="submit" className={(canEdit ? '' : 'disabled') + ' col'}>

@@ -5,19 +5,12 @@ import Password from "./password";
 import { useEffect, useState } from "react";
 import { Plus } from "react-bootstrap-icons";
 import { UserGroupDTO } from "../../model/GroupModels";
-import axios from "axios";
-import ServiceResponse from "../../model/ServiceResponse";
 
 interface PasswordListProps {
     passwords: PasswordDto[],
     groupId?: string,
     userGroup?: UserGroupDTO
 }
-
-const config = {
-    headers:
-        { Authorization: `Bearer ${localStorage.getItem('token')}` }
-};
 
 export default function PasswordList({ passwords, groupId, userGroup }: PasswordListProps) {
     const [show, setShow] = useState(false);
@@ -73,8 +66,6 @@ export default function PasswordList({ passwords, groupId, userGroup }: Password
 }
 
 function displayPassword(passwords: PasswordDto[], onPasswordDelete: (password: PasswordDto) => void, groupId?: string, userGroup?: UserGroupDTO) {
-    console.log(userGroup);
-    
     return passwords.map((password, index) => (
         <Password password={password} key={index} onDeletePassword={onPasswordDelete} groupId={groupId} userGroup={userGroup}/>
     ))
