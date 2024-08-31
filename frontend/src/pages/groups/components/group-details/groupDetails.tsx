@@ -21,7 +21,7 @@ const config = {
 
 export default function GroupDetails({ lightGroup, userGroup }: GroupDetailsProps) {
     const [passwords, setPasswords] = useState<PasswordDto[]>([]);
-    
+
     useEffect(() => {
         const fetchGroupData = async () => {
             if (lightGroup) {
@@ -30,7 +30,6 @@ export default function GroupDetails({ lightGroup, userGroup }: GroupDetailsProp
                 setPasswords(serviceResponse.data as PasswordDto[])
             }
         }
-
         fetchGroupData();
     }, [lightGroup])
 
@@ -44,7 +43,7 @@ export default function GroupDetails({ lightGroup, userGroup }: GroupDetailsProp
                 <h1 className="text-capitalize">{lightGroup.name}</h1>
                 <div className="buttons d-flex gap-1">
                     <CustomModal buttonText="Paramètre" size="lg" header="Paramètre du groupe">
-                        <GroupParameter lightGroup={lightGroup}/>
+                        <GroupParameter lightGroup={lightGroup} />
                     </CustomModal>
                     <CustomModal buttonText="Ajouter un ami" header="Vos Amis">
                         <FriendListModal lightGroup={lightGroup} />

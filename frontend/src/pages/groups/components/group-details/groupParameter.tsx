@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { LightGroupDTO, UserGroupDTO } from "../../../../model/GroupModels";
 import axios from "axios";
 import ServiceResponse from "../../../../model/ServiceResponse";
-import { FormCheck, Table } from "react-bootstrap";
+import { Button, FormCheck, FormControl, FormGroup, FormLabel, InputGroup, Table } from "react-bootstrap";
 import { useToast } from "../../../../context/ToastContext";
 
 interface GroupParameterProps {
-    lightGroup: LightGroupDTO
+    lightGroup: LightGroupDTO,
 }
 
 const config = {
@@ -17,6 +17,7 @@ const config = {
 
 export default function GroupParameter({ lightGroup }: GroupParameterProps) {
     const [userGroups, setUserGroups] = useState<UserGroupDTO[]>([]);
+    const [groupName, setGroupName] = useState('');
     const { addToast } = useToast();
 
     const handleCanEditChange = async (index: number, userGroup: UserGroupDTO) => {
@@ -117,9 +118,19 @@ export default function GroupParameter({ lightGroup }: GroupParameterProps) {
         ));
     }
 
+    const modifyGroupName = async (groupName: string) => {
+        lightGroup.name = groupName;
+        await (axios.put(`http://localhost:8080/group`, lightGroup, config));
+        addToast('Modification du nom de groupe réussi !', {
+            bg: 'success',
+            autohide: true,
+            delay: 3000
+        })
+    }
+
     return (
         <div className="group-details p-3">
-            <Table>
+            <Table className="mb-5">
                 <thead>
                     <tr>
                         <td>Email</td>
@@ -132,6 +143,13 @@ export default function GroupParameter({ lightGroup }: GroupParameterProps) {
                     {displayUsers()}
                 </tbody>
             </Table>
+            <FormGroup>
+                <FormLabel>Modifier le nom du groupe</FormLabel>
+                <InputGroup>
+                    <FormControl value={groupName} placeholder={lightGroup.name} onChange={(e) => setGroupName(e.target.value)} type="text"/>
+                        <Button onClick={() => modifyGroupName(groupName)}>Modifier</Button>
+                </InputGroup>
+            </FormGroup>
         </div>
     )
 }
