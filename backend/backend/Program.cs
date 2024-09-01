@@ -1,6 +1,8 @@
 using System.Text;
 using backend.Context;
 using backend.Helper;
+using backend.Hubs;
+using backend.Hubs;
 using backend.Repository.GroupRepository;
 using backend.Repository.PasswordRepository;
 using backend.Repository.UserContactRepository;
@@ -79,6 +81,9 @@ builder.Services.AddScoped<IGroupService, GroupService>();
 //UserGroup
 builder.Services.AddScoped<IUserGroupRepository, UserGroupRepository>();
 
+//Message
+builder.Services.AddSingleton<SharedDb>();
+
 builder.Services.AddScoped<AuthHelper>();
 
 
@@ -92,6 +97,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("localhost");
+app.MapHub<ChatHub>("/api/chat");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();

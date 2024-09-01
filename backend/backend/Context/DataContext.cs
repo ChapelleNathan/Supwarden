@@ -13,6 +13,7 @@ public class DataContext : DbContext
     public DbSet<UserContact> UserContacts => Set<UserContact>();
     public DbSet<Group> Groups => Set<Group>();
     public DbSet<UserGroup> UserGroups => Set<UserGroup>();
+    public DbSet<Message> Messages => Set<Message>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
