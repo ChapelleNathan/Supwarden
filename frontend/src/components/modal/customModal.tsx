@@ -9,9 +9,10 @@ interface ModalProps {
     size?: 'sm' | 'lg' | 'xl',
     buttonText: string,
     isLink?: boolean
+    buttonSize?: 'btn-lg' | 'btn-sm'
 }
 
-export default function CustomModal({ children, header, size, buttonText, isLink = false }: ModalProps) {
+export default function CustomModal({ children, header, size, buttonText, isLink = false, buttonSize }: ModalProps) {
     const [show, setShow] = useState(false);
 
     const handleShow = () => setShow(true);
@@ -27,7 +28,7 @@ export default function CustomModal({ children, header, size, buttonText, isLink
         }
 
         return (
-            <Button onClick={handleShow}>
+            <Button onClick={handleShow} className={buttonSize}>
                 {buttonText}
             </Button>
         )
