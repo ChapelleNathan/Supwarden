@@ -17,6 +17,8 @@ public enum ErrorMessages
     //CONNECTION
     [Description("Mot de passe ou Email incorrect")]
     Sup400ConnectionError,
+    [Description("Un compte créer avec la création de compte de Supwarden, veuillez vous connecter avec l'email et le mot de passe.")]
+    Sup400GoogleConnectionError,
     
     //INSCRIPTION
     [Description("Email n'est pas valide")]

@@ -49,6 +49,36 @@ public class AuthService(IUserRepository userRepository, IMapper mapper, AuthHel
         return userDto;
     }
 
+    public async Task<ConnectedUserDto> LoginWithGoogle(GoogleUserDto userDto)
+    {
+        var user = await userRepository.FindUserByEmail(userDto.Email);
+
+        
+        
+        if (user is null)
+        {
+            user = await userRepository.CreateUser(new User
+            {
+                Email = userDto.Email,
+                Firstname = userDto.Firstname,
+                Lastname = userDto.Lastname,
+                IdentifiedWithGoogle = true,
+            });
+            userRepository.Save();
+        }
+
+        if (!user.IdentifiedWithGoogle)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400GoogleConnectionError);
+            throw new HttpResponseException(400, errorMessage);
+        } 
+        
+        var connectedUserDto = mapper.Map<ConnectedUserDto>(user);
+        connectedUserDto.Token = authHelper.GenerateToken(user);
+        
+        return connectedUserDto;
+    }
+
     private void IsUserCorrect(User user)
     {
         if (!Regex.Match(user.Email, "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$").Success)

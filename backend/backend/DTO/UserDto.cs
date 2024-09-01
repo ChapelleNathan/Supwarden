@@ -8,6 +8,7 @@ public class UserDto
     public required string Lastname { get; set; }
     public required string Email { get; set; }
     public required string PhoneNumber { get; set; }
+    public required bool IdentifiedWithGoogle { get; set; }
 }
 
 public class ConnectedUserDto : UserDto
@@ -28,5 +29,12 @@ public class CreateUserDto
     public required string Email { get; set; }
     public required string PhoneNumber { get; set; }
     public required string Password { get; set; }
+}
+
+public class GoogleUserDto
+{
+    public required string Email { get; set; }
+    public string Lastname { get; set; } = string.Empty;
+    public string Firstname { get; set; } = string.Empty;
 }
 

@@ -6,7 +6,7 @@ namespace backend.Repository.UserRepository;
 
 public class UserRepository(DataContext context) : IUserRepository
 {
-    public async Task<User?> CreateUser(User user)
+    public async Task<User> CreateUser(User user)
     {
         var  newUser = await context.Users.AddAsync(user);
         return newUser.Entity;

@@ -13,4 +13,6 @@ public interface IAuthService
 
     public Task<UserDto> Signin(CreateUserDto userDto);
     public Task<ConnectedUserDto> Login(AuthUserDto authUserDto);
+
+    public Task<ConnectedUserDto> LoginWithGoogle(GoogleUserDto userDto);
 }
