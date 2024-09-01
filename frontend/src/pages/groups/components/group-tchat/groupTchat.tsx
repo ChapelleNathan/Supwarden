@@ -5,8 +5,10 @@ import ServiceResponse from "../../../../model/ServiceResponse";
 import { CreateMessageDto, MessageDto } from "../../../../model/MessageModels";
 import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import { Form } from "react-router-dom";
-import { Button, FormControl } from "react-bootstrap";
+import { Button, FormControl, InputGroup } from "react-bootstrap";
 import { useToast } from "../../../../context/ToastContext";
+import { Send } from "react-bootstrap-icons";
+import './groupTchat.scss';
 
 interface GroupTchatProps {
     selectedGroup: LightGroupDTO
@@ -26,7 +28,7 @@ export default function GroupTchat({ selectedGroup }: GroupTchatProps) {
     const hasInitilized = useRef(false);
 
     useEffect(() => {
-        if(hasInitilized.current) return;
+        if (hasInitilized.current) return;
 
         hasInitilized.current = true;
 
@@ -75,10 +77,10 @@ export default function GroupTchat({ selectedGroup }: GroupTchatProps) {
         }
 
         return () => {
-            if(connection) {
+            if (connection) {
                 connection.stop().then(() => {
                     console.log('connection stopped');
-                }).catch (err => {
+                }).catch(err => {
                     console.error(err);
                 })
             }
@@ -120,7 +122,14 @@ export default function GroupTchat({ selectedGroup }: GroupTchatProps) {
 
     const displayMessages = (): ReactNode => {
         return messages.map(message => (
-            <div key={message.id} className="message">
+            <div
+                key={message.id}
+                className={
+                    (message.username === localStorage.getItem('email') ? 'bg-primary rounded-top rounded-start color-primary text-light align-self-end' : ' rounded-top rounded-end')
+                    + ' message border py-1 px-2'
+                }
+            >
+                <p className="username">{message.username === localStorage.getItem('email') ? 'Vous' : message.username}</p>
                 <p>{message.text}</p>
             </div>
         ))
@@ -133,14 +142,16 @@ export default function GroupTchat({ selectedGroup }: GroupTchatProps) {
     }, [messages])
 
     return (
-        <div className="chat">
-            <div className="messages">
+        <div className="chat d-flex flex-column flex-fill overflow-hidden">
+            <div className="messages d-flex flex-column gap-3 flex-fill overflow-y-scroll">
                 {displayMessages()}
                 <div ref={messageEndRef}></div>
             </div>
-            <Form onSubmit={onSubmitMessage}>
-                <FormControl id="message-text" as='textarea' value={message} onChange={(e) => setMessage(e.target.value)} />
-                <Button type="submit">Envoyer</Button>
+            <Form onSubmit={onSubmitMessage} className="mt-3">
+                <InputGroup>
+                    <FormControl rows={1} id="message-text" as='textarea' value={message} onChange={(e) => setMessage(e.target.value)} />
+                    <Button type="submit"><Send /></Button>
+                </InputGroup>
             </Form>
         </div>
     )

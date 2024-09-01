@@ -1,6 +1,6 @@
 export interface MessageDto {
     id: number,
-    userName: string,
+    username: string,
     text: string,
     userId: string,
     groupId: string,

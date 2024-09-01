@@ -49,10 +49,10 @@ export default function GroupDetails({ lightGroup, userGroup }: GroupDetailsProp
     }
     
     return (
-        <section className="group-details border rounded p-3 col-8">
+        <section className="group-details border rounded p-3 col-8 d-flex flex-column">
             <div className="group-list-header d-flex justify-content-between mb-3 align-items-center">
                 <h1 className="text-capitalize">{lightGroup.name}</h1>
-                <div className="buttons d-flex gap-1 h-50">
+                <div className="buttons d-flex gap-1">
                     <Button className="btn-sm" onClick={() => setSelectedPage('list')}>Trousseau</Button>
                     <Button className="btn-sm" onClick={() => setSelectedPage('tchat')}>Tchat</Button>
                     <CustomModal buttonText="Paramètre" size="lg" header="Paramètre du groupe" buttonSize="btn-sm">
