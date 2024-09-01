@@ -19,6 +19,7 @@ export interface UserDTO {
     lastname: string,
     email: string,
     phoneNumber: string,
+    identifiedWithGoogle: boolean
 }
 
 export interface ConnectedUserDTO extends UserDTO {
@@ -30,4 +31,10 @@ export interface UserContactDTO {
     user1: UserDTO,
     user2: UserDTO,
     status: ContactRequestEnum
+}
+
+export interface GoogleUserDTO {
+    email: string,
+    lastname: string,
+    firstname: string,
 }
