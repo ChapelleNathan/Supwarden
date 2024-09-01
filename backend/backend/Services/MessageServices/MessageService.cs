@@ -15,7 +15,7 @@ public class MessageService(IMessageRepository messageRepository, IMapper mapper
     {
         var messages = await messageRepository.GetMessagesFromGroupId(groupId);
 
-        return messages.Select(message => mapper.Map<MessageDto>(message)).ToList();
+        return messages.Select(message => mapper.Map<MessageDto>(message)).OrderBy(message => message.SendDate).ToList();
     }
 
     public async Task<MessageDto> SaveMessage(CreateMessageDto messageDto)
