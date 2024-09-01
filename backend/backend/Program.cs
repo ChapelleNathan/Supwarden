@@ -4,12 +4,14 @@ using backend.Helper;
 using backend.Hubs;
 using backend.Hubs;
 using backend.Repository.GroupRepository;
+using backend.Repository.MessageRepository;
 using backend.Repository.PasswordRepository;
 using backend.Repository.UserContactRepository;
 using backend.Repository.UserGroupRepository;
 using backend.Repository.UserRepository;
 using backend.Services.AuthService;
 using backend.Services.GroupService;
+using backend.Services.MessageServices;
 using backend.Services.PasswordService;
 using backend.Services.UserContactService;
 using backend.Services.UserServices;
@@ -36,6 +38,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<DataContext>(options => 
     options.UseNpgsql(builder.Configuration.GetConnectionString("DevConnection"))
@@ -67,24 +70,32 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
 //User
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserServices, UserServices>();
+
 //Auth
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddSingleton<AuthHelper>();
+
+
 //Password
 builder.Services.AddScoped<IPasswordService, PasswordService>();
 builder.Services.AddScoped<IPasswordRepository, PasswordRepository>();
+
 //UserContact
 builder.Services.AddScoped<IUserContactRepository, UserContactRepository>();
 builder.Services.AddScoped<IUserContactService, UserContactService>();
+
 //Group
 builder.Services.AddScoped<IGroupRepository, GroupRepository>();
 builder.Services.AddScoped<IGroupService, GroupService>();
+
 //UserGroup
 builder.Services.AddScoped<IUserGroupRepository, UserGroupRepository>();
 
 //Message
 builder.Services.AddSingleton<SharedDb>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+builder.Services.AddScoped<IMessageService, MessageService>();
 
-builder.Services.AddScoped<AuthHelper>();
 
 
 var app = builder.Build();

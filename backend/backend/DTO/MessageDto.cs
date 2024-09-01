@@ -10,7 +10,7 @@ public class MessageDto
     public required DateTime UpdatedAt { get; set; }
 }
 
-public class CreateMessage
+public class CreateMessageDto
 {
     public required Guid UserId { get; set; }
     public required string Text { get; set; }
