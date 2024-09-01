@@ -32,5 +32,11 @@ public class AutoMapperProfile : Profile
         CreateMap<UserGroupDto, UserGroup>()
             .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User))
             .ForMember(dest => dest.Group, opt => opt.Ignore());
+        
+        //MESSAGE
+        CreateMap<Message, MessageDto>()
+            .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Email))
+            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
+            .ForMember(dest => dest.GroupId, opt => opt.MapFrom(src => src.Group.Id));
     }
 }
