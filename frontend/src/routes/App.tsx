@@ -8,7 +8,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 export default function App() {
     const navigate = useNavigate();
     const location = useLocation();
-    const clientId = '282928748602-jvjsus7ci73pgdtkohkd77kdlc7nqj8m.apps.googleusercontent.com';
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
     useEffect(() => {
         if (localStorage.getItem('token') == null) {
