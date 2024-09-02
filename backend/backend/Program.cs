@@ -22,6 +22,13 @@ using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var databaseConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+
+
+if(databaseConnectionString is null) {
+    databaseConnectionString = builder.Configuration.GetConnectionString("DevConnection");
+}
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -41,7 +48,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<DataContext>(options => 
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DevConnection"))
+    options.UseNpgsql(databaseConnectionString)
 );
 
 builder.Services.AddCors(options =>

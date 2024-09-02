@@ -12,26 +12,43 @@ services:
       - postgres-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-
-  backend:
-    build:
-      context: ./backend/backend
-    container_name: backend
-    depends_on:
-      - postgres
-    ports:
-      - "8080:8080"
+    networks:
+      - db
 
   frontend:
     build:
       context: ./frontend
+      dockerfile: Dockerfile
+    command: npm run dev
     container_name: frontend
-    environment:
-      NEXT_PUBLIC_API_URL: http://localhost:8080
     ports:
-      - "3000:3000"
+      - "8000:8000"
     depends_on:
       - backend
+    networks:
+      - app
+
+
+  backend:
+    build:
+      context: ./backend/backend
+      dockerfile: Dockerfile
+    container_name: backend
+    environment:
+      DB_CONNECTION_STRING: Host=postgres;Port=5432;Username=${DB_USERNAME};Password=${DB_PASSWORD};Database=${DB_NAME}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - app
+      - db
+
+networks:
+  app:
+    driver: bridge
+  db:
+    driver: bridge
 
 volumes:
   postgres-data:
