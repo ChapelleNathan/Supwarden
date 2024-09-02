@@ -2,7 +2,6 @@ using System.Text;
 using backend.Context;
 using backend.Helper;
 using backend.Hubs;
-using backend.Hubs;
 using backend.Repository.GroupRepository;
 using backend.Repository.MessageRepository;
 using backend.Repository.PasswordRepository;
@@ -25,7 +24,8 @@ var builder = WebApplication.CreateBuilder(args);
 var databaseConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
 
 
-if(databaseConnectionString is null) {
+if (databaseConnectionString is null)
+{
     databaseConnectionString = builder.Configuration.GetConnectionString("DevConnection");
 }
 
@@ -47,7 +47,7 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSignalR();
 
-builder.Services.AddDbContext<DataContext>(options => 
+builder.Services.AddDbContext<DataContext>(options =>
     options.UseNpgsql(databaseConnectionString)
 );
 
@@ -108,11 +108,8 @@ builder.Services.AddScoped<IMessageService, MessageService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseCors("localhost");
 app.MapHub<ChatHub>("/api/chat");
