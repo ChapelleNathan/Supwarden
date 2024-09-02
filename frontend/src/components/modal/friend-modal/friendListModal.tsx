@@ -1,10 +1,10 @@
 import axios from "axios"
-import { ReactNode, useEffect, useState } from "react"
+import { ReactNode, useState } from "react"
 import ServiceResponse from "../../../model/ServiceResponse"
 import { UserDTO } from "../../../model/UserModels"
 import { Button } from "react-bootstrap"
 import { Plus } from "react-bootstrap-icons"
-import { GroupDTO, LightGroupDTO } from "../../../model/GroupModels"
+import {  LightGroupDTO } from "../../../model/GroupModels"
 import { useToast } from "../../../context/ToastContext"
 
 const config = {
@@ -19,10 +19,10 @@ interface FriendListModalProps {
 
 export default function FriendListModal({ lightGroup }: FriendListModalProps) {
     const [users, setUsers] = useState<UserDTO[]>([]);
-    const [group, setGroup] = useState<UserDTO[]>([]);
+    // const [group, setGroup] = useState<UserDTO[]>([]);
     const { addToast } = useToast();
 
-    useEffect(() => {
+    /* useEffect(() => {
         const fetchUserFriend = async () => {
             const response = await axios.get(`http://localhost:8080/user-contact/friends`, config);
             const serviceResponse = response.data as ServiceResponse;
@@ -32,7 +32,6 @@ export default function FriendListModal({ lightGroup }: FriendListModalProps) {
         const fetchGroupUsers = async () => {
             const response = await axios.get(`http://localhost:8080/group/${lightGroup.id}/users`, config);
             const serviceResponse = response.data as ServiceResponse;            
-            setGroup(serviceResponse.data as UserDTO[]);
         }
         if (lightGroup) {
             fetchGroupUsers().then(() => {
@@ -42,7 +41,7 @@ export default function FriendListModal({ lightGroup }: FriendListModalProps) {
                 });
             });
         }
-    }, [])
+    }, []) */
 
     const addToGroup = async (user: UserDTO) => {
         try {
