@@ -83,8 +83,7 @@ export default function PasswordList({ passwords, groupId, userGroup }: Password
                 <thead>
                     <tr>
                         <th className="col">Element</th>
-                        <th className="col">Tags</th>
-                        <th className="col">Trousseau</th>
+                        <th className="col">Identifiant</th>
                         <th className="col">Actions</th>
                     </tr>
                 </thead>

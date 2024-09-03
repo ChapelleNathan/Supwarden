@@ -34,6 +34,7 @@ export default function GroupDetails({ lightGroup, userGroup }: GroupDetailsProp
             }
         }
         fetchGroupData();
+        setSelectedPage('list');
     }, [lightGroup])
 
     const displaySelectedPage = (lightGroup: LightGroupDTO) : ReactNode => {

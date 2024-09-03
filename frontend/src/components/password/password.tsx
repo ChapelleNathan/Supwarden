@@ -57,12 +57,7 @@ export default function Password({ password, onDeletePassword, groupId, userGrou
                 <h3 className="fs-5">{password.name}</h3>
                 <p className="text-body-secondary fs-7">{password.uri}</p>
             </td>
-            <td>
-                <div className="test">
-                    <p className="align-self-center">tags</p>
-                </div>
-            </td>
-            <td>trousseau</td>
+            <td>{password.identifier}</td>
             <td>
                 <Dropdown>
                     <Dropdown.Toggle variant="outline-primary">

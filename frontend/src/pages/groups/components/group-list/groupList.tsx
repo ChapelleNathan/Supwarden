@@ -27,7 +27,7 @@ export default function GroupList({groupList, onSelectGroup}: GroupListProps) {
 
     return (
         <section className="list-group col-3 border rounded p-3 d-flex flex-column gap-3">
-            <h2>Vos Groupes :</h2>
+            <h2>Vos Trousseaux :</h2>
             <CustomModal buttonText="Créer un groupe" header="Créer un groupe">
                 <GroupForm onGroupCreated={createGroup}/>
             </CustomModal>
