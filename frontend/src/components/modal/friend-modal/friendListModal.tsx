@@ -30,13 +30,13 @@ export default function FriendListModal({ lightGroup }: FriendListModalProps) {
             serviceResponse = (await axios.get(`http://localhost:8080/group/${lightGroup.id}/users`, config)).data as ServiceResponse;
             const userGroups = serviceResponse.data as UserGroupDTO[]
             const usersInGroup = userGroups.map(userGroup => userGroup.user.id);
-
+            const usersNotInGroup: UserDTO[] = []; 
             friendList.forEach(user => {
                 if(!usersInGroup.includes(user.id)){
-                    setUsers([...users, user])
+                    usersNotInGroup.push(user);
                 }
             })
-            
+            setUsers([...usersNotInGroup]);
         }
 
         if (lightGroup) {
