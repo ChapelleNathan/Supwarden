@@ -23,34 +23,24 @@ export default function FriendListModal({ lightGroup }: FriendListModalProps) {
     const { addToast } = useToast();
 
     useEffect(() => {
-        let friendList: UserDTO[] = [];
         const fetchUserFriend = async () => {
-            const response = await axios.get(`http://localhost:8080/user-contact/friends`, config);
-            const serviceResponse = response.data as ServiceResponse;
-            friendList = serviceResponse.data as UserDTO[];
-            setUsers(friendList)
-        }
+            let serviceResponse = (await axios.get(`http://localhost:8080/user-contact/friends`, config)).data as ServiceResponse;
+            const friendList = serviceResponse.data as UserDTO[];
 
-        const fetchGroupUsers = async () => {
-            const serviceResponse = (await axios.get(`http://localhost:8080/group/${lightGroup.id}/users`, config)).data as ServiceResponse;
-            const usersInGroup = serviceResponse.data as UserGroupDTO[]
-            let usersNotInGroup: UserDTO[] = []
-            usersInGroup.map(userGroup => {
-                // console.log(userGroup);
-                const userNotInGroup = friendList.find(user => user == userGroup.user);
-                console.log();
-                
-                if(userNotInGroup){
-                    usersNotInGroup.push(userNotInGroup)
+            serviceResponse = (await axios.get(`http://localhost:8080/group/${lightGroup.id}/users`, config)).data as ServiceResponse;
+            const userGroups = serviceResponse.data as UserGroupDTO[]
+            const usersInGroup = userGroups.map(userGroup => userGroup.user.id);
+
+            friendList.forEach(user => {
+                if(!usersInGroup.includes(user.id)){
+                    setUsers([...users, user])
                 }
-            });
-            setUsers(usersNotInGroup)
+            })
+            
         }
 
         if (lightGroup) {
-            fetchUserFriend().then(() => {
-                fetchGroupUsers();
-            });
+            fetchUserFriend();
         }
     }, [])
 
