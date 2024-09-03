@@ -1,10 +1,10 @@
 import axios from "axios"
-import { ReactNode, useState } from "react"
+import { ReactNode, useEffect, useState } from "react"
 import ServiceResponse from "../../../model/ServiceResponse"
 import { UserDTO } from "../../../model/UserModels"
 import { Button } from "react-bootstrap"
 import { Plus } from "react-bootstrap-icons"
-import {  LightGroupDTO } from "../../../model/GroupModels"
+import {  LightGroupDTO, UserGroupDTO } from "../../../model/GroupModels"
 import { useToast } from "../../../context/ToastContext"
 
 const config = {
@@ -22,26 +22,37 @@ export default function FriendListModal({ lightGroup }: FriendListModalProps) {
     // const [group, setGroup] = useState<UserDTO[]>([]);
     const { addToast } = useToast();
 
-    /* useEffect(() => {
+    useEffect(() => {
+        let friendList: UserDTO[] = [];
         const fetchUserFriend = async () => {
             const response = await axios.get(`http://localhost:8080/user-contact/friends`, config);
             const serviceResponse = response.data as ServiceResponse;
-            setUsers(serviceResponse.data as UserDTO[]);
+            friendList = serviceResponse.data as UserDTO[];
+            setUsers(friendList)
         }
 
         const fetchGroupUsers = async () => {
-            const response = await axios.get(`http://localhost:8080/group/${lightGroup.id}/users`, config);
-            const serviceResponse = response.data as ServiceResponse;            
+            const serviceResponse = (await axios.get(`http://localhost:8080/group/${lightGroup.id}/users`, config)).data as ServiceResponse;
+            const usersInGroup = serviceResponse.data as UserGroupDTO[]
+            let usersNotInGroup: UserDTO[] = []
+            usersInGroup.map(userGroup => {
+                // console.log(userGroup);
+                const userNotInGroup = friendList.find(user => user == userGroup.user);
+                console.log();
+                
+                if(userNotInGroup){
+                    usersNotInGroup.push(userNotInGroup)
+                }
+            });
+            setUsers(usersNotInGroup)
         }
+
         if (lightGroup) {
-            fetchGroupUsers().then(() => {
-                fetchUserFriend().then(() => {
-                    //FIXME Probleme lors de la récupération des utilisateurs du groupe ??
-                    //setUsers([...users.filter(user => !group.includes(user))])
-                });
+            fetchUserFriend().then(() => {
+                fetchGroupUsers();
             });
         }
-    }, []) */
+    }, [])
 
     const addToGroup = async (user: UserDTO) => {
         try {
@@ -63,7 +74,7 @@ export default function FriendListModal({ lightGroup }: FriendListModalProps) {
 
     const displayFriends = (friends: UserDTO[]): ReactNode => {
         if (friends.length == 0) {
-            return (<p>Vous n'avez pas d'ami 😟</p>)
+            return (<p>Vous n'avez pas d'ami à ajouter 😟</p>)
         }
 
         return users.map((user, index) => (
