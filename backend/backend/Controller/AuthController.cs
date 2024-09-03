@@ -45,4 +45,22 @@ public class AuthController (IAuthService authService)
 
         return new HttpResponseHandler().Handle(serviceResponse);
     }
+
+    [HttpPost("/login/google")]
+    public async Task<ActionResult<ServiceResponse<ConnectedUserDto>>> LoginWithGoogle(GoogleUserDto userDto)
+    {
+        var serviceResponse = new ServiceResponse<ConnectedUserDto>();
+
+        try
+        {
+            serviceResponse.Data = await authService.LoginWithGoogle(userDto);
+        }
+        catch (HttpResponseException e)
+        {
+            serviceResponse.HttpCode = e.StatusCode;
+            serviceResponse.Message = e.Message;
+        }
+
+        return new HttpResponseHandler().Handle(serviceResponse);
+    }
 }

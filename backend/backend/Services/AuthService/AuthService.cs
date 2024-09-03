@@ -9,20 +9,20 @@ using backend.Repository.UserRepository;
 
 namespace backend.Services.AuthService;
 
-public class AuthService(IUserRepository userRepository, IMapper mapper, DataContext context) : IAuthService
+public class AuthService(IUserRepository userRepository, IMapper mapper, AuthHelper authHelper) : IAuthService
 {
     public async Task<UserDto> Signin(CreateUserDto userDto)
     {
         var user = await userRepository.CreateUser(mapper.Map<User>(userDto));
         if (user is null)
         {
-            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.CreationError500);
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup500CreationError);
             throw new HttpResponseException(500,errorMessage ,user);
         }
         user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
         IsUserCorrect(user);
         
-        await context.SaveChangesAsync();
+        userRepository.Save();
         
         return mapper.Map<UserDto>(user);
     }
@@ -32,7 +32,7 @@ public class AuthService(IUserRepository userRepository, IMapper mapper, DataCon
         var user = await userRepository.FindUserByEmail(authUserDto.Email);
         if (user is null)
         {
-            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.ConnectionError400);
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400ConnectionError);
             throw new HttpResponseException(404, errorMessage, authUserDto);
         }
         var userDto = mapper.Map<ConnectedUserDto>(user);
@@ -40,20 +40,50 @@ public class AuthService(IUserRepository userRepository, IMapper mapper, DataCon
         var checkPassword = BCrypt.Net.BCrypt.Verify(authUserDto.Password, user.Password);
         if (!checkPassword)
         {
-            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.ConnectionError400);
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400ConnectionError);
             throw new HttpResponseException(400, errorMessage, userDto);
         }
 
-        userDto.Token = IAuthService.GenerateToken(user);
+        userDto.Token = authHelper.GenerateToken(user);
         
         return userDto;
+    }
+
+    public async Task<ConnectedUserDto> LoginWithGoogle(GoogleUserDto userDto)
+    {
+        var user = await userRepository.FindUserByEmail(userDto.Email);
+
+        
+        
+        if (user is null)
+        {
+            user = await userRepository.CreateUser(new User
+            {
+                Email = userDto.Email,
+                Firstname = userDto.Firstname,
+                Lastname = userDto.Lastname,
+                IdentifiedWithGoogle = true,
+            });
+            userRepository.Save();
+        }
+
+        if (!user.IdentifiedWithGoogle)
+        {
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400GoogleConnectionError);
+            throw new HttpResponseException(400, errorMessage);
+        } 
+        
+        var connectedUserDto = mapper.Map<ConnectedUserDto>(user);
+        connectedUserDto.Token = authHelper.GenerateToken(user);
+        
+        return connectedUserDto;
     }
 
     private void IsUserCorrect(User user)
     {
         if (!Regex.Match(user.Email, "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$").Success)
         {
-            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.EmailNotValid400);            
+            var errorMessage = ErrorHelper.GetErrorMessage(ErrorMessages.Sup400EmailNotValid);            
             throw new HttpResponseException(400,errorMessage ,user);
         }
     }

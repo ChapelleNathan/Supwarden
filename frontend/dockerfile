@@ -1,23 +1,35 @@
-# Utiliser une image de base officielle de Node.js
-FROM node:18-alpine
+# Étape 1 : Construction de l'application
+FROM node:18 AS build
 
 # Définir le répertoire de travail dans le conteneur
 WORKDIR /app
 
-# Copier le fichier package.json et package-lock.json (si présent)
-COPY package*.json ./
+# Copier les fichiers package.json et package-lock.json
+COPY package.json .
 
-# Installer les dépendances de l'application
+# Installer les dépendances
 RUN npm install
 
 # Copier le reste des fichiers de l'application
 COPY . .
 
-# Construire l'application Next.js
+# Construire l'application pour la production
 RUN npm run build
 
-# Exposer le port que l'application utilise
-EXPOSE 3000
+# Étape 2 : Serveur de production
+FROM node:18 AS production
 
-# Démarrer l'application Next.js
-CMD ["npm", "start"]
+# Installer un simple serveur HTTP pour servir l'application
+RUN npm install -g serve
+
+# Définir le répertoire de travail dans le conteneur
+WORKDIR /app
+
+# Copier les fichiers construits depuis l'étape de build
+COPY --from=build /app/dist ./dist
+
+# Exposer le port 8000
+EXPOSE 8000
+
+# Lancer le serveur avec l'application construite
+CMD ["serve", "-s", "dist", "-l", "8000"]
