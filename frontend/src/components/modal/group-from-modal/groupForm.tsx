@@ -32,7 +32,7 @@ export default function GroupForm({modifiedGroup, onGroupCreated}: GroupFormProp
                 <Form.Label>Nom du groupe</Form.Label>
                 <Form.Control value={groupName} onChange={(e) => setGroupName(e.target.value)}/>
             </Form.Group>
-            <Button className="col-4 offset-4" type="submit">Créer le Groupe</Button>
+            <Button className="col-4 offset-4" type="submit">Créer le Trousseau</Button>
         </Form>
     )
 }

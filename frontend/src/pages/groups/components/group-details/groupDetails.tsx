@@ -46,7 +46,7 @@ export default function GroupDetails({ lightGroup, userGroup }: GroupDetailsProp
     }
 
     if (!lightGroup) {
-        return <section className="group-details col-8">Aucun groupe sélectionné</section>
+        return <section className="group-details col-8">Aucun trousseau sélectionné</section>
     }
     
     return (
@@ -56,7 +56,7 @@ export default function GroupDetails({ lightGroup, userGroup }: GroupDetailsProp
                 <div className="buttons d-flex gap-1">
                     <Button className="btn-sm" onClick={() => setSelectedPage('list')}>Trousseau</Button>
                     <Button className="btn-sm" onClick={() => setSelectedPage('tchat')}>Tchat</Button>
-                    <CustomModal buttonText="Paramètre" size="lg" header="Paramètre du groupe" buttonSize="btn-sm">
+                    <CustomModal buttonText="Paramètre" size="lg" header="Paramètre du trousseau" buttonSize="btn-sm">
                         <GroupParameter lightGroup={lightGroup} />
                     </CustomModal>
                     <CustomModal buttonText="Ajouter un ami" header="Vos Amis" buttonSize="btn-sm">

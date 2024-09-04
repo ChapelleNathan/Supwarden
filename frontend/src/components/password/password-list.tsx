@@ -3,7 +3,7 @@ import { PasswordDto } from "../../model/PasswordModels";
 import CreatePasswordTrigger from "./create-password-trigger";
 import Password from "./password";
 import { useEffect, useState } from "react";
-import { FileEarmarkArrowDownFill, FileEarmarkArrowUpFill, Plus } from "react-bootstrap-icons";
+import { FileEarmarkArrowDownFill, Plus } from "react-bootstrap-icons";
 import { UserGroupDTO } from "../../model/GroupModels";
 import { jsonToCSV } from "react-papaparse";
 
@@ -57,10 +57,6 @@ export default function PasswordList({ passwords, groupId, userGroup }: Password
             <div className="d-flex justify-content-between">
                 <h2 className="mb-1">Vos mot de passes :</h2>
                 <div className="actions d-flex gap-2">
-                    <Button size="sm" variant="outline-primary" className="d-flex align-items-center gap-1">
-                        <FileEarmarkArrowUpFill size={20} />
-                        Importer
-                    </Button>
                     <Button size="sm" variant="outline-primary" className="d-flex align-items-center gap-1" onClick={exportPasswords}>
                         <FileEarmarkArrowDownFill size={20} />
                         Exporter
